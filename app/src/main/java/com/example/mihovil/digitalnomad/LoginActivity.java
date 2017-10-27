@@ -3,6 +3,7 @@ package com.example.mihovil.digitalnomad;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -32,12 +33,19 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+
+
+
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -92,6 +100,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        ButterKnife.bind(this);
+    }
+    @OnClick(R.id.signup)
+    public void SignUp(View view) {
+        startActivity(new Intent(this, RegistracijaActivity.class));
     }
 
     private void populateAutoComplete() {
