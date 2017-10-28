@@ -5,8 +5,10 @@ package com.example.webservice.interfaces;
  */
 
 public class Login {
-    public Boolean returnValue;
+    private Boolean returnValue;
 
-
+    public Boolean getReturnValue() {
+        return returnValue;
+    }
 }
 

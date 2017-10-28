@@ -16,7 +16,7 @@
         android:layout_marginTop="36dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/name"
+        android:hint="@string/name"
         tools:ignore="LabelFor" />
 
     <EditText
@@ -26,13 +26,14 @@
         android:layout_marginTop="28dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/lastname"
+        android:hint="@string/lastname"
         android:layout_below="@+id/name"
         android:layout_alignStart="@+id/name"
         tools:ignore="LabelFor" />
 
     <EditText
         android:id="@+id/email"
+        android:hint="@string/email_email_com"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/lastName"
@@ -44,6 +45,7 @@
 
     <EditText
         android:id="@+id/password"
+        android:hint="@string/pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/email"

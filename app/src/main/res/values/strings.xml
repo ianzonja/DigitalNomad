@@ -17,6 +17,8 @@
     <string name="register">Register</string>
     <string name="name">Enter name</string>
     <string name="lastname">Enter last name</string>
+    <string name="email_email_com">email@email.com</string>
+    <string name="pass">Enter Password</string>
     <item name="visible" type="id"/>
 
     <item name="masked" type="id"/>

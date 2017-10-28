@@ -1,5 +1,8 @@
 package com.example.webservice.interfaces;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.squareup.okhttp.OkHttpClient;
 
 import retrofit.Call;
@@ -33,9 +36,7 @@ public class WebServiceCaller {
 
     // get all records from a web service
     public void Registrate(String email, String password, String name, String last_name) {
-        System.out.println("stop2");
         APIinterface serviceCaller = retrofit.create(APIinterface.class);
-        System.out.println("stop1");
         Call<Login> call = serviceCaller.registration(email, password, name, last_name);
         if (call != null) {
             call.enqueue(new Callback<Login>() {
@@ -44,10 +45,11 @@ public class WebServiceCaller {
                     try {
                         Login login = response.body();
                         if (response.isSuccess()) {
-                            if (login.equals("true")) {
-                                System.out.println("uspjesna registracija");
+                            if (login.getReturnValue().equals("true")) {
+
+
                             } else {
-                                System.out.println("neuspjesna registracija");
+
                             }
                         }
                     } catch (Exception ex) {
