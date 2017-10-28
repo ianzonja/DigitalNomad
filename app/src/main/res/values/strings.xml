@@ -14,4 +14,7 @@
         completions."
     </string>
     <string name="sign_up">Dont have an accout? Sign up here!</string>
+    <item name="visible" type="id"/>
+
+    <item name="masked" type="id"/>
 </resources>
