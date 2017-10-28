@@ -14,6 +14,9 @@
         completions."
     </string>
     <string name="sign_up">Dont have an accout? Sign up here!</string>
+    <string name="register">Register</string>
+    <string name="name">Enter name</string>
+    <string name="lastname">Enter last name</string>
     <item name="visible" type="id"/>
 
     <item name="masked" type="id"/>
