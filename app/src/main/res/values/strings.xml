@@ -13,4 +13,5 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="sign_up">Dont have an accout? Sign up here!</string>
 </resources>
