@@ -5,10 +5,14 @@ package com.example.webservice.interfaces;
  */
 
 public class Login {
-    private Boolean returnValue;
+    private String returnValue;
 
-    public Boolean getReturnValue() {
+    public String getReturnValue() {
         return returnValue;
+    }
+
+    public void setReturnValue(String returnValue) {
+        this.returnValue = returnValue;
     }
 }
 

@@ -1,8 +1,10 @@
 package com.example.webservice.interfaces;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
 import retrofit.Call;
@@ -16,22 +18,22 @@ import retrofit.Retrofit;
  */
 
 public class WebServiceCaller {
+    OnServiceFinished listener;
 
     Retrofit retrofit;
 
     private final String baseUrl = "http://jospudja.heliohost.org/";
 
-    public WebServiceCaller() {
+    public WebServiceCaller(OnServiceFinished listener) {
+        this.listener=listener;
 
         OkHttpClient client = new OkHttpClient();
-
 
         this.retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
-
     }
 
     // get all records from a web service
@@ -43,15 +45,12 @@ public class WebServiceCaller {
                 @Override
                 public void onResponse(Response<Login> response, Retrofit retrofit) {
                     try {
-                        Login login = response.body();
-                        if (response.isSuccess()) {
-                            if (login.getReturnValue().equals("true")) {
-
-
-                            } else {
-
-                            }
+                        if (response.isSuccess()){
+                            listener.onServiceDone(response.body());
+                        }else{
+                            listener.onServiceFail(response.errorBody());
                         }
+
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -59,6 +58,7 @@ public class WebServiceCaller {
 
                 @Override
                 public void onFailure(Throwable t) {
+                    Log.i("stiglo", "failioure");
                     t.printStackTrace();
                 }
             });
