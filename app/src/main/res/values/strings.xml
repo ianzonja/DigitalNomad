@@ -21,5 +21,6 @@
     <string name="pass">Enter Password</string>
     <item name="visible" type="id"/>
 
-    <item name="masked" type="id"/>
+    <item name="masked" type="id" />
+    <string name="title_activity_login">Login</string>
 </resources>
