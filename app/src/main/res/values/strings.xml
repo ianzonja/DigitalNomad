@@ -23,4 +23,6 @@
 
     <item name="masked" type="id" />
     <string name="title_activity_login">Login</string>
+    <string name="login">Login</string>
+    <string name="email">Enter email</string>
 </resources>

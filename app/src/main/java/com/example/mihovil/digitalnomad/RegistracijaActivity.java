@@ -1,9 +1,7 @@
 package com.example.mihovil.digitalnomad;
 
-import android.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +22,7 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registracija);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         register = (Button) findViewById(R.id.registracija);
@@ -46,6 +44,7 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
     @Override
     public void onServiceDone(Object response) {
         ServiceResponse login = (ServiceResponse) response;
+        Log.d("TAG",login.getReturnValue());
 
         if (login.getReturnValue().trim().equals("1")){
             //startActivity();
@@ -56,8 +55,8 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
     }
 
     @Override
-    public void onServiceFail(Object msg) {
-        Toast.makeText(this, "Registracija neuspjesna" + (String)msg,Toast.LENGTH_LONG).show();
+    public void onServiceFail(Object message) {
+        Toast.makeText(this, (String)message,Toast.LENGTH_LONG).show();
     }
 }
 

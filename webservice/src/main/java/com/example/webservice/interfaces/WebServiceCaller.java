@@ -18,15 +18,14 @@ import retrofit.Retrofit;
  */
 
 public class WebServiceCaller {
-    OnServiceFinished listener;
+    private OnServiceFinished listener;
 
-    Retrofit retrofit;
-    APIinterface serviceCaller;
-    Call<ServiceResponse> call;
-
-    private final String baseUrl = "http://jospudja.heliohost.org/";
+    private Retrofit retrofit;
+    private APIinterface serviceCaller;
+    private Call<ServiceResponse> call;
 
     public WebServiceCaller(OnServiceFinished listener) {
+        final String baseUrl = "http://jospudja.heliohost.org/";
         this.listener=listener;
 
         OkHttpClient client = new OkHttpClient();
@@ -38,7 +37,7 @@ public class WebServiceCaller {
                 .build();
     }
 
-    public void CreateCaller(){
+    private void CreateCaller(){
         serviceCaller = retrofit.create(APIinterface.class);
     }
 
@@ -55,7 +54,7 @@ public class WebServiceCaller {
         CheckCall();
     }
 
-    public void CheckCall(){
+    private void CheckCall(){
         if (call != null) {
             call.enqueue(new Callback<ServiceResponse>() {
                 @Override
@@ -63,8 +62,6 @@ public class WebServiceCaller {
                     try {
                         if (response.isSuccess()){
                             listener.onServiceDone(response.body());
-                        }else{
-                            listener.onServiceFail(response.errorBody());
                         }
 
                     } catch (Exception ex) {
@@ -74,8 +71,8 @@ public class WebServiceCaller {
 
                 @Override
                 public void onFailure(Throwable t) {
-                    Log.i("stiglo", "failioure");
                     t.printStackTrace();
+                    listener.onServiceFail("Check your internet connection");
                 }
             });
         }

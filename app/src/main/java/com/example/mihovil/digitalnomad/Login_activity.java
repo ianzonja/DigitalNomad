@@ -1,8 +1,10 @@
 package com.example.mihovil.digitalnomad;
 
 import android.content.Intent;
+import android.support.annotation.BoolRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,7 +28,6 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
     TextView signUp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("activity startan");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_activity);
         mail = (EditText) findViewById(R.id.email);
@@ -36,10 +37,9 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("button clicked");
                 String mailText = mail.getText().toString();
                 String passwordText = pass.getText().toString();
-                if(mailText.isEmpty()  && passwordText.isEmpty()){
+                if(!mailText.isEmpty()  && !passwordText.isEmpty()){
                     WebServiceCaller wsc = new WebServiceCaller(Login_activity.this);
                     wsc.Login(mailText, passwordText);
                 }
@@ -58,17 +58,18 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
     @Override
     public void onServiceDone(Object response) {
         ServiceResponse login = (ServiceResponse) response;
-        if (login.postoji){
-            System.out.println("uspjeh");
+        if (login.isPostoji()){
+
+            Log.d("TAG","uspjeh");
           //??  Toast.makeText(this, "Registracija uspjesna",Toast.LENGTH_LONG);
         } else {
-            System.out.println("neuspjeh");
+            Log.d("TAG","neuspjeh");
            //?? Toast.makeText(this, "Registracija neuspjesna",Toast.LENGTH_LONG);
         }
     }
 
     @Override
     public void onServiceFail(Object message) {
-
+        Toast.makeText(this, (String)message,Toast.LENGTH_LONG).show();
     }
 }
