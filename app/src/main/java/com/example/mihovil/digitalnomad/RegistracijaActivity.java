@@ -1,7 +1,9 @@
 package com.example.mihovil.digitalnomad;
 
+import android.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +23,9 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registracija);
+
+        getSupportActionBar().setHomeButtonEnabled(true);
+
 
         register = (Button) findViewById(R.id.registracija);
         name = (EditText) findViewById(R.id.name);
