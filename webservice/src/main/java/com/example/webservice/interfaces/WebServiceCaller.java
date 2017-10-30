@@ -21,6 +21,8 @@ public class WebServiceCaller {
     OnServiceFinished listener;
 
     Retrofit retrofit;
+    APIinterface serviceCaller;
+    Call<ServiceResponse> call;
 
     private final String baseUrl = "http://jospudja.heliohost.org/";
 
@@ -36,14 +38,28 @@ public class WebServiceCaller {
                 .build();
     }
 
+    public void CreateCaller(){
+        serviceCaller = retrofit.create(APIinterface.class);
+    }
+
     // get all records from a web service
     public void Registrate(String email, String password, String name, String last_name) {
-        APIinterface serviceCaller = retrofit.create(APIinterface.class);
-        Call<Login> call = serviceCaller.registration(email, password, name, last_name);
+        CreateCaller();
+        call = serviceCaller.registration(email, password, name, last_name);
+        CheckCall();
+    }
+
+    public void Login(String email, String password){
+        CreateCaller();
+        call = serviceCaller.authenticate(email, password);
+        CheckCall();
+    }
+
+    public void CheckCall(){
         if (call != null) {
-            call.enqueue(new Callback<Login>() {
+            call.enqueue(new Callback<ServiceResponse>() {
                 @Override
-                public void onResponse(Response<Login> response, Retrofit retrofit) {
+                public void onResponse(Response<ServiceResponse> response, Retrofit retrofit) {
                     try {
                         if (response.isSuccess()){
                             listener.onServiceDone(response.body());

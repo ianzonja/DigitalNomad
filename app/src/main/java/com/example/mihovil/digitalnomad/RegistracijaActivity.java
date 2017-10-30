@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.webservice.interfaces.Login;
+import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.OnServiceFinished;
 import com.example.webservice.interfaces.WebServiceCaller;
 
@@ -36,8 +36,6 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 WebServiceCaller wsc = new WebServiceCaller(RegistracijaActivity.this);
                 wsc.Registrate(email.getText().toString(), password.getText().toString(), name.getText().toString(), lastName.getText().toString());
             }
@@ -47,7 +45,7 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
 
     @Override
     public void onServiceDone(Object response) {
-        Login login = (Login) response;
+        ServiceResponse login = (ServiceResponse) response;
 
         if (login.getReturnValue().trim().equals("1")){
             //startActivity();

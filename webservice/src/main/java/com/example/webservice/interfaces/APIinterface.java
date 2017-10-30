@@ -1,9 +1,7 @@
 package com.example.webservice.interfaces;
 
 import retrofit.Call;
-import retrofit.http.Field;
 import retrofit.http.GET;
-import retrofit.http.Path;
 import retrofit.http.Query;
 
 /**
@@ -12,9 +10,9 @@ import retrofit.http.Query;
 
 public interface APIinterface {
     @GET("webservis.php")
-    Call<Login> authenticate(@Query("email") String email, @Query("password") String password);
+    Call<ServiceResponse> authenticate(@Query("email") String email, @Query("password") String password);
 
     //@FormUrlEncoded
     @GET("insert.php")
-    Call<Login> registration(@Query("email") String email, @Query("password") String password, @Query("name") String name, @Query("last_name") String lastName);
+    Call<ServiceResponse> registration(@Query("email") String email, @Query("password") String password, @Query("name") String name, @Query("last_name") String lastName);
 }

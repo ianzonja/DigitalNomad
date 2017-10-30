@@ -6,9 +6,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.webservice.interfaces.APIinterface;
-import com.example.webservice.interfaces.Login;
+import com.example.webservice.interfaces.ServiceResponse;
+import com.example.webservice.interfaces.OnServiceFinished;
 import com.example.webservice.interfaces.WebServiceCaller;
 
 import retrofit.Call;
@@ -16,7 +18,7 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class Login_activity extends AppCompatActivity {
+public class Login_activity extends AppCompatActivity implements OnServiceFinished {
     EditText mail;
     EditText pass;
     Button login;
@@ -31,7 +33,6 @@ public class Login_activity extends AppCompatActivity {
         pass = (EditText) findViewById(R.id.pass);
         login = (Button) findViewById(R.id.button);
         textview = (TextView) findViewById(R.id.textView);
-        userService = WebServiceCaller.getUserService();
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,38 +40,27 @@ public class Login_activity extends AppCompatActivity {
                 String mailText = mail.getText().toString();
                 String passwordText = pass.getText().toString();
                 if(mailText != "" && passwordText != ""){
-                    DoLogin(mailText, passwordText);
+                    WebServiceCaller wsc = new WebServiceCaller(Login_activity.this);
+                    wsc.Login(mailText, passwordText);
                 }
             }
         });
     }
 
-    private void DoLogin(String mail, String pass){
-        System.out.println("prije calla");
-        try {
-            Call<Login> call = userService.authenticate(mail, pass);
-        System.out.println("call pozvan");
-            call.enqueue(new Callback<Login>() {
-            @Override
-            public void onResponse(Response<Login> response, Retrofit retrofit) {
-                if(response.isSuccess()){
-                    System.out.println("call success");
-                    System.out.println(response.headers().toString());
-                    System.out.println("kraj hedera");
-                    System.out.println(response.body().toString());
-                    System.out.println("kraj bodya");
-                    System.out.println(String.valueOf(response.body().postoji));
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                textview.setText(t.getLocalizedMessage());
-                System.out.println("call not success");
-            }
-        });
-        }catch(Exception ex){
-            System.out.println(ex.getMessage());
+    @Override
+    public void onServiceDone(Object response) {
+        ServiceResponse login = (ServiceResponse) response;
+        if (login.postoji == true){
+            System.out.println("uspjeh");
+            Toast.makeText(this, "Registracija uspjesna",Toast.LENGTH_LONG);
+        } else {
+            System.out.println("neuspjeh");
+            Toast.makeText(this, "Registracija neuspjesna",Toast.LENGTH_LONG);
         }
+    }
+
+    @Override
+    public void onServiceFail(Object message) {
+
     }
 }
