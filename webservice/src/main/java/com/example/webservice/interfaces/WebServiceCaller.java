@@ -1,10 +1,5 @@
 package com.example.webservice.interfaces;
 
-import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
 import retrofit.Call;
@@ -41,7 +36,6 @@ public class WebServiceCaller {
         serviceCaller = retrofit.create(APIinterface.class);
     }
 
-    // get all records from a web service
     public void Registrate(String email, String password, String name, String last_name) {
         CreateCaller();
         call = serviceCaller.registration(email, password, name, last_name);

@@ -14,18 +14,14 @@ import com.example.webservice.interfaces.WebServiceCaller;
 
 
 public class RegistracijaActivity extends AppCompatActivity implements OnServiceFinished {
-    Button register;
-    EditText name, lastName, password, email;
+    private EditText name, lastName, password, email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registracija);
 
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-        register = (Button) findViewById(R.id.registracija);
+        Button register = (Button) findViewById(R.id.registracija);
         name = (EditText) findViewById(R.id.name);
         lastName = (EditText) findViewById(R.id.lastName);
         email = (EditText) findViewById(R.id.email);
@@ -44,19 +40,19 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
     @Override
     public void onServiceDone(Object response) {
         ServiceResponse login = (ServiceResponse) response;
-        Log.d("TAG",login.getReturnValue());
+        Log.d("TAG", login.getReturnValue());
 
-        if (login.getReturnValue().trim().equals("1")){
+        if (login.getReturnValue().trim().equals("1")) {
             //startActivity();
-            Toast.makeText(this, "Registracija uspjesna",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Registracija uspjesna", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, "Registracija neuspjesna",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Registracija neuspjesna", Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onServiceFail(Object message) {
-        Toast.makeText(this, (String)message,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, (String) message, Toast.LENGTH_LONG).show();
     }
 }
 
