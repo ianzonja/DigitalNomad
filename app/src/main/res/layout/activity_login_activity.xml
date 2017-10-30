@@ -7,10 +7,10 @@
     tools:context="com.example.mihovil.digitalnomad.Login_activity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:hint="@string/sign_up"
         tools:layout_editor_absoluteX="128dp"
         tools:layout_editor_absoluteY="30dp"
         android:layout_alignParentTop="true"

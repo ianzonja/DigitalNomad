@@ -24,7 +24,7 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registracija);
 
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         register = (Button) findViewById(R.id.registracija);
@@ -49,14 +49,15 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
 
         if (login.getReturnValue().trim().equals("1")){
             //startActivity();
+            Toast.makeText(this, "Registracija uspjesna",Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, "Registracija neuspjesna",Toast.LENGTH_LONG);
+            Toast.makeText(this, "Registracija neuspjesna",Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onServiceFail(Object msg) {
-
+        Toast.makeText(this, "Registracija neuspjesna" + (String)msg,Toast.LENGTH_LONG).show();
     }
 }
 
