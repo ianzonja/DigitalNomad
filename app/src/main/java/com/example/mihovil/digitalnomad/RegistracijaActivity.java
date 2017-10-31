@@ -73,7 +73,6 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
         Log.d("TAG", login.getReturnValue());
 
         if (login.getReturnValue().equals("1")) {
-            Toast.makeText(this, "Registracija uspjesna", Toast.LENGTH_LONG).show();
             startActivity(new Intent(getBaseContext(), MainMenuActivity.class));
         } else {
             Toast.makeText(this, "Registracija neuspjesna", Toast.LENGTH_LONG).show();
@@ -85,11 +84,11 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
         Toast.makeText(this, (String) message, Toast.LENGTH_LONG).show();
     }
 
-    private boolean CheckIndividualEntry(EditText check, String error){
-        if (check.getText().toString().isEmpty()){
+    private boolean CheckIndividualEntry(EditText check, String error) {
+        if (check.getText().toString().isEmpty()) {
             check.setError(error);
             return false;
-        }else {
+        } else {
             check.setError(null);
         }
         return true;
@@ -98,22 +97,22 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
     private boolean CheckEntry(EditText email, EditText password, EditText name, EditText lastName, EditText repeatPass) {
         boolean success[] = new boolean[4];
 
-        success[0]=CheckIndividualEntry(name,"Enter name");
-        success[1]=CheckIndividualEntry(lastName,"Enter last name");
+        success[0] = CheckIndividualEntry(name, "Enter name");
+        success[1] = CheckIndividualEntry(lastName, "Enter last name");
 
-       if(success[2]=CheckIndividualEntry(email,"Enter email")){
-           if (!email.getText().toString().contains("@")){
-               email.setError("Email must contain @");
-               success[2]=false;
-           }
-       }
-       if( success[3]=CheckIndividualEntry(password,"Enter password")){
-           if(!password.getText().toString().equals(repeatPass.getText().toString())){
-               repeatPass.setError("Passwords do not match");
-               success[3]=false;
-           }
-       }
-        for(boolean b : success) if(!b) return false;
+        if (success[2] = CheckIndividualEntry(email, "Enter email")) {
+            if (!email.getText().toString().contains("@")) {
+                email.setError("Email must contain @");
+                success[2] = false;
+            }
+        }
+        if (success[3] = CheckIndividualEntry(password, "Enter password")) {
+            if (!password.getText().toString().equals(repeatPass.getText().toString())) {
+                repeatPass.setError("Passwords do not match");
+                success[3] = false;
+            }
+        }
+        for (boolean b : success) if (!b) return false;
         return true;
     }
 }

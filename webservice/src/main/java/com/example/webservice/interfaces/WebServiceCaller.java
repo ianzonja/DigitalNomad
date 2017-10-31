@@ -2,6 +2,8 @@ package com.example.webservice.interfaces;
 
 import com.squareup.okhttp.OkHttpClient;
 
+import java.util.concurrent.TimeUnit;
+
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -23,7 +25,10 @@ public class WebServiceCaller {
         final String baseUrl = "http://jospudja.heliohost.org/";
         this.listener=listener;
 
-        OkHttpClient client = new OkHttpClient();
+        final OkHttpClient client = new OkHttpClient();
+        client.setReadTimeout(60, TimeUnit.SECONDS);
+        client.setConnectTimeout(60, TimeUnit.SECONDS);
+
 
         this.retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)

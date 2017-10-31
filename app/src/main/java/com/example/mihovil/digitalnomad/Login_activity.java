@@ -28,11 +28,11 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String mailText = mail.getText().toString();
-                String passwordText =pass.getText().toString();
-                if(!mailText.isEmpty()  && !passwordText.isEmpty()){
+                if (CheckEntry(mail, pass)) {
                     WebServiceCaller wsc = new WebServiceCaller(Login_activity.this);
-                    wsc.Login(mailText, passwordText);
+                    wsc.Login(mail.getText().toString(), pass.getText().toString());
+                } else {
+                    Toast.makeText(getBaseContext(), "Correct errors", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -40,8 +40,7 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getBaseContext(),RegistracijaActivity.class);
-                startActivity(i);
+                startActivity(new Intent(getBaseContext(), RegistracijaActivity.class));
             }
         });
     }
@@ -49,15 +48,33 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
     @Override
     public void onServiceDone(Object response) {
         ServiceResponse login = (ServiceResponse) response;
-        if (login.isPostoji()){
-            startActivity(new Intent(getBaseContext(),MainMenuActivity.class));
+        if (login.isPostoji()) {
+            startActivity(new Intent(getBaseContext(), MainMenuActivity.class));
         } else {
-          //ToDo
+            Toast.makeText(getBaseContext(), "Invalid email or password", Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onServiceFail(Object message) {
-        Toast.makeText(this, (String)message,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, (String) message, Toast.LENGTH_LONG).show();
+    }
+
+    private boolean CheckEntry(EditText email, EditText password) {
+        boolean success = true;
+
+        if (email.getText().toString().isEmpty()) {
+            email.setError("Enter email");
+            success = false;
+        } else {
+            email.setError(null);
+        }
+        if (password.getText().toString().isEmpty()) {
+            password.setError("Enter password");
+        } else {
+            password.setError(null);
+        }
+
+        return success;
     }
 }
