@@ -3,16 +3,17 @@
 
     <string name="sign_up">Dont have an accout? Sign up here!</string>
     <string name="register">Register</string>
-    <string name="name">Enter name</string>
-    <string name="lastname">Enter last name</string>
-    <string name="email_email_com">email@email.com</string>
-    <string name="pass">Enter Password</string>
+    <string name="name">Name</string>
+    <string name="lastname">Last name</string>
+    <string name="email_email_com">Email</string>
+    <string name="pass">Password</string>
+    <string name="acc">Make an account</string>
     <item name="visible" type="id" />
 
     <item name="masked" type="id" />
     <string name="title_activity_login">Login</string>
     <string name="login">Login</string>
-    <string name="email">Enter email</string>
+    <string name="email">Email</string>
     <string name="repeat_password">Repeat password</string>
     <string name="title_activity_main_menu">MainMenu</string>
 
