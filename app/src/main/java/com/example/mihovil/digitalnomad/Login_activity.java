@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,9 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
     private EditText mail;
     private EditText pass;
 
+    private ProgressBar progressBar;
+    private RelativeLayout relativeLayout;
+
     //facebook
     LoginButton loginButton;
     CallbackManager callbackManager;
@@ -40,6 +45,10 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_activity);
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        relativeLayout = (RelativeLayout) findViewById(R.id.RelativeLayout1);
+
 
         //facebook
         loginButton = (LoginButton) findViewById(R.id.login_button);
@@ -75,6 +84,7 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
             @Override
             public void onClick(View view) {
                 if (CheckEntry(mail, pass)) {
+                    EnableProgressBar();
                     WebServiceCaller wsc = new WebServiceCaller(Login_activity.this);
                     wsc.Login(mail.getText().toString(), pass.getText().toString());
                 } else {
@@ -91,6 +101,16 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
         });
     }
 
+    private void DisableProgressBar(){
+        relativeLayout.setAlpha(1);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    private void EnableProgressBar(){
+        relativeLayout.setAlpha(0.3f);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode,resultCode,data);
@@ -98,6 +118,7 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
 
     @Override
     public void onServiceDone(Object response) {
+        DisableProgressBar();
         ServiceResponse login = (ServiceResponse) response;
         if (login.isPostoji()) {
             startActivity(new Intent(getBaseContext(), MainMenuActivity.class));
@@ -109,6 +130,7 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
     @Override
     public void onServiceFail(Object message) {
         Toast.makeText(this, (String) message, Toast.LENGTH_LONG).show();
+        DisableProgressBar();
     }
 
     private boolean CheckEntry(EditText email, EditText password) {

@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.webservice.interfaces.ServiceResponse;
@@ -18,12 +20,17 @@ import com.example.webservice.interfaces.WebServiceCaller;
 
 public class RegistracijaActivity extends AppCompatActivity implements OnServiceFinished {
     private EditText name, lastName, password, email, repeatPass;
+    private ProgressBar progressBar;
+    private RelativeLayout relativeLayout;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registracija);
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar2);
+        relativeLayout = (RelativeLayout) findViewById(R.id.RelativeLayout2);
 
         Button register = (Button) findViewById(R.id.registracija);
         name = (EditText) findViewById(R.id.name);
@@ -36,6 +43,7 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
             @Override
             public void onClick(View view) {
                 if (CheckEntry(email, password, name, lastName, repeatPass)) {
+                    EnableProgressBar();
                     WebServiceCaller wsc = new WebServiceCaller(RegistracijaActivity.this);
                     wsc.Registrate(email.getText().toString(), password.getText().toString(), name.getText().toString(), lastName.getText().toString());
                 } else {
@@ -65,10 +73,19 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
             }
         });
     }
+    private void DisableProgressBar(){
+        relativeLayout.setAlpha(1);
+        progressBar.setVisibility(View.GONE);
+    }
+    private void EnableProgressBar(){
+        relativeLayout.setAlpha(0.3f);
+        progressBar.setVisibility(View.VISIBLE);
+    }
 
 
     @Override
     public void onServiceDone(Object response) {
+        DisableProgressBar();
         ServiceResponse login = (ServiceResponse) response;
         Log.d("TAG", login.getReturnValue());
 
@@ -81,6 +98,7 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
 
     @Override
     public void onServiceFail(Object message) {
+        DisableProgressBar();
         Toast.makeText(this, (String) message, Toast.LENGTH_LONG).show();
     }
 
