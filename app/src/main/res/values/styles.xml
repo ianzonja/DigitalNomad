@@ -5,17 +5,16 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#FF005B9C</item>
         <item name="colorPrimaryDark">#00497c</item>
-        <item name="colorAccent">#ffffff</item>
+        <item name="colorAccent">@color/dnBlue</item>
         <item name="android:textColorSecondary">#005B9C</item>
-        <item name="android:windowBackground">@color/background</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="colorAccent">#ffffff</item>
+        <item name="colorPrimaryDark">#00497c</item>
+        <item name="colorAccent">@color/dnBlue</item>
         <item name="android:textColorSecondary">#005B9C</item>
-        <item name="android:windowBackground">@color/background</item>
     </style>
 
     <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

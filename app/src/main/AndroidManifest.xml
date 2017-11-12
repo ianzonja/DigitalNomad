@@ -20,7 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegistracijaActivity">
+        <activity android:name=".RegistracijaActivity"
+            android:label="Sign up">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Login_activity" />

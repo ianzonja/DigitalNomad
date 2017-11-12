@@ -13,9 +13,9 @@
 
     <RelativeLayout
         android:id="@+id/RelativeLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="UselessParent">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp">
 
         <ScrollView
             android:id="@+id/login_form"
@@ -33,50 +33,46 @@
                     android:id="@+id/imageView"
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
-                    android:layout_marginTop="60dp"
+                    android:layout_marginTop="25dp"
                     android:contentDescription=""
                     app:srcCompat="@drawable/logo"
                     tools:ignore="ContentDescription" />
 
                 <android.support.design.widget.TextInputLayout
-                    android:layout_width="310dp"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="50dp"
-                    android:background="@color/blackColor"
                     android:clickable="false"
-                    android:textColorHint="@color/justWhite">
+                    android:textColorHint="@color/dnBlue">
 
                     <EditText
                         android:id="@+id/email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@android:color/transparent"
+                        android:backgroundTint="@color/gray"
                         android:hint="@string/email"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
                         android:padding="10dp"
-                        android:textColor="@color/justWhite"
                         android:translationY="-5dp"
                         tools:ignore="UnusedAttribute" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
-                    android:layout_width="310dp"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="10dp"
-                    android:background="@color/blackColor"
-                    android:textColorHint="@color/justWhite">
+                    android:textColorHint="@color/dnBlue">
 
                     <EditText
                         android:id="@+id/pass"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@android:color/transparent"
+                        android:backgroundTint="@color/gray"
                         android:hint="@string/pass"
                         android:inputType="textPassword"
                         android:maxLines="1"
                         android:padding="10dp"
-                        android:textColor="@color/justWhite"
                         android:translationY="-5dp"
                         tools:ignore="UnusedAttribute" />
                 </android.support.design.widget.TextInputLayout>
@@ -84,13 +80,13 @@
                 <Button
                     android:id="@+id/button"
                     style="?android:textAppearanceSmall"
-                    android:layout_width="310dp"
+                    android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="16dp"
                     android:background="@color/dnBlue"
                     android:text="@string/login"
-                    android:textColor="@color/justWhite"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="#ffffff"/>
 
                 <TextView
                     android:id="@+id/textView2"
@@ -103,7 +99,7 @@
 
                 <com.facebook.login.widget.LoginButton
                     android:id="@+id/login_button"
-                    android:layout_width="310dp"
+                    android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_gravity="center_horizontal" />
 
@@ -115,7 +111,8 @@
                     android:layout_marginTop="50dp"
                     android:text="@string/sign_up"
                     android:textAlignment="center"
-                    android:textColor="@color/justWhite" />
+                    android:textColor="#000000"/>
+
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>
@@ -126,6 +123,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"
+        android:indeterminate="false"
         android:visibility="gone" />
+
 </RelativeLayout>
 
