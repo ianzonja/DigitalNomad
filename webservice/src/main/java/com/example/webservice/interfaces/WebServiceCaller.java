@@ -22,7 +22,7 @@ public class WebServiceCaller {
     private Call<ServiceResponse> call;
 
     public WebServiceCaller(OnServiceFinished listener) {
-        final String baseUrl = "http://jospudja.heliohost.org/";
+        final String baseUrl = "http://jospudjaatfoi.000webhostapp.com/";
         this.listener=listener;
 
         final OkHttpClient client = new OkHttpClient();

@@ -9,10 +9,10 @@ import retrofit.http.Query;
  */
 
 public interface APIinterface {
-    @GET("webservis.php")
+    @GET("prijavaKorisnika.php")
     Call<ServiceResponse> authenticate(@Query("email") String email, @Query("password") String password);
 
     //@FormUrlEncoded
-    @GET("insert.php")
+    @GET("registracijaKorisnika.php")
     Call<ServiceResponse> registration(@Query("email") String email, @Query("password") String password, @Query("name") String name, @Query("last_name") String lastName);
 }

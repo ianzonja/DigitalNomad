@@ -96,6 +96,7 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
                 startActivity(new Intent(getBaseContext(), RegistracijaActivity.class));
             }
         });

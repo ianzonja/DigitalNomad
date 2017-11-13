@@ -90,6 +90,7 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
         Log.d("TAG", login.getReturnValue());
 
         if (login.getReturnValue().equals("1")) {
+            finish();
             startActivity(new Intent(getBaseContext(), MainMenuActivity.class));
         } else {
             Toast.makeText(this, "Registracija neuspjesna", Toast.LENGTH_LONG).show();
