@@ -100,15 +100,21 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
                                     String last_name = object.getString("last_name");
                                     String image_url = "http://graph.facebook.com/" + id + "/picture?type=large";
 
-                                    String email=null;
+                                    String email = null;
                                     if (object.has("email")) {
                                         email = object.getString("email");
                                     }
+                                    /*
+                                    WebServiceCaller wsc = new WebServiceCaller(Login_activity.this);
+                                    wsc.FacebookLogin(email,first_name,last_name,image_url);
+                                    */
 
-                                    Log.d("TAG","email i pic \n"+ email + image_url);
+                                    Intent i = new Intent(getBaseContext(), MainMenuActivity.class);
+                                    startActivity(i);
+                                    finish();
+                                    Log.d("TAG", "email i pic \n" + email + "\n" + image_url + "\n" + first_name + "  " + last_name);
 
-                                }
-                                catch(JSONException e){
+                                } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -117,11 +123,6 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
                 parameters.putString("fields", "id,first_name,last_name,email");
                 request.setParameters(parameters);
                 request.executeAsync();
-               // Intent i = new Intent(getBaseContext(),MainMenuActivity.class);
-               // startActivity(i);
-
-               // finish();
-
             }
 
             @Override
@@ -135,6 +136,7 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -150,7 +152,6 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
         relativeLayout.setAlpha(0.3f);
         progressBar.setVisibility(View.VISIBLE);
     }
-
 
 
     @Override

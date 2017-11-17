@@ -16,5 +16,10 @@ public interface APIinterface {
 
     //@FormUrlEncoded
     @GET("registracijaKorisnika.php")
+
+
     Call<ServiceResponse> registration(@Query("email") String email, @Query("password") String password, @Query("name") String name, @Query("last_name") String lastName);
+//ToDo
+   @GET("facebookLogin.php")
+   Call<ServiceResponse> facebookRegistration(@Query("email") String email, @Query("name") String name, @Query("last_name")String lastName,@Query("url") String url);
 }

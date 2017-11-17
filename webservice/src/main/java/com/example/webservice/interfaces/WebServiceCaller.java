@@ -55,6 +55,11 @@ public class WebServiceCaller {
         CheckCall();
     }
 
+    private void FacebookLogin(String email, String name, String lastName, String url){
+        CreateCaller();
+        call = serviceCaller.facebookRegistration(email,name,lastName,url);
+    }
+
     private void CheckCall(){
         if (call != null) {
             call.enqueue(new Callback<ServiceResponse>() {
