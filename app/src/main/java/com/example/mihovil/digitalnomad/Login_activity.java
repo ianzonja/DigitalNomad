@@ -15,20 +15,14 @@ import android.widget.Toast;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.appevents.AppEventsLogger;
 
 import com.example.webservice.interfaces.ServiceResponse;
-import com.example.webservice.interfaces.OnServiceFinished;
+import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 import com.example.webservice.interfaces.WebServiceCaller;
 
 //facebook
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-
-import org.json.JSONObject;
 
 public class Login_activity extends AppCompatActivity implements OnServiceFinished {
     private EditText mail;

@@ -1,5 +1,7 @@
 package com.example.webservice.interfaces;
 
+import com.example.webservice.interfaces.interfaces.APIinterface;
+import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.util.concurrent.TimeUnit;

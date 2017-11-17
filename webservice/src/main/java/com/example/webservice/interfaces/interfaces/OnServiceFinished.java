@@ -1,4 +1,4 @@
-package com.example.webservice.interfaces;
+package com.example.webservice.interfaces.interfaces;
 
 /**
  * Created by Mihovil on 29.10.2017..

@@ -1,4 +1,6 @@
-package com.example.webservice.interfaces;
+package com.example.webservice.interfaces.interfaces;
+
+import com.example.webservice.interfaces.ServiceResponse;
 
 import retrofit.Call;
 import retrofit.http.GET;

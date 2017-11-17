@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.webservice.interfaces.ServiceResponse;
-import com.example.webservice.interfaces.OnServiceFinished;
+import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 import com.example.webservice.interfaces.WebServiceCaller;
 
 
