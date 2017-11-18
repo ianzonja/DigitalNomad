@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 import com.example.webservice.interfaces.WebServiceCaller;
+import com.raizlabs.android.dbflow.config.FlowConfig;
+import com.raizlabs.android.dbflow.config.FlowManager;
 
 
 public class RegistracijaActivity extends AppCompatActivity implements OnServiceFinished {
@@ -28,6 +30,8 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registracija);
+
+        FlowManager.init(new FlowConfig.Builder(this).build());
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
         relativeLayout = (RelativeLayout) findViewById(R.id.RelativeLayout2);
