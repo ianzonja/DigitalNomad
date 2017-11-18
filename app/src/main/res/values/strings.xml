@@ -25,4 +25,9 @@
     <string name="facebook_app_id">986322564851247</string>
     <string name="fb_login_protocol_scheme">fb986322564851247</string>
     <string name="or">or</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="change_password">Change password</string>
+    <string name="enter_old_password">Enter old password</string>
+    <string name="enter_new_password">Enter new password</string>
+    <string name="save">Save</string>
 </resources>
