@@ -12,19 +12,46 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 @Table(database = MainDatabase.class)
 public class User extends BaseModel {
     public User() {
+
     }
 
-    public int getIduser() {
-        return iduser;
+    public User(String name, String last_name, String email, String password) {
+        this.name = name;
+        this.last_name = last_name;
+        this.email = email;
+        this.password = password;
     }
 
-    public void setIduser(int iduser) {
-        this.iduser = iduser;
+    public String getName() {
+        return name;
     }
 
-    public User(int iduser) {
+    public String getLast_name() {
+        return last_name;
+    }
 
-        this.iduser = iduser;
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @PrimaryKey (autoincrement = true)
