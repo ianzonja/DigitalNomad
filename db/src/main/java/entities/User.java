@@ -33,5 +33,13 @@ public class User extends BaseModel {
     @Column String last_name;
     @Column String email;
     @Column String password;
-    @Column String image_url;
+
+    public void StoreData(String name, String last_name, String email, String password){
+        User user = new User();
+        user.name = name;
+        user.last_name = last_name;
+        user.email = email;
+        user.password = password;
+        user.save();
+    }
 }

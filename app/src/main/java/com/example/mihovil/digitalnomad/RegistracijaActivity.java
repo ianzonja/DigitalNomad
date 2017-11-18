@@ -19,6 +19,8 @@ import com.example.webservice.interfaces.WebServiceCaller;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
+import entities.User;
+
 
 public class RegistracijaActivity extends AppCompatActivity implements OnServiceFinished {
     private EditText name, lastName, password, email, repeatPass;
@@ -50,6 +52,8 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
                     EnableProgressBar();
                     WebServiceCaller wsc = new WebServiceCaller(RegistracijaActivity.this);
                     wsc.Registrate(email.getText().toString(), password.getText().toString(), name.getText().toString(), lastName.getText().toString());
+                    User user = new User();
+                    user.StoreData(name.getText().toString(), lastName.getText().toString(), email.getText().toString(), password.getText().toString());
                 } else {
                     Toast.makeText(getBaseContext(), "Correct errors", Toast.LENGTH_SHORT).show();
                 }
