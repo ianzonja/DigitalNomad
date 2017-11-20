@@ -174,7 +174,9 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
         DisableProgressBar();
         ServiceResponse login = (ServiceResponse) response;
         if (login.isPostoji()) {
+            SetLoginSession(mail.getText().toString());
             startActivity(new Intent(getBaseContext(), MainMenuActivity.class));
+            finish();
         } else {
             Toast.makeText(getBaseContext(), "Invalid email or password", Toast.LENGTH_LONG).show();
         }
