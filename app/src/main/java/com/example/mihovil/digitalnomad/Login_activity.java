@@ -57,6 +57,7 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         preferences=PreferenceManager.getDefaultSharedPreferences(this);
+
         if (preferences.contains("Email")) {
             Intent i = new Intent(getBaseContext(), MainMenuActivity.class);
             startActivity(i);
