@@ -39,6 +39,9 @@
                 android:id="@+id/nav_workspaces"
                 android:icon="@drawable/ic_menu_share"
                 android:title="Your workspaces" />
+            <item
+                android:id="@+id/nav_logout"
+                android:title="@string/logout" />
         </menu>
     </item>
 
