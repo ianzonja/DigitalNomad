@@ -2,6 +2,8 @@ package com.example.mihovil.digitalnomad;
 
 import android.app.Instrumentation;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +45,8 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
     private ProgressBar progressBar;
     private RelativeLayout relativeLayout;
 
+    private SharedPreferences preferences;
+
     //facebook
     LoginButton loginButton;
     CallbackManager callbackManager;
@@ -51,7 +55,18 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
+
+        preferences=PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (preferences.contains("Email")) {
+            Intent i = new Intent(getBaseContext(), MainMenuActivity.class);
+            startActivity(i);
+            finish();
+        }
+
+
         setContentView(R.layout.activity_login_activity);
+
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         relativeLayout = (RelativeLayout) findViewById(R.id.RelativeLayout1);
@@ -103,6 +118,7 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
                                     String email = null;
                                     if (object.has("email")) {
                                         email = object.getString("email");
+                                        SetLoginSession(email);
                                     }
                                     /*
                                     WebServiceCaller wsc = new WebServiceCaller(Login_activity.this);
@@ -112,7 +128,6 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
                                     Intent i = new Intent(getBaseContext(), MainMenuActivity.class);
                                     startActivity(i);
                                     finish();
-                                    Log.d("TAG", "email i pic \n" + email + "\n" + image_url + "\n" + first_name + "  " + last_name);
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -159,7 +174,9 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
         DisableProgressBar();
         ServiceResponse login = (ServiceResponse) response;
         if (login.isPostoji()) {
+            SetLoginSession(mail.getText().toString());
             startActivity(new Intent(getBaseContext(), MainMenuActivity.class));
+            finish();
         } else {
             Toast.makeText(getBaseContext(), "Invalid email or password", Toast.LENGTH_LONG).show();
         }
@@ -187,5 +204,11 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
         }
 
         return success;
+    }
+
+    private void SetLoginSession(String email) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("Email", email);
+        editor.apply();
     }
 }
