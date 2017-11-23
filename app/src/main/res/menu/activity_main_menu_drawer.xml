@@ -36,9 +36,13 @@
     <item android:title="Other">
         <menu>
             <item
+                android:id="@+id/user_profile"
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/profile" />
+            <item
                 android:id="@+id/nav_workspaces"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Your workspaces" />
+                android:title="@string/your_workspaces" />
             <item
                 android:id="@+id/nav_logout"
                 android:title="@string/logout" />

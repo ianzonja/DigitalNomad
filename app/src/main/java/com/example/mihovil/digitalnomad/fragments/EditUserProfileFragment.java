@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.mihovil.digitalnomad.R;
 
@@ -16,14 +15,14 @@ import com.example.mihovil.digitalnomad.R;
  * Created by Mihovil on 17.11.2017..
  */
 
-public class UserProfileFragment extends Fragment {
+public class EditUserProfileFragment extends Fragment {
 
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.user_profile_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.user_profile_fragment_edit_profile, container, false);
         return rootView;
     }
 
@@ -31,16 +30,6 @@ public class UserProfileFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        View changePassword = view.findViewById(R.id.user_profile_txtChangePassword);
-        changePassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment fragment = new EditUserProfileFragment();
 
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content,fragment);
-                ft.commit();
-            }
-        });
     }
 }
