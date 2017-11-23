@@ -19,7 +19,6 @@
             android:layout_width="150sp"
             android:layout_height="150sp"
             android:contentDescription=""
-            app:srcCompat="@drawable/com_facebook_auth_dialog_cancel_background"
             tools:ignore="ContentDescription"
             android:background="@drawable/round_image"/>
 
@@ -50,7 +49,8 @@
             android:ems="10"
             android:inputType="textPersonName"
             tools:ignore="LabelFor"
-            android:backgroundTint="@color/gray"/>
+            android:backgroundTint="@color/gray"
+            android:enabled="false" />
 
         <TextView
             android:id="@+id/txtView_email"
@@ -72,7 +72,8 @@
             android:ems="10"
             android:inputType="textPersonName"
             tools:ignore="LabelFor,TextFields"
-            android:backgroundTint="@color/gray" />
+            android:backgroundTint="@color/gray"
+            android:enabled="false" />
 
         <TextView
             android:id="@+id/user_profile_txtChangePassword"
