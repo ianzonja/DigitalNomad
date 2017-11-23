@@ -22,6 +22,7 @@
     <style name="MainMenuTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/dnBlue</item>
         <item name="colorPrimaryDark">#00497c</item>
+        <item name="colorAccent">@color/dnBlue</item>
     </style>
 
     <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
