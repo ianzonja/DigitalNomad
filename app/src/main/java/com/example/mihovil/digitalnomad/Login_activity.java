@@ -178,10 +178,10 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
                 for (int i = 0; i < user.length(); i++) {
                     JSONObject u = user.getJSONObject(i);
 
-                    String name = u.getString("name");
+                    String name = u.getString("first_name");
                     String last_name = u.getString("last_name");  //ispravni nazivi polja u JSON-u???
                     String email = u.getString("email");
-                    String image_url = u.getString("imageUrl");
+                    String image_url = u.getString("image_url");
 
                     User userDB = new User();
                     userDB.StoreData(name,last_name,email,image_url); //pohrana u lokalnu bazu
