@@ -1,5 +1,7 @@
 package entities;
 
+import android.os.AsyncTask;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -53,6 +55,7 @@ public class User extends BaseModel {
     public void setImageUrl(String image_url) {
         this.image_url = image_url;
     }
+
 
     @PrimaryKey (autoincrement = true)
     @Column int iduser;

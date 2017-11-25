@@ -1,8 +1,10 @@
 package com.example.mihovil.digitalnomad;
 
 import android.app.Instrumentation;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,10 +35,19 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Arrays;
+
+import java.lang.Object;
+
+import entities.User;
 
 public class Login_activity extends AppCompatActivity implements OnServiceFinished {
     private EditText mail;
@@ -67,7 +78,6 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
 
         setContentView(R.layout.activity_login_activity);
 
-
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         relativeLayout = (RelativeLayout) findViewById(R.id.RelativeLayout1);
         mail = (EditText) findViewById(R.id.email);
@@ -82,6 +92,9 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
                     EnableProgressBar();
                     WebServiceCaller wsc = new WebServiceCaller(Login_activity.this);
                     wsc.Login(mail.getText().toString(), pass.getText().toString());
+                    GetData data = new GetData();
+                    data.doInBackground(); // poziv funkcije za dohvat podataka iz JSON-a i pohranu u lokalnu bazu
+
                 } else {
                     Toast.makeText(getBaseContext(), "Correct errors", Toast.LENGTH_SHORT).show();
                 }
@@ -94,6 +107,8 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
                 startActivity(new Intent(getBaseContext(), RegistracijaActivity.class));
             }
         });
+
+
 
         //facebook
         loginButton = (LoginButton) findViewById(R.id.login_button);
@@ -149,6 +164,33 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
                 Log.d("TAG", "error");
             }
         });
+    }
+
+    private class GetData extends AsyncTask<Void, Void, Void> {
+        private String TAG = Login_activity.class.getSimpleName();
+
+        protected Void doInBackground(Void... arg0) {
+            WebServiceCaller wsc = new WebServiceCaller(Login_activity.this);
+            String jsonStr = "http://jospudjaatfoi.000webhostapp.com/";
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                JSONArray user = jsonObj.getJSONArray(""); //naziv polja u JSON-u???
+                for (int i = 0; i < user.length(); i++) {
+                    JSONObject u = user.getJSONObject(i);
+
+                    String name = u.getString("name");
+                    String last_name = u.getString("last_name");  //ispravni nazivi polja u JSON-u???
+                    String email = u.getString("email");
+                    String image_url = u.getString("imageUrl");
+
+                    User userDB = new User();
+                    userDB.StoreData(name,last_name,email,image_url); //pohrana u lokalnu bazu
+                }
+            } catch (final JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 
     @Override
