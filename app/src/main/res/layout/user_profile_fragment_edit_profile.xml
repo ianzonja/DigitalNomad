@@ -1,45 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:id="@+id/user_profile_fragment_edit_profile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/user_profile_edit_profile_txtEnterPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+    <ImageView
+        android:id="@+id/imageView_lockPass"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="108dp"
-        android:ems="10"
-        android:hint="@string/enter_old_password"
-        android:inputType="textPassword" />
+        android:layout_marginTop="50dp"
+        android:background="@drawable/lockpass"
+        android:contentDescription="@string/lockPass" />
 
-    <EditText
-        android:id="@+id/user_profile_edit_profile_txtEnterNewPassword"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/user_profile_edit_profile_txtEnterPassword"
-        android:layout_centerVertical="true"
-        android:ems="10"
-        android:hint="@string/enter_new_password"
-        android:inputType="textPassword" />
+        android:layout_below="@+id/imageView_lockPass"
+        android:layout_margin="30dp"
+        android:gravity="center">
 
-    <EditText
-        android:id="@+id/user_profile_edit_profile_txtRepeatPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/user_profile_edit_profile_txtEnterNewPassword"
-        android:layout_below="@+id/user_profile_edit_profile_txtEnterNewPassword"
-        android:layout_marginTop="14dp"
-        android:ems="10"
-        android:hint="@string/repeat_password"
-        android:inputType="textPassword" />
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/user_profile_edit_mdesign"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/dnBlue">
 
-    <Button
-        android:id="@+id/user_profile_edit_user_btnSpremi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/user_profile_edit_profile_txtRepeatPassword"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="12dp"
-        android:text="@string/save" />
+            <EditText
+                android:id="@+id/user_profile_edit_profile_txtEnterPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/gray"
+                android:ems="10"
+                android:fontFamily="sans-serif"
+                android:hint="@string/enter_old_password"
+                android:inputType="textPassword" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/user_profile_edit_mdesign_newpass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_profile_edit_mdesign"
+            android:textColorHint="@color/dnBlue">
+
+            <EditText
+                android:id="@+id/user_profile_edit_profile_txtEnterNewPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/gray"
+                android:ems="10"
+                android:fontFamily="sans-serif"
+                android:hint="@string/enter_new_password"
+                android:inputType="textPassword" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/user_profile_edit_mdesign_repeatpass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_profile_edit_mdesign_newpass"
+            android:textColorHint="@color/dnBlue">
+
+            <EditText
+                android:id="@+id/user_profile_edit_profile_txtRepeatPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/gray"
+                android:ems="10"
+                android:fontFamily="sans-serif"
+                android:hint="@string/repeat_password"
+                android:inputType="textPassword" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/user_profile_edit_user_btnSpremi"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/user_profile_edit_mdesign_repeatpass"
+            android:layout_marginTop="35dp"
+            android:background="@color/dnBlue"
+            android:text="@string/save"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+    </RelativeLayout>
 </RelativeLayout>

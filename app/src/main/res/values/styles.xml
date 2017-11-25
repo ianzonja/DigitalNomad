@@ -17,8 +17,14 @@
         <item name="android:textColorSecondary">#005B9C</item>
     </style>
 
-    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="MainMenuTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/dnBlue</item>
+        <item name="colorPrimaryDark">#00497c</item>
+        <item name="colorAccent">@color/dnBlue</item>
+    </style>
+
+    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
 </resources>

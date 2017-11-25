@@ -1,50 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/user_profile_fragment"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/profilePic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="62dp"
-        android:layout_marginTop="63dp"
-        app:srcCompat="@drawable/com_facebook_auth_dialog_cancel_background"
-        android:contentDescription=""
-        tools:ignore="ContentDescription" />
+    <RelativeLayout
+        android:id="@+id/relativeLayout_imageView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:background="@color/dnBlue"
+        android:layout_marginTop="3dp">
 
-    <EditText
-        android:id="@+id/user_profile_txtName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="33dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        tools:ignore="LabelFor" />
+        <ImageView
+            android:id="@+id/profilePic"
+            android:layout_width="150sp"
+            android:layout_height="150sp"
+            android:contentDescription=""
+            tools:ignore="ContentDescription"
+            android:background="@drawable/round_image"/>
 
-    <EditText
-        android:id="@+id/user_profile_txtEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/user_profile_txtName"
-        android:layout_below="@+id/user_profile_txtName"
-        android:layout_marginTop="27dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        tools:ignore="LabelFor,TextFields" />
+    </RelativeLayout>
 
-    <TextView
-        android:id="@+id/user_profile_txtChangePassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/user_profile_txtEmail"
-        android:layout_below="@+id/user_profile_txtEmail"
-        android:layout_marginTop="33dp"
-        android:text="@string/change_password" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/relativeLayout_imageView"
+        android:gravity="center_horizontal"
+        android:layout_margin="30dp">
+
+        <TextView
+            android:id="@+id/txtView_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:textColor="@color/dnBlue"
+            android:layout_alignStart="@+id/user_profile_txtName"/>
+
+        <EditText
+            android:id="@+id/user_profile_txtName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            tools:ignore="LabelFor"
+            android:backgroundTint="@color/gray"
+            android:enabled="false" />
+
+        <TextView
+            android:id="@+id/txtView_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/user_profile_txtName"
+            android:layout_marginTop="15dp"
+            android:text="@string/email"
+            android:textColor="@color/dnBlue" />
+
+        <EditText
+            android:id="@+id/user_profile_txtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/user_profile_txtName"
+            android:layout_below="@+id/user_profile_txtName"
+            android:layout_marginTop="27dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            tools:ignore="LabelFor,TextFields"
+            android:backgroundTint="@color/gray"
+            android:enabled="false" />
+
+        <TextView
+            android:id="@+id/user_profile_txtChangePassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/user_profile_txtEmail"
+            android:layout_marginTop="50dp"
+            android:text="@string/change_password"
+            android:textColor="@color/dnBlue"/>
+    </RelativeLayout>
 </RelativeLayout>

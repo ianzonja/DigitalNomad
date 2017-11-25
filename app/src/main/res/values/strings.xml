@@ -30,4 +30,8 @@
     <string name="enter_old_password">Enter old password</string>
     <string name="enter_new_password">Enter new password</string>
     <string name="save">Save</string>
+    <string name="logout">Logout</string>
+    <string name="lockPass">lockPass</string>
+    <string name="profile">Profile</string>
+    <string name="your_workspaces">Your workspaces</string>
 </resources>

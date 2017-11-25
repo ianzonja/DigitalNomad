@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mihovil.digitalnomad.R;
+
 /**
  * Created by Mihovil on 17.11.2017..
  */
@@ -21,6 +23,6 @@ public class UserProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return inflater.inflate(R.layout.user_profile_fragment, container, false);
     }
 }
