@@ -19,7 +19,7 @@ public class User extends BaseModel {
         this.name = name;
         this.last_name = last_name;
         this.email = email;
-        this.password = password;
+        this.image_url = password;
     }
 
     public String getName() {
@@ -34,8 +34,8 @@ public class User extends BaseModel {
         return email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getImageUrl() {
+        return image_url;
     }
 
     public void setName(String name) {
@@ -50,8 +50,8 @@ public class User extends BaseModel {
         this.email = email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setImageUrl(String image_url) {
+        this.image_url = image_url;
     }
 
     @PrimaryKey (autoincrement = true)
@@ -59,14 +59,15 @@ public class User extends BaseModel {
     @Column String name;
     @Column String last_name;
     @Column String email;
-    @Column String password;
+    @Column String image_url;
 
-    public void StoreData(String name, String last_name, String email, String password){
+
+    public void StoreData(String name, String last_name, String email, String image_url){
         User user = new User();
         user.name = name;
         user.last_name = last_name;
         user.email = email;
-        user.password = password;
+        user.image_url = image_url;
         user.save();
     }
 }
