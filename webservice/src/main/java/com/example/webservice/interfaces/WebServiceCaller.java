@@ -4,6 +4,7 @@ import com.example.webservice.interfaces.interfaces.APIinterface;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 import com.squareup.okhttp.OkHttpClient;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import retrofit.Call;
@@ -55,9 +56,18 @@ public class WebServiceCaller {
         CheckCall();
     }
 
-    private void FacebookLogin(String email, String name, String lastName, String url){
+    public void FacebookLogin(String email, String name, String lastName, String url)  {
         CreateCaller();
         call = serviceCaller.facebookRegistration(email,name,lastName,url);
+        call.enqueue(new Callback<ServiceResponse>() {
+            @Override
+            public void onResponse(Response<ServiceResponse> response, Retrofit retrofit) {
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+            }
+        });
     }
 
     private void CheckCall(){

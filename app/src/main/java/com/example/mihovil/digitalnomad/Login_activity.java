@@ -134,10 +134,10 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
                                         email = object.getString("email");
                                         SetLoginSession(email);
                                     }
-                                    /*
+
                                     WebServiceCaller wsc = new WebServiceCaller(Login_activity.this);
                                     wsc.FacebookLogin(email,first_name,last_name,image_url);
-                                    */
+
 
                                     Intent i = new Intent(getBaseContext(), MainMenuActivity.class);
                                     startActivity(i);
