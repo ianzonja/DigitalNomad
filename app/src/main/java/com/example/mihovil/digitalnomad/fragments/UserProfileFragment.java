@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +15,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mihovil.digitalnomad.R;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+
+import java.util.List;
+
+import entities.User;
 
 /**
  * Created by Mihovil on 17.11.2017..
  */
 
 public class UserProfileFragment extends Fragment {
-
 
 
     @Override
@@ -40,14 +45,27 @@ public class UserProfileFragment extends Fragment {
             public void onClick(View v) {
                 Fragment fragment = new EditUserProfileFragment();
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame,fragment);
+                ft.replace(R.id.content_frame, fragment);
                 ft.commit();
             }
         });
 
-        ImageView profilePicture =(ImageView) view.findViewById(R.id.profilePic);
+        ImageView profilePicture = (ImageView) view.findViewById(R.id.profilePic);
         EditText txtName = (EditText) view.findViewById(R.id.user_profile_txtName);
-        EditText txtEmail =(EditText) view.findViewById(R.id.user_profile_txtEmail);
+        EditText txtEmail = (EditText) view.findViewById(R.id.user_profile_txtEmail);
+
+        if (SQLite.select().from(User.class).queryList().isEmpty()) {
+            User user = new User(0, "miho", "miho@.com", "neki url");
+            user.save();
+            txtName.setText(user.getName());
+            txtEmail.setText(user.getEmail());
+
+        }else {
+            final List<User> user =SQLite.select().from(User.class).queryList();
+            txtName.setText(user.get(0).getName());
+            txtEmail.setText(user.get(0).getEmail());
+            Log.d("TAG","broj:  "+ user.size());
+        }
     }
 
 

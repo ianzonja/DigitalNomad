@@ -59,8 +59,9 @@ public class MainMenuActivity extends AppCompatActivity
 
         FlowManager.init(new FlowConfig.Builder(this).build());
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         //ToDo: usporediti podatke na serveru i lokalno
-       /* preferences = PreferenceManager.getDefaultSharedPreferences(this);
+       /*
         if (preferences.contains("Email")){
             String email = preferences.getString("Email",null);
             WebServiceCaller wsc = new WebServiceCaller(MainMenuActivity.this);
