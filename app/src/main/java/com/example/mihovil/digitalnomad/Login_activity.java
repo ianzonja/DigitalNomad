@@ -92,8 +92,8 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
                     EnableProgressBar();
                     WebServiceCaller wsc = new WebServiceCaller(Login_activity.this);
                     wsc.Login(mail.getText().toString(), pass.getText().toString());
-                    GetData data = new GetData();
-                    data.doInBackground(); // poziv funkcije za dohvat podataka iz JSON-a i pohranu u lokalnu bazu
+                  //  GetData data = new GetData();
+                   // data.doInBackground(); // poziv funkcije za dohvat podataka iz JSON-a i pohranu u lokalnu bazu
 
                 } else {
                     Toast.makeText(getBaseContext(), "Correct errors", Toast.LENGTH_SHORT).show();
@@ -166,7 +166,7 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
         });
     }
 
-    private class GetData extends AsyncTask<Void, Void, Void> {
+  /*  private class GetData extends AsyncTask<Void, Void, Void> {
         private String TAG = Login_activity.class.getSimpleName();
 
         protected Void doInBackground(Void... arg0) {
@@ -191,7 +191,7 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
             }
             return null;
         }
-    }
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

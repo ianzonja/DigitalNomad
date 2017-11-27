@@ -3,7 +3,10 @@ package com.example.webservice.interfaces.interfaces;
 import com.example.webservice.interfaces.ServiceResponse;
 
 import retrofit.Call;
+import retrofit.http.Field;
+import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Query;
 
 /**
@@ -20,4 +23,8 @@ public interface APIinterface {
 
     @GET("facebookLogin.php")
     Call<ServiceResponse> facebookRegistration(@Query("email") String email, @Query("name") String name, @Query("last_name") String lastName, @Query("url") String url);
+
+    @FormUrlEncoded
+    @POST("userProfile.php")
+    Call<ServiceResponse> getUserProfile(@Field("email") String email);
 }

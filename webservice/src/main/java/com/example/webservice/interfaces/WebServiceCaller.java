@@ -2,9 +2,9 @@ package com.example.webservice.interfaces;
 
 import com.example.webservice.interfaces.interfaces.APIinterface;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
+
 import com.squareup.okhttp.OkHttpClient;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import retrofit.Call;
@@ -70,6 +70,13 @@ public class WebServiceCaller {
         });
     }
 
+    public void GetUserProfile(String email){
+        CreateCaller();
+        call = serviceCaller.getUserProfile(email);
+        CheckCall();
+    }
+
+
     private void CheckCall(){
         if (call != null) {
             call.enqueue(new Callback<ServiceResponse>() {
@@ -79,7 +86,6 @@ public class WebServiceCaller {
                         if (response.isSuccess()){
                             listener.onServiceDone(response.body());
                         }
-
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }

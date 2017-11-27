@@ -17,60 +17,48 @@ public class User extends BaseModel {
 
     }
 
-    public User(String name, String last_name, String email, String password) {
+    public User(int id,String name, String email, String url) {
+        this.idUser = id;
         this.name = name;
-        this.last_name = last_name;
         this.email = email;
-        this.image_url = password;
+        this.image_url = url;
+    }
+
+    public int getIduser() {
+        return idUser;
+    }
+
+    public void setIduser(int iduser) {
+        this.idUser = iduser;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public String getImageUrl() {
-        return image_url;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public void setImageUrl(String image_url) {
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
         this.image_url = image_url;
     }
 
-
-    @PrimaryKey (autoincrement = true)
-    @Column int iduser;
+    @PrimaryKey //(autoincrement = true)
+    @Column int idUser;
     @Column String name;
-    @Column String last_name;
     @Column String email;
     @Column String image_url;
-
-
-    public void StoreData(String name, String last_name, String email, String image_url){
-        User user = new User();
-        user.name = name;
-        user.last_name = last_name;
-        user.email = email;
-        user.image_url = image_url;
-        user.save();
-    }
 }

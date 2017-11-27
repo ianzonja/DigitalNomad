@@ -45,7 +45,7 @@ public class EditUserProfileFragment extends Fragment {
                 if (!checkIfEmpty(oldPassword,newPassword,repeatPassword)){
                     Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
                 }else{
-                    //ToDo: poziv web servisa
+                    //ToDo: poziv web servisa ili lokalne baze (miho)
                 }
             }
         });

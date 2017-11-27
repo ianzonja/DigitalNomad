@@ -1,7 +1,6 @@
 package com.example.mihovil.digitalnomad;
 
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,14 +24,22 @@ import android.view.MenuItem;
 
 import com.example.mihovil.digitalnomad.fragments.RecyclerViewFragment;
 import com.example.mihovil.digitalnomad.fragments.UserProfileFragment;
+import com.example.webservice.interfaces.ServiceResponse;
+import com.example.webservice.interfaces.WebServiceCaller;
+import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
+import com.raizlabs.android.dbflow.config.FlowConfig;
+import com.raizlabs.android.dbflow.config.FlowManager;
+
+import entities.User;
 
 public class MainMenuActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements OnServiceFinished, NavigationView.OnNavigationItemSelectedListener {
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +56,16 @@ public class MainMenuActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        FlowManager.init(new FlowConfig.Builder(this).build());
+
+        //ToDo: usporediti podatke na serveru i lokalno
+       /* preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (preferences.contains("Email")){
+            String email = preferences.getString("Email",null);
+            WebServiceCaller wsc = new WebServiceCaller(MainMenuActivity.this);
+            wsc.GetUserProfile(email);
+        }*/
 
     }
 
@@ -84,10 +101,10 @@ public class MainMenuActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private void displaySelectedFragment(int id){
+    private void displaySelectedFragment(int id) {
         Fragment fragment = null;
 
-        switch(id){
+        switch (id) {
             case R.id.nav_user_profile:
                 fragment = new UserProfileFragment();
                 break;
@@ -99,9 +116,9 @@ public class MainMenuActivity extends AppCompatActivity
                 startActivity(new Intent(getBaseContext(), Login_activity.class));
                 finish();
         }
-        if (fragment !=null){
-            FragmentTransaction ft =getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame,fragment);
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
             ft.commit();
         }
 
@@ -119,8 +136,8 @@ public class MainMenuActivity extends AppCompatActivity
         displaySelectedFragment(id);
         return true;
     }
+
     private void Logout() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         preferences.edit().remove("Email").apply();
 
         if (AccessToken.getCurrentAccessToken() == null) {
@@ -135,5 +152,23 @@ public class MainMenuActivity extends AppCompatActivity
 
             }
         }).executeAsync();
+    }
+
+    @Override
+    public void onServiceDone(Object response) {
+        ServiceResponse user = (ServiceResponse) response;
+
+        String name = user.getName();
+        String url=user.getUrlPicture();
+        String email = user.getEmail();
+        int id = user.getReponseId();
+
+        User SaveUserLocaly = new User(id,name, email, url);
+        SaveUserLocaly.save();
+    }
+
+    @Override
+    public void onServiceFail(Object message) {
+
     }
 }

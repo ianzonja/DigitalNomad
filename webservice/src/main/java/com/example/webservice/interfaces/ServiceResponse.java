@@ -14,6 +14,42 @@ public class ServiceResponse {
         return returnValue;
     }
 
+    private int reponseId;
+    private String email;
+    private String name;
+    private String urlPicture;
 
+    public int getReponseId() {
+        return reponseId;
+    }
+
+    public void setReponseId(int reponseId) {
+        this.reponseId = reponseId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUrlPicture() {
+        return urlPicture;
+    }
+
+    public void setUrlPicture(String urlPicture) {
+        this.urlPicture = urlPicture;
+    }
 }
+
 
