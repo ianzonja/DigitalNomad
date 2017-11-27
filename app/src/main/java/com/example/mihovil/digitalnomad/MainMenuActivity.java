@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -61,7 +62,7 @@ public class MainMenuActivity extends AppCompatActivity
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         //ToDo: usporediti podatke na serveru i lokalno
-       /*
+/*
         if (preferences.contains("Email")){
             String email = preferences.getString("Email",null);
             WebServiceCaller wsc = new WebServiceCaller(MainMenuActivity.this);

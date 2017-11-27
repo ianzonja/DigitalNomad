@@ -129,6 +129,7 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
                                     String last_name = object.getString("last_name");
                                     String image_url = "http://graph.facebook.com/" + id + "/picture?type=large";
 
+
                                     String email = null;
                                     if (object.has("email")) {
                                         email = object.getString("email");

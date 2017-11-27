@@ -15,8 +15,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mihovil.digitalnomad.R;
+import com.example.mihovil.digitalnomad.staticClass.FolderManagment;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 import entities.User;
@@ -54,19 +62,25 @@ public class UserProfileFragment extends Fragment {
         EditText txtName = (EditText) view.findViewById(R.id.user_profile_txtName);
         EditText txtEmail = (EditText) view.findViewById(R.id.user_profile_txtEmail);
 
+        final List<User> user;
+
         if (SQLite.select().from(User.class).queryList().isEmpty()) {
-            User user = new User(0, "miho", "miho@.com", "neki url");
-            user.save();
-            txtName.setText(user.getName());
-            txtEmail.setText(user.getEmail());
+            User userM = new User(0, "miho", "miho@.com", "neki url");
+            userM.save();
+            txtName.setText(userM.getName());
+            txtEmail.setText(userM.getEmail());
 
         }else {
-            final List<User> user =SQLite.select().from(User.class).queryList();
+            user =SQLite.select().from(User.class).queryList();
             txtName.setText(user.get(0).getName());
             txtEmail.setText(user.get(0).getEmail());
-            Log.d("TAG","broj:  "+ user.size());
+
+        /*    try {
+                FolderManagment.DohvatiSliku(user.get(0).getImage_url(),user.get(0).getName());
+                profilePicture.setImageBitmap(FolderManagment.PostaviSliku(user.get(0).getName()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*/
         }
     }
-
-
 }
