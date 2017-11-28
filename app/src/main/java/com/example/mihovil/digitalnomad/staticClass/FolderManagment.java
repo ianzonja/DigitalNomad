@@ -1,16 +1,25 @@
 package com.example.mihovil.digitalnomad.staticClass;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.mihovil.digitalnomad.OnImageDownload;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import entities.User;
 
@@ -18,31 +27,86 @@ import entities.User;
  * Created by Mihovil on 27.11.2017..
  */
 
-public class FolderManagment {
+public class FolderManagment extends AsyncTask<Void, Integer, Void> {
+    private Context context;
+    private User user;
 
-    public static void DohvatiSliku(String urlUser,String name ) throws IOException {
-        URL url = new URL(urlUser);
-        InputStream in = new BufferedInputStream(url.openStream());
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        byte[] buf = new byte[1024];
-        int n = 0;
-        while (-1!=(n=in.read(buf)))
-        {
-            out.write(buf, 0, n);
+    private Bitmap bitmap;
+
+
+    private OnImageDownload myListener;
+    public FolderManagment(User user, Context context, OnImageDownload imageListener) {
+        this.user = user;
+        this.context = context;
+        myListener = imageListener;
+
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        super.onProgressUpdate(values);
+        if(values.length > 0){
+            if(values[0] == 1){
+                myListener.onImageDownload(bitmap);
+            }else {
+                //myListener.onImageSaved();
+            }
         }
-        out.close();
-        in.close();
-        byte[] response = out.toByteArray();
-        SpremiSliku(response, name);
-    }
-    private static  void SpremiSliku(byte[] response, String name) throws IOException {
-        FileOutputStream fos = new FileOutputStream(name+".jpg");
-        fos.write(response);
-        fos.close();
     }
 
-    public static Bitmap PostaviSliku(String name){
-        Log.d("TAG","tu sam\n"+name);
-        return BitmapFactory.decodeFile(name+".jpg") ;
+    private void DohvatiSliku() throws IOException {
+        URL url = new URL(user.getImage_url());
+        InputStream in = url.openStream();
+
+        bitmap  = BitmapFactory.decodeStream(in);
+
+        publishProgress(1);
+        SpremiSliku();
     }
+
+    private void SpremiSliku() throws IOException {
+        ContextWrapper cw = new ContextWrapper(context);
+        File directory = cw.getDir("Slike", Context.MODE_PRIVATE);
+        File myPath=new File(directory,user.getName() +".jpg");
+        
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(myPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Bitmap PostaviSliku() {
+        ContextWrapper cw = new ContextWrapper(context);
+        File directory = cw.getDir("Slike", Context.MODE_PRIVATE);
+        directory.mkdirs();
+        File myPath=new File(directory,user.getName() +".jpg");
+        FileOutputStream fos = null;
+        try {
+            Log.d("TAG","isNull "+(myPath != null));
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(myPath));return b;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    @Override
+    protected Void doInBackground(Void... params) {
+        try {
+            DohvatiSliku();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
