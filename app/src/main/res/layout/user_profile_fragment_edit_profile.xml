@@ -23,8 +23,7 @@
         <android.support.design.widget.TextInputLayout
             android:id="@+id/user_profile_edit_mdesign"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="@color/dnBlue">
+            android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/user_profile_edit_profile_txtEnterPassword"
@@ -43,8 +42,7 @@
             android:id="@+id/user_profile_edit_mdesign_newpass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/user_profile_edit_mdesign"
-            android:textColorHint="@color/dnBlue">
+            android:layout_below="@+id/user_profile_edit_mdesign">
 
             <EditText
                 android:id="@+id/user_profile_edit_profile_txtEnterNewPassword"
@@ -63,8 +61,7 @@
             android:id="@+id/user_profile_edit_mdesign_repeatpass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/user_profile_edit_mdesign_newpass"
-            android:textColorHint="@color/dnBlue">
+            android:layout_below="@+id/user_profile_edit_mdesign_newpass">
 
             <EditText
                 android:id="@+id/user_profile_edit_profile_txtRepeatPassword"
