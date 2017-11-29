@@ -1,4 +1,4 @@
-package com.example.mihovil.digitalnomad.staticClass;
+package com.example.mihovil.digitalnomad.Folders;
 
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -7,10 +7,8 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.mihovil.digitalnomad.OnImageDownload;
+import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,8 +16,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.List;
-import java.util.StringTokenizer;
 
 import entities.User;
 
@@ -55,13 +51,14 @@ public class FolderManagment extends AsyncTask<Void, Integer, Void> {
     }
 
     private void DohvatiSliku() throws IOException {
+        Log.d("TAG","user url\n"+user.getImage_url());
         URL url = new URL(user.getImage_url());
-        InputStream in = url.openStream();
 
-        bitmap  = BitmapFactory.decodeStream(in);
+        bitmap  = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        Log.d("TAG","bitmap\n"+bitmap);
 
         publishProgress(1);
-        SpremiSliku();
+       // SpremiSliku();
     }
 
     private void SpremiSliku() throws IOException {

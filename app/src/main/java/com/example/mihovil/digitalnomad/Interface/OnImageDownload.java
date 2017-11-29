@@ -1,4 +1,4 @@
-package com.example.mihovil.digitalnomad;
+package com.example.mihovil.digitalnomad.Interface;
 
 import android.graphics.Bitmap;
 

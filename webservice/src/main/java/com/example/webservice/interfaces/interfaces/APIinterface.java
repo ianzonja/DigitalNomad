@@ -24,7 +24,7 @@ public interface APIinterface {
     @GET("facebookLogin.php")
     Call<ServiceResponse> facebookRegistration(@Query("email") String email, @Query("name") String name, @Query("last_name") String lastName, @Query("url") String url);
 
-    @FormUrlEncoded
-    @POST("userProfile.php")
-    Call<ServiceResponse> getUserProfile(@Field("email") String email);
+
+    @GET("userProfile.php")
+    Call<ServiceResponse> getUserProfile(@Query("email") String email);
 }

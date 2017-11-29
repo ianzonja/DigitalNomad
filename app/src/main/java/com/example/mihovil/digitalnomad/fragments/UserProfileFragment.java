@@ -2,7 +2,6 @@ package com.example.mihovil.digitalnomad.fragments;
 
 
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,11 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.example.mihovil.digitalnomad.OnImageDownload;
+import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 import com.example.mihovil.digitalnomad.R;
-import com.example.mihovil.digitalnomad.staticClass.FolderManagment;
+import com.example.mihovil.digitalnomad.Folders.FolderManagment;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 
@@ -63,15 +61,17 @@ public class UserProfileFragment extends Fragment implements OnImageDownload {
         final List<User> user;
 
         if (SQLite.select().from(User.class).queryList().isEmpty()) {
-            User userM = new User(0, "miho", "miho@.com", "http://natjecaj.atlas.hr/images/uploaded/avatars/f4xnrdfrdpsyh7ypse2ter8z68frdfrx17dhse57.jpg");
+            User userM = new User(0, "miho", "miho@.com", "https://graph.facebook.com/10211956430679059/picture?type=large");
             userM.save();
             txtName.setText(userM.getName());
             txtEmail.setText(userM.getEmail());
 
         } else {
+
             user = SQLite.select().from(User.class).queryList();
             txtName.setText(user.get(0).getName());
             txtEmail.setText(user.get(0).getEmail());
+
 
             FolderManagment fm = new FolderManagment(user.get(0),getContext(),this);
             fm.execute();

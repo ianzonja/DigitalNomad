@@ -22,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.mihovil.digitalnomad.fragments.RecyclerViewFragment;
 import com.example.mihovil.digitalnomad.fragments.UserProfileFragment;
@@ -66,8 +67,9 @@ public class MainMenuActivity extends AppCompatActivity
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         //ToDo: usporediti podatke na serveru i lokalno
-/*
-        if (preferences.contains("Email")){
+
+    /*    if (preferences.contains("Email")){
+            Log.d("TAG","tu sam");
             String email = preferences.getString("Email",null);
             WebServiceCaller wsc = new WebServiceCaller(MainMenuActivity.this);
             wsc.GetUserProfile(email);
@@ -169,13 +171,16 @@ public class MainMenuActivity extends AppCompatActivity
         String email = user.getEmail();
         int id = user.getReponseId();
 
+        Log.d("TAG","nameMM \n"+name);
+        Log.d("TAG","responseMM\n"+ url);
+
         User SaveUserLocaly = new User(id, name, email, url);
         SaveUserLocaly.save();
     }
 
     @Override
     public void onServiceFail(Object message) {
-
+        Toast.makeText(getBaseContext(),(String)message,Toast.LENGTH_LONG).show();
     }
 
     public void getAllWorkspaces(String name, String description, String address, String country, String town, double latitude, double longitude, User user) {
