@@ -14,10 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-
-import entities.User;
 
 /**
  * Created by Mihovil on 27.11.2017..
@@ -25,14 +22,17 @@ import entities.User;
 
 public class FolderManagment extends AsyncTask<Void, Integer, Void> {
     private Context context;
-    private User user;
+    private String  name;
+    private String urlProfile;
 
     private Bitmap bitmap;
 
 
     private OnImageDownload myListener;
-    public FolderManagment(User user, Context context, OnImageDownload imageListener) {
-        this.user = user;
+
+    public FolderManagment(String name,String url, Context context, OnImageDownload imageListener) {
+        this.name = name;
+        this.urlProfile = url;
         this.context = context;
         myListener = imageListener;
 
@@ -41,31 +41,30 @@ public class FolderManagment extends AsyncTask<Void, Integer, Void> {
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
-        if(values.length > 0){
-            if(values[0] == 1){
+        if (values.length > 0) {
+            if (values[0] == 1) {
                 myListener.onImageDownload(bitmap);
-            }else {
+            } else {
                 //myListener.onImageSaved();
             }
         }
     }
 
     private void DohvatiSliku() throws IOException {
-        Log.d("TAG","user url\n"+user.getImage_url());
-        URL url = new URL(user.getImage_url());
 
-        bitmap  = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        Log.d("TAG","bitmap\n"+bitmap);
+        URL url = new URL(urlProfile);
+
+        bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
         publishProgress(1);
-       // SpremiSliku();
+        // SpremiSliku();
     }
 
     private void SpremiSliku() throws IOException {
         ContextWrapper cw = new ContextWrapper(context);
         File directory = cw.getDir("Slike", Context.MODE_PRIVATE);
-        File myPath=new File(directory,user.getName() +".jpg");
-        
+        File myPath = new File(directory, name + ".jpg");
+
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(myPath);
@@ -84,11 +83,12 @@ public class FolderManagment extends AsyncTask<Void, Integer, Void> {
         ContextWrapper cw = new ContextWrapper(context);
         File directory = cw.getDir("Slike", Context.MODE_PRIVATE);
         directory.mkdirs();
-        File myPath=new File(directory,user.getName() +".jpg");
+        File myPath = new File(directory, name + ".jpg");
         FileOutputStream fos = null;
         try {
-            Log.d("TAG","isNull "+(myPath != null));
-            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(myPath));return b;
+            Log.d("TAG", "isNull " + (myPath != null));
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(myPath));
+            return b;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;

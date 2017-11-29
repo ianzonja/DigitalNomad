@@ -6,22 +6,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.mihovil.digitalnomad.Folders.UserToJsonFile;
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 import com.example.mihovil.digitalnomad.R;
 import com.example.mihovil.digitalnomad.Folders.FolderManagment;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 
-import java.util.List;
-
-import entities.User;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Mihovil on 17.11.2017..
@@ -30,6 +28,9 @@ import entities.User;
 public class UserProfileFragment extends Fragment implements OnImageDownload {
 
     ImageView profilePicture;
+    String name;
+    String email;
+    String url;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,34 +59,33 @@ public class UserProfileFragment extends Fragment implements OnImageDownload {
         EditText txtName = (EditText) view.findViewById(R.id.user_profile_txtName);
         EditText txtEmail = (EditText) view.findViewById(R.id.user_profile_txtEmail);
 
-        final List<User> user;
-
-        if (SQLite.select().from(User.class).queryList().isEmpty()) {
-            User userM = new User(0, "miho", "miho@.com", "https://graph.facebook.com/10211956430679059/picture?type=large");
-            userM.save();
-            txtName.setText(userM.getName());
-            txtEmail.setText(userM.getEmail());
-
-        } else {
-
-            user = SQLite.select().from(User.class).queryList();
-            txtName.setText(user.get(0).getName());
-            txtEmail.setText(user.get(0).getEmail());
-
-
-            FolderManagment fm = new FolderManagment(user.get(0),getContext(),this);
-            fm.execute();
-
-           /* if(profilePicture != null){
-                profilePicture.setImageBitmap(fm.PostaviSliku());
-            }*/
-
+        JSONObject object = null;
+        String jsonString = UserToJsonFile.ReadFromFile(getContext());
+        try {
+            object = new JSONObject(jsonString);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        try {
+            name = object.getString("name");
+            email = object.getString("email");
+            url = object.getString("url");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        txtEmail.setText(email);
+        txtName.setText(name);
+
+        FolderManagment fm = new FolderManagment(name, url, getContext(), this);
+        fm.execute();
+
     }
+
 
     @Override
     public void onImageDownload(Bitmap image) {
-        if(profilePicture != null){
+        if (profilePicture != null) {
             profilePicture.setImageBitmap(image);
         }
     }

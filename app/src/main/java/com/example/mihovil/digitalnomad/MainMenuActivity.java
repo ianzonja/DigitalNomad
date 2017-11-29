@@ -1,19 +1,14 @@
 package com.example.mihovil.digitalnomad;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.mihovil.digitalnomad.Folders.UserToJsonFile;
 import com.example.mihovil.digitalnomad.fragments.RecyclerViewFragment;
 import com.example.mihovil.digitalnomad.fragments.UserProfileFragment;
 import com.example.webservice.interfaces.ServiceResponse;
@@ -40,7 +36,6 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.List;
 
-import entities.User;
 import entities.Workspace;
 
 public class MainMenuActivity extends AppCompatActivity
@@ -68,12 +63,11 @@ public class MainMenuActivity extends AppCompatActivity
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         //ToDo: usporediti podatke na serveru i lokalno
 
-    /*    if (preferences.contains("Email")){
-            Log.d("TAG","tu sam");
-            String email = preferences.getString("Email",null);
+        if (preferences.contains("Email")) {
+            String email = preferences.getString("Email", null);
             WebServiceCaller wsc = new WebServiceCaller(MainMenuActivity.this);
             wsc.GetUserProfile(email);
-        }*/
+        }
 
     }
 
@@ -157,6 +151,7 @@ public class MainMenuActivity extends AppCompatActivity
             public void onCompleted(GraphResponse graphResponse) {
 
                 LoginManager.getInstance().logOut();
+                finish();
 
             }
         }).executeAsync();
@@ -165,25 +160,23 @@ public class MainMenuActivity extends AppCompatActivity
     @Override
     public void onServiceDone(Object response) {
         ServiceResponse user = (ServiceResponse) response;
+        UserToJsonFile obj = new UserToJsonFile(user.getName(), user.getEmail(), user.getReponseId(), user.getUrlPicture(), getBaseContext());
 
-        String name = user.getName();
-        String url = user.getUrlPicture();
-        String email = user.getEmail();
-        int id = user.getReponseId();
+        try {
+            obj.makeJSONObject();
+            obj.SaveToFile();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        Log.d("TAG","nameMM \n"+name);
-        Log.d("TAG","responseMM\n"+ url);
-
-        User SaveUserLocaly = new User(id, name, email, url);
-        SaveUserLocaly.save();
     }
 
     @Override
     public void onServiceFail(Object message) {
-        Toast.makeText(getBaseContext(),(String)message,Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), (String) message, Toast.LENGTH_LONG).show();
     }
 
-    public void getAllWorkspaces(String name, String description, String address, String country, String town, double latitude, double longitude, User user) {
+    public void getAllWorkspaces(String name, String description, String address, String country, String town, double latitude, double longitude/*, User user*/) {
         final List<Workspace> workspace;
         workspace = SQLite.select().from(Workspace.class).queryList();
         name = workspace.get(0).getName();

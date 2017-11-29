@@ -23,14 +23,14 @@ public class Workspace extends BaseModel {
     @Column String town;
     @Column double latitude;
     @Column double longitude;
-    @ForeignKey(tableClass = User.class)
-    User user;
+   // @ForeignKey(tableClass = User.class)
+    //User user;
 
     public Workspace() {
 
     }
 
-    public Workspace(String name, String description, String address, String country, String town, double latitude, double longitude, User user) {
+    public Workspace(String name, String description, String address, String country, String town, double latitude, double longitude/*, User user*/) {
         this.name = name;
         this.description = description;
         this.address = address;
@@ -38,7 +38,7 @@ public class Workspace extends BaseModel {
         this.town = town;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.user = user;
+      //  this.user = user;
     }
 
     public int getIdworkspace() {
