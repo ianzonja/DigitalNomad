@@ -35,8 +35,12 @@ import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+
+import java.util.List;
 
 import entities.User;
+import entities.Workspace;
 
 public class MainMenuActivity extends AppCompatActivity
         implements OnServiceFinished, NavigationView.OnNavigationItemSelectedListener {
@@ -161,16 +165,28 @@ public class MainMenuActivity extends AppCompatActivity
         ServiceResponse user = (ServiceResponse) response;
 
         String name = user.getName();
-        String url=user.getUrlPicture();
+        String url = user.getUrlPicture();
         String email = user.getEmail();
         int id = user.getReponseId();
 
-        User SaveUserLocaly = new User(id,name, email, url);
+        User SaveUserLocaly = new User(id, name, email, url);
         SaveUserLocaly.save();
     }
 
     @Override
     public void onServiceFail(Object message) {
 
+    }
+
+    public void getAllWorkspaces(String name, String description, String address, String country, String town, double latitude, double longitude, User user) {
+        final List<Workspace> workspace;
+        workspace = SQLite.select().from(Workspace.class).queryList();
+        name = workspace.get(0).getName();
+        description = workspace.get(0).getDescription();
+        address = workspace.get(0).getAddress();
+        country = workspace.get(0).getCountry();
+        town = workspace.get(0).getTown();
+        latitude = workspace.get(0).getLatitude();
+        longitude = workspace.get(0).getLongitude();
     }
 }
