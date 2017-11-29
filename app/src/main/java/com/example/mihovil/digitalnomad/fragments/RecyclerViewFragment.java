@@ -40,9 +40,21 @@ public class RecyclerViewFragment extends Fragment {
         rv.setHasFixedSize(true);
         Workspace ws = new Workspace("qweqwe", "44");
         Workspace ws2 = new Workspace("adasdsad", "44");
+        Workspace ws3 = new Workspace("adasdsad", "44");
+        Workspace ws4 = new Workspace("adasdsad", "44");
+        Workspace ws5 = new Workspace("adasdsad", "44");
+        Workspace ws6 = new Workspace("adasdsad", "44");
+        Workspace ws7 = new Workspace("adasdsad", "44");
+        Workspace ws8 = new Workspace("adasdsad", "44");
         workspaces = new ArrayList<Workspace>();
         workspaces.add(ws);
         workspaces.add(ws2);
+        workspaces.add(ws3);
+        workspaces.add(ws4);
+        workspaces.add(ws5);
+        workspaces.add(ws6);
+        workspaces.add(ws7);
+        workspaces.add(ws8);
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(workspaces);
         rv.setAdapter(adapter);
     }
