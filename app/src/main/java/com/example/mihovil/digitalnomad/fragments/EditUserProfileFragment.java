@@ -47,6 +47,7 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         oldPassword = (EditText) view.findViewById(R.id.user_profile_edit_profile_txtEnterPassword);
         newPassword = (EditText) view.findViewById(R.id.user_profile_edit_profile_txtEnterNewPassword);
         repeatPassword = (EditText) view.findViewById(R.id.user_profile_edit_profile_txtRepeatPassword);
@@ -60,7 +61,7 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
                 if (!checkIfEmpty(oldPassword, newPassword, repeatPassword)) {
                     Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
                 } else {
-                    preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
                     String email = preferences.getString("Email", null);
                     //   WebServiceCaller wsc = new WebServiceCaller(EditUserProfileFragment.this);
                     //  wsc.changePassword(email,oldPassword.getText().toString(),newPassword.getText().toString());
