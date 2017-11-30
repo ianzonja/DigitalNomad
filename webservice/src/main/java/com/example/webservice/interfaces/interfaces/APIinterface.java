@@ -30,4 +30,7 @@ public interface APIinterface {
 
     @GET("imeservisa.php")
     Call<ServiceResponse> getUserWorkspaces(@Query("user_id") int id);
+
+    @GET("imeservisa.php")
+    Call<ServiceResponse> addWorkspaceAndGetConfirmation(@Query("name") String name, @Query("country") String country, @Query("city") String city, @Query("adress") String adress);
 }

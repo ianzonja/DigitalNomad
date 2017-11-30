@@ -81,6 +81,13 @@ public class WebServiceCaller {
         call = serviceCaller.getUserWorkspaces(id);
         CheckCall();
     }
+
+    public void addWorkspaceAsUser(String name, String country, String city, String  adress){
+        CreateCaller();
+        call = serviceCaller.addWorkspaceAndGetConfirmation(name, country, city, adress);
+        CheckCall();
+    }
+
     private void CheckCall(){
         if (call != null) {
             call.enqueue(new Callback<ServiceResponse>() {
