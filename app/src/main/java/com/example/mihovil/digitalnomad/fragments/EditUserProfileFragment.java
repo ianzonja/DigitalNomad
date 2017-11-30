@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.mihovil.digitalnomad.R;
@@ -25,8 +27,13 @@ import com.example.webservice.interfaces.interfaces.OnServiceFinished;
  * Created by Mihovil on 17.11.2017..
  */
 
-public class EditUserProfileFragment extends Fragment implements OnServiceFinished{
+public class EditUserProfileFragment extends Fragment implements OnServiceFinished {
     private SharedPreferences preferences;
+    private EditText oldPassword;
+    private EditText newPassword;
+    private EditText repeatPassword;
+    //private RelativeLayout relativeLayout;
+    //private ProgressBar progressBar;
 
 
     @Override
@@ -40,21 +47,24 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final EditText oldPassword = (EditText) view.findViewById(R.id.user_profile_edit_profile_txtEnterPassword);
-        final EditText newPassword = (EditText) view.findViewById(R.id.user_profile_edit_profile_txtEnterNewPassword);
-        final EditText repeatPassword = (EditText) view.findViewById(R.id.user_profile_edit_profile_txtRepeatPassword);
+        oldPassword = (EditText) view.findViewById(R.id.user_profile_edit_profile_txtEnterPassword);
+        newPassword = (EditText) view.findViewById(R.id.user_profile_edit_profile_txtEnterNewPassword);
+        repeatPassword = (EditText) view.findViewById(R.id.user_profile_edit_profile_txtRepeatPassword);
+        // relativeLayout = (RelativeLayout) findViewById(R.id.user_profile_fragment_relative_layout);
+        // progressBar = (ProgressBar) findViewById(R.id.user_profile_fragment_progress_bar);
 
         final Button save = (Button) view.findViewById(R.id.user_profile_edit_user_btnSpremi);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!checkIfEmpty(oldPassword,newPassword,repeatPassword)){
+                if (!checkIfEmpty(oldPassword, newPassword, repeatPassword)) {
                     Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
-                }else{
-                    preferences= PreferenceManager.getDefaultSharedPreferences(getContext());
-                    String email = preferences.getString("Email",null);
-                 //   WebServiceCaller wsc = new WebServiceCaller(EditUserProfileFragment.this);
-                  //  wsc.changePassword(email,oldPassword.getText().toString(),newPassword.getText().toString());
+                } else {
+                    preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    String email = preferences.getString("Email", null);
+                    //   WebServiceCaller wsc = new WebServiceCaller(EditUserProfileFragment.this);
+                    //  wsc.changePassword(email,oldPassword.getText().toString(),newPassword.getText().toString());
+                    resetAll();
                 }
             }
         });
@@ -80,7 +90,6 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
         });
 
 
-
     }
 
     private boolean checkIfEmpty(EditText oldP, EditText newP, EditText repeatP) {
@@ -104,17 +113,33 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
         return success;
     }
 
+    private void resetAll() {
+        oldPassword.setText(null);
+        newPassword.setText(null);
+        oldPassword.setText(null);
+    }
+ /*   private void DisableProgressBar() {
+        relativeLayout.setAlpha(1);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    private void EnableProgressBar() {
+        relativeLayout.setAlpha(0.3f);
+        progressBar.setVisibility(View.VISIBLE);
+    }*/
+
+
     @Override
     public void onServiceDone(Object response) {
         ServiceResponse res = (ServiceResponse) response;
-        if(res.isPostoji()){
-            Toast.makeText(getContext(),"Password changed",Toast.LENGTH_LONG).show();
+        if (res.isPostoji()) {
+            Toast.makeText(getContext(), "Password changed", Toast.LENGTH_LONG).show();
         }
 
     }
 
     @Override
     public void onServiceFail(Object message) {
-        Toast.makeText(getContext(),(String) message,Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), (String) message, Toast.LENGTH_LONG).show();
     }
 }
