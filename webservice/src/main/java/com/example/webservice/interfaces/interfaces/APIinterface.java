@@ -27,4 +27,7 @@ public interface APIinterface {
 
     @GET("userProfile.php")
     Call<ServiceResponse> getUserProfile(@Query("email") String email);
+
+    @GET("imeservisa.php")
+    Call<ServiceResponse> getUserWorkspaces(@Query("user_id") int id);
 }

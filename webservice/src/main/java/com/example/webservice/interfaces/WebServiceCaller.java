@@ -76,6 +76,12 @@ public class WebServiceCaller {
         CheckCall();
     }
 
+    public void GetClientWorkspaces(int id){
+        CreateCaller();
+        call = serviceCaller.getUserWorkspaces(id);
+        CheckCall();
+    }
+
 
     private void CheckCall(){
         if (call != null) {
