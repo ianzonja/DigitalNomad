@@ -3,40 +3,41 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/cv"
-    >
+    android:id="@+id/cv">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        >
+        android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
             android:id="@+id/person_photo"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="16dp"
-            />
+            android:contentDescription=""
+            android:background="@color/com_facebook_button_border_color_focused"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/workspace_name"
-            android:layout_toRightOf="@+id/person_photo"
-            android:layout_alignParentTop="true"
-            android:textSize="30sp"
-            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@+id/person_photo"
+            android:padding="20dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/workspace_age"
-            android:layout_toRightOf="@+id/person_photo"
-            android:layout_below="@+id/workspace_name"
-            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/workspace_name"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/workspace_age"
+                android:layout_below="@+id/workspace_name"
+                android:fontFamily="sans-serif"/>
+
+        </RelativeLayout>
+
 
     </RelativeLayout>
 

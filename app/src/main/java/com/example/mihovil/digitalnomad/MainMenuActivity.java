@@ -56,6 +56,7 @@ public class MainMenuActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(this);
 
         FlowManager.init(new FlowConfig.Builder(this).build());
