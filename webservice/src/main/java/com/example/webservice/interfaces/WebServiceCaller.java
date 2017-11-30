@@ -81,8 +81,6 @@ public class WebServiceCaller {
         call = serviceCaller.getUserWorkspaces(id);
         CheckCall();
     }
-
-
     private void CheckCall(){
         if (call != null) {
             call.enqueue(new Callback<ServiceResponse>() {

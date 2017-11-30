@@ -1,0 +1,49 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.mihovil.digitalnomad.fragments.EnterWorkspaceFragment">
+
+    <EditText
+        android:id="@+id/add_workspace_name"
+        android:layout_width="match_parent"
+        android:layout_height="128dp"
+        android:backgroundTint="@color/gray"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
+        android:padding="10dp"
+        android:translationY="-5dp"
+        tools:ignore="UnusedAttribute" />
+
+
+    <EditText
+        android:id="@+id/add_workspace_mail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/gray"/>
+
+    <EditText
+        android:id="@+id/add_workspace_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/gray" />
+
+    <EditText
+        android:id="@+id/add_workspace_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/gray" />
+
+    <EditText
+        android:id="@+id/add_workspace_adress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/gray" />
+
+    <Button
+        android:id="@+id/add_Workspace_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+</FrameLayout>
