@@ -33,4 +33,7 @@ public interface APIinterface {
 
     @GET("imeservisa.php")
     Call<ServiceResponse> addWorkspaceAndGetConfirmation(@Query("name") String name, @Query("country") String country, @Query("city") String city, @Query("adress") String adress);
+
+    @GET("changePassword.php")
+    Call<ServiceResponse> changePassword(@Query("email") String email,@Query("oldPass") String oldPass,@Query("newPass") String newPass);
 }

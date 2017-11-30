@@ -88,6 +88,12 @@ public class WebServiceCaller {
         CheckCall();
     }
 
+    public void changePassword(String email, String oldPass, String newPass){
+        CreateCaller();
+        call = serviceCaller.changePassword(email,oldPass,newPass);
+        CheckCall();
+    }
+
     private void CheckCall(){
         if (call != null) {
             call.enqueue(new Callback<ServiceResponse>() {

@@ -1,7 +1,9 @@
 package com.example.mihovil.digitalnomad.fragments;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -15,12 +17,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.mihovil.digitalnomad.R;
+import com.example.webservice.interfaces.ServiceResponse;
+import com.example.webservice.interfaces.WebServiceCaller;
+import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 
 /**
  * Created by Mihovil on 17.11.2017..
  */
 
-public class EditUserProfileFragment extends Fragment {
+public class EditUserProfileFragment extends Fragment implements OnServiceFinished{
+    private SharedPreferences preferences;
 
 
     @Override
@@ -45,7 +51,10 @@ public class EditUserProfileFragment extends Fragment {
                 if (!checkIfEmpty(oldPassword,newPassword,repeatPassword)){
                     Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
                 }else{
-                    //ToDo: poziv web servisa ili lokalne baze (miho)
+                    preferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+                    String email = preferences.getString("Email",null);
+                 //   WebServiceCaller wsc = new WebServiceCaller(EditUserProfileFragment.this);
+                  //  wsc.changePassword(email,oldPassword.getText().toString(),newPassword.getText().toString());
                 }
             }
         });
@@ -93,5 +102,19 @@ public class EditUserProfileFragment extends Fragment {
             repeatP.setError(null);
         }
         return success;
+    }
+
+    @Override
+    public void onServiceDone(Object response) {
+        ServiceResponse res = (ServiceResponse) response;
+        if(res.isPostoji()){
+            Toast.makeText(getContext(),"Password changed",Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    @Override
+    public void onServiceFail(Object message) {
+        Toast.makeText(getContext(),(String) message,Toast.LENGTH_LONG).show();
     }
 }
