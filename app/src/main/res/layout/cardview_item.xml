@@ -11,7 +11,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="170dp"
             android:id="@+id/person_photo"
             android:contentDescription=""
             android:background="@color/com_facebook_button_border_color_focused"/>

@@ -36,4 +36,5 @@
     <string name="your_workspaces">Your workspaces</string>
     <string name="home">Home</string>
     <string name="search">Search</string>
+    <string name="resetpass">Set a new password</string>
 </resources>
