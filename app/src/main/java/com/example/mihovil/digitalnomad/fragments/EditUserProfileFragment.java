@@ -32,8 +32,8 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
     private EditText oldPassword;
     private EditText newPassword;
     private EditText repeatPassword;
-    //private RelativeLayout relativeLayout;
-    //private ProgressBar progressBar;
+    private RelativeLayout relativeLayout;
+    private ProgressBar progressBar;
 
 
     @Override
@@ -51,8 +51,8 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
         oldPassword = (EditText) view.findViewById(R.id.user_profile_edit_profile_txtEnterPassword);
         newPassword = (EditText) view.findViewById(R.id.user_profile_edit_profile_txtEnterNewPassword);
         repeatPassword = (EditText) view.findViewById(R.id.user_profile_edit_profile_txtRepeatPassword);
-        // relativeLayout = (RelativeLayout) findViewById(R.id.user_profile_fragment_relative_layout);
-        // progressBar = (ProgressBar) findViewById(R.id.user_profile_fragment_progress_bar);
+        relativeLayout = (RelativeLayout) view.findViewById(R.id.user_profile_fragment_relative_layout);
+        progressBar = (ProgressBar) view.findViewById(R.id.user_profile_fragment_progress_bar);
 
         final Button save = (Button) view.findViewById(R.id.user_profile_edit_user_btnSpremi);
         save.setOnClickListener(new View.OnClickListener() {
@@ -61,11 +61,10 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
                 if (!checkIfEmpty(oldPassword, newPassword, repeatPassword)) {
                     Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
                 } else {
-
                     String email = preferences.getString("Email", null);
-                    //   WebServiceCaller wsc = new WebServiceCaller(EditUserProfileFragment.this);
-                    //  wsc.changePassword(email,oldPassword.getText().toString(),newPassword.getText().toString());
-                    resetAll();
+                    WebServiceCaller wsc = new WebServiceCaller(EditUserProfileFragment.this);
+                    wsc.changePassword(email, oldPassword.getText().toString(), newPassword.getText().toString());
+                    EnableProgressBar();
                 }
             }
         });
@@ -103,11 +102,13 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
         }
         if (newP.getText().toString().isEmpty()) {
             newP.setError("Enter new password");
+            success = false;
         } else {
             newP.setError(null);
         }
         if (!repeatP.getText().toString().equals(newP.getText().toString())) {
             repeatP.setError("Passwords do not match");
+            success = false;
         } else {
             repeatP.setError(null);
         }
@@ -117,9 +118,10 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
     private void resetAll() {
         oldPassword.setText(null);
         newPassword.setText(null);
-        oldPassword.setText(null);
+        repeatPassword.setText(null);
     }
- /*   private void DisableProgressBar() {
+
+    private void DisableProgressBar() {
         relativeLayout.setAlpha(1);
         progressBar.setVisibility(View.GONE);
     }
@@ -127,20 +129,20 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
     private void EnableProgressBar() {
         relativeLayout.setAlpha(0.3f);
         progressBar.setVisibility(View.VISIBLE);
-    }*/
+        resetAll();
+    }
 
 
     @Override
     public void onServiceDone(Object response) {
         ServiceResponse res = (ServiceResponse) response;
-        if (res.isPostoji()) {
-            Toast.makeText(getContext(), "Password changed", Toast.LENGTH_LONG).show();
-        }
-
+        Toast.makeText(getContext(), res.getResponseMessage(), Toast.LENGTH_LONG).show();
+        DisableProgressBar();
     }
 
     @Override
     public void onServiceFail(Object message) {
         Toast.makeText(getContext(), (String) message, Toast.LENGTH_LONG).show();
+        DisableProgressBar();
     }
 }

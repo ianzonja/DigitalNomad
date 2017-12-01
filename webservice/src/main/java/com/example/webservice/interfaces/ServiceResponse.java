@@ -18,6 +18,15 @@ public class ServiceResponse {
     private String email;
     private String name;
     private String urlPicture;
+    private String responseMessage;
+
+    public String getResponseMessage() {
+        return responseMessage;
+    }
+
+    public void setResponseMessage(String responseMessage) {
+        this.responseMessage = responseMessage;
+    }
 
     public int getReponseId() {
         return reponseId;

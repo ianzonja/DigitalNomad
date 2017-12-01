@@ -229,6 +229,7 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
         }
         if (password.getText().toString().isEmpty()) {
             password.setError("Enter password");
+            success=false;
         } else {
             password.setError(null);
         }

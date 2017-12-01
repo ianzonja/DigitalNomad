@@ -3,7 +3,10 @@
     android:id="@+id/user_profile_fragment_edit_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+   <RelativeLayout
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:id="@+id/user_profile_fragment_relative_layout">
     <ImageView
         android:id="@+id/imageView_lockPass"
         android:layout_width="100dp"
@@ -88,4 +91,15 @@
             android:textColor="#ffffff"
             android:textStyle="bold" />
     </RelativeLayout>
+
+   </RelativeLayout>
+    <ProgressBar
+        android:id="@+id/user_profile_fragment_progress_bar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:indeterminate="false"
+        android:visibility="gone" />
+
 </RelativeLayout>
