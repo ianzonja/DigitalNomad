@@ -177,15 +177,12 @@ public class MainMenuActivity extends AppCompatActivity
         Toast.makeText(getBaseContext(), (String) message, Toast.LENGTH_LONG).show();
     }
 
-    public void getAllWorkspaces(String name, String description, String address, String country, String town, double latitude, double longitude/*, User user*/) {
+    public void getAllWorkspaces() {
         final List<Workspace> workspace;
         workspace = SQLite.select().from(Workspace.class).queryList();
-        name = workspace.get(0).getName();
-        description = workspace.get(0).getDescription();
-        address = workspace.get(0).getAddress();
-        country = workspace.get(0).getCountry();
-        town = workspace.get(0).getTown();
-        latitude = workspace.get(0).getLatitude();
-        longitude = workspace.get(0).getLongitude();
+        String name = workspace.get(0).getName();
+        String country = workspace.get(0).getCountry();
+        String town = workspace.get(0).getCity();
+        String address = workspace.get(0).getAddress();
     }
 }

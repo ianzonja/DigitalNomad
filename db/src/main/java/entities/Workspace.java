@@ -17,12 +17,9 @@ public class Workspace extends BaseModel {
     @PrimaryKey(autoincrement = true)
     @Column int idworkspace;
     @Column String name;
-    @Column String description;
-    @Column String address;
     @Column String country;
-    @Column String town;
-    @Column double latitude;
-    @Column double longitude;
+    @Column String city;
+    @Column String address;
    // @ForeignKey(tableClass = User.class)
     //User user;
 
@@ -30,15 +27,11 @@ public class Workspace extends BaseModel {
 
     }
 
-    public Workspace(String name, String description, String address, String country, String town, double latitude, double longitude/*, User user*/) {
+    public Workspace(String name, String country, String city, String address) {
         this.name = name;
-        this.description = description;
-        this.address = address;
         this.country = country;
-        this.town = town;
-        this.latitude = latitude;
-        this.longitude = longitude;
-      //  this.user = user;
+        this.city = city;
+        this.address = address;
     }
 
     public int getIdworkspace() {
@@ -47,14 +40,6 @@ public class Workspace extends BaseModel {
 
     public void setIdworkspace(int idworkspace) {
         this.idworkspace = idworkspace;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getCountry() {
@@ -81,27 +66,9 @@ public class Workspace extends BaseModel {
         this.name = name;
     }
 
-    public String getTown() {
-        return town;
+    public String getCity() {
+        return city;
     }
 
-    public void setTown(String town) {
-        this.town = town;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
+    public void setTown(String city) { this.city = city; }
 }
