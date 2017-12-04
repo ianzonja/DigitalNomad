@@ -1,4 +1,4 @@
-package com.example.mihovil.digitalnomad.Folders;
+package com.example.mihovil.digitalnomad.files;
 
 import android.content.Context;
 import android.content.ContextWrapper;

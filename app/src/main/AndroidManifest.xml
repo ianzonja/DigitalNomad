@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Login_activity"
+            android:name=".LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -19,13 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".RegistracijaActivity"
-            android:label="Sign up">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Login_activity" />
-        </activity>
+
         <activity
             android:name=".MainMenuActivity"
             android:label="@string/title_activity_main_menu"

@@ -1,12 +1,20 @@
-package com.example.mihovil.digitalnomad;
+package com.example.mihovil.digitalnomad.fragments;
+
+
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -14,15 +22,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mihovil.digitalnomad.MainMenuActivity;
+import com.example.mihovil.digitalnomad.R;
+import com.example.webservice.interfaces.ServiceResponse;
+import com.example.webservice.interfaces.WebServiceCaller;
+import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-
-import com.example.webservice.interfaces.ServiceResponse;
-import com.example.webservice.interfaces.interfaces.OnServiceFinished;
-import com.example.webservice.interfaces.WebServiceCaller;
-
-//facebook
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -35,9 +42,11 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-import java.lang.Object;
+/**
+ * Created by Mihovil on 4.12.2017..
+ */
 
-public class Login_activity extends AppCompatActivity implements OnServiceFinished {
+public class LoginFragment extends Fragment implements OnServiceFinished {
     private EditText mail;
     private EditText pass;
 
@@ -45,46 +54,43 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
     private RelativeLayout relativeLayout;
 
     private SharedPreferences preferences;
-
-    //facebook
-    LoginButton loginButton;
-    CallbackManager callbackManager;
+    private LoginButton loginButton;
+    private CallbackManager callbackManager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getApplicationContext());
+        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+    }
 
-        preferences=PreferenceManager.getDefaultSharedPreferences(this);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.login_fragment, container, false);
+        return rootView;
+    }
 
-        if (preferences.contains("Email")) {
-            Intent i = new Intent(getBaseContext(), MainMenuActivity.class);
-            startActivity(i);
-            finish();
-        }
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        relativeLayout = (RelativeLayout) view.findViewById(R.id.RelativeLayout1);
+        mail = (EditText) view.findViewById(R.id.email);
+        pass = (EditText) view.findViewById(R.id.pass);
 
 
-        setContentView(R.layout.activity_login_activity);
-
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        relativeLayout = (RelativeLayout) findViewById(R.id.RelativeLayout1);
-        mail = (EditText) findViewById(R.id.email);
-        pass = (EditText) findViewById(R.id.pass);
-
-        TextView signUp = (TextView) findViewById(R.id.signup);
-        Button login = (Button) findViewById(R.id.button);
+        TextView signUp = (TextView) view.findViewById(R.id.signup);
+        Button login = (Button) view.findViewById(R.id.button);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (CheckEntry(mail, pass)) {
                     EnableProgressBar();
-                    WebServiceCaller wsc = new WebServiceCaller(Login_activity.this);
+                    WebServiceCaller wsc = new WebServiceCaller(LoginFragment.this);
                     wsc.Login(mail.getText().toString(), pass.getText().toString());
-                  //  GetData data = new GetData();
-                   // data.doInBackground(); // poziv funkcije za dohvat podataka iz JSON-a i pohranu u lokalnu bazu
-
                 } else {
-                    Toast.makeText(getBaseContext(), "Correct errors", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -92,20 +98,23 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), RegistracijaActivity.class));
+                Fragment fragment = new RegistracijaFragment();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.login_content, fragment);
+                ft.commit();
+
             }
         });
 
-
-
         //facebook
-        loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton = (LoginButton) view.findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList(
                 "public_profile", "email"));
-        callbackManager = CallbackManager.Factory.create();
+        loginButton.setFragment(this);
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
@@ -124,13 +133,12 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
                                         SetLoginSession(email);
                                     }
 
-                                    WebServiceCaller wsc = new WebServiceCaller(Login_activity.this);
+                                    WebServiceCaller wsc = new WebServiceCaller(LoginFragment.this);
                                     wsc.FacebookLogin(email,first_name,last_name,image_url);
 
-
-                                    Intent i = new Intent(getBaseContext(), MainMenuActivity.class);
+                                    Intent i = new Intent(getContext(), MainMenuActivity.class);
                                     startActivity(i);
-                                    finish();
+                                    getActivity().finish();
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -141,6 +149,7 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
                 parameters.putString("fields", "id,first_name,last_name,email");
                 request.setParameters(parameters);
                 request.executeAsync();
+
             }
 
             @Override
@@ -150,72 +159,16 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
 
             @Override
             public void onError(FacebookException error) {
-                Log.d("TAG", "error");
+
             }
         });
     }
 
-  /*  private class GetData extends AsyncTask<Void, Void, Void> {
-        private String TAG = Login_activity.class.getSimpleName();
-
-        protected Void doInBackground(Void... arg0) {
-            WebServiceCaller wsc = new WebServiceCaller(Login_activity.this);
-            String jsonStr = "http://jospudjaatfoi.000webhostapp.com/";
-            try {
-                JSONObject jsonObj = new JSONObject(jsonStr);
-                JSONArray user = jsonObj.getJSONArray(""); //naziv polja u JSON-u???
-                for (int i = 0; i < user.length(); i++) {
-                    JSONObject u = user.getJSONObject(i);
-
-                    String name = u.getString("first_name");
-                    String last_name = u.getString("last_name");  //ispravni nazivi polja u JSON-u???
-                    String email = u.getString("email");
-                    String image_url = u.getString("image_url");
-
-                    User userDB = new User();
-                    userDB.StoreData(name,last_name,email,image_url); //pohrana u lokalnu bazu
-                }
-            } catch (final JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }*/
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
-    }
-
-
-    private void DisableProgressBar() {
-        relativeLayout.setAlpha(1);
-        progressBar.setVisibility(View.GONE);
-    }
-
-    private void EnableProgressBar() {
-        relativeLayout.setAlpha(0.3f);
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-
-    @Override
-    public void onServiceDone(Object response) {
-        DisableProgressBar();
-        ServiceResponse login = (ServiceResponse) response;
-        if (login.isPostoji()) {
-            SetLoginSession(mail.getText().toString());
-            startActivity(new Intent(getBaseContext(), MainMenuActivity.class));
-            finish();
-        } else {
-            Toast.makeText(getBaseContext(), "Invalid email or password", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void onServiceFail(Object message) {
-        Toast.makeText(this, (String) message, Toast.LENGTH_LONG).show();
-        DisableProgressBar();
     }
 
     private boolean CheckEntry(EditText email, EditText password) {
@@ -237,9 +190,40 @@ public class Login_activity extends AppCompatActivity implements OnServiceFinish
         return success;
     }
 
+
+    private void DisableProgressBar() {
+        relativeLayout.setAlpha(1);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    private void EnableProgressBar() {
+        relativeLayout.setAlpha(0.3f);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onServiceDone(Object response) {
+        DisableProgressBar();
+        ServiceResponse login = (ServiceResponse) response;
+        if (login.isPostoji()) {
+            SetLoginSession(mail.getText().toString());
+            startActivity(new Intent(getContext(), MainMenuActivity.class));
+            getActivity().finish();
+        } else {
+            Toast.makeText(getActivity(), "Invalid email or password", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onServiceFail(Object message) {
+        Toast.makeText(getActivity(), (String) message, Toast.LENGTH_LONG).show();
+        DisableProgressBar();
+    }
     private void SetLoginSession(String email) {
+        preferences= PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("Email", email);
         editor.apply();
     }
+
 }

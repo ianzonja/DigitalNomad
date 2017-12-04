@@ -19,7 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.mihovil.digitalnomad.Folders.UserToJsonFile;
+import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.mihovil.digitalnomad.fragments.RecyclerViewFragment;
 import com.example.mihovil.digitalnomad.fragments.UserProfileFragment;
 import com.example.webservice.interfaces.ServiceResponse;
@@ -116,7 +116,7 @@ public class MainMenuActivity extends AppCompatActivity
                 break;
             case R.id.nav_logout:
                 Logout();
-                startActivity(new Intent(getBaseContext(), Login_activity.class));
+                startActivity(new Intent(getBaseContext(), LoginActivity.class));
                 finish();
         }
         if (fragment != null) {

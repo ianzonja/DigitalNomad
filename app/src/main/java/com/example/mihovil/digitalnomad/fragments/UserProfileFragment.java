@@ -1,7 +1,6 @@
 package com.example.mihovil.digitalnomad.fragments;
 
 
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,10 +12,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.example.mihovil.digitalnomad.Folders.UserToJsonFile;
+import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 import com.example.mihovil.digitalnomad.R;
-import com.example.mihovil.digitalnomad.Folders.FolderManagment;
+import com.example.mihovil.digitalnomad.files.FolderManagment;
 
 
 import org.json.JSONException;

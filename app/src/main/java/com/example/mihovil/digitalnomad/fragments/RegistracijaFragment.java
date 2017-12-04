@@ -1,19 +1,24 @@
-package com.example.mihovil.digitalnomad;
+package com.example.mihovil.digitalnomad.fragments;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.mihovil.digitalnomad.MainMenuActivity;
+import com.example.mihovil.digitalnomad.R;
 import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 import com.example.webservice.interfaces.WebServiceCaller;
@@ -21,68 +26,37 @@ import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
 
-public class RegistracijaActivity extends AppCompatActivity implements OnServiceFinished {
+public class RegistracijaFragment extends Fragment implements OnServiceFinished {
     private EditText name, lastName, password, email, repeatPass;
     private ProgressBar progressBar;
     private RelativeLayout relativeLayout;
     private SharedPreferences preferences;
+    private Button register;
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.registracija_fragment, container, false);
+        return rootView;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registracija);
-
-        FlowManager.init(new FlowConfig.Builder(this).build());
-        preferences= PreferenceManager.getDefaultSharedPreferences(this);
-
-        progressBar = (ProgressBar) findViewById(R.id.progressBar2);
-        relativeLayout = (RelativeLayout) findViewById(R.id.RelativeLayout2);
-
-        Button register = (Button) findViewById(R.id.registracija);
-        name = (EditText) findViewById(R.id.name);
-        lastName = (EditText) findViewById(R.id.lastName);
-        email = (EditText) findViewById(R.id.email);
-        password = (EditText) findViewById(R.id.password);
-        repeatPass = (EditText) findViewById(R.id.passwordcheck);
-
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (CheckEntry(email, password, name, lastName, repeatPass)) {
-                    EnableProgressBar();
-                    WebServiceCaller wsc = new WebServiceCaller(RegistracijaActivity.this);
-                    wsc.Registrate(email.getText().toString(), password.getText().toString(), name.getText().toString(), lastName.getText().toString());
-                    //mozda cemo morati ovo mijenjat
-                    //User user = new User();
-                    //user.StoreData(name.getText().toString(), lastName.getText().toString(), email.getText().toString(), password.getText().toString());
-                } else {
-                    Toast.makeText(getBaseContext(), "Correct errors", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-        repeatPass.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!password.getText().toString().equals(repeatPass.getText().toString())) {
-                    repeatPass.setError("Passwords do not match");
-                } else {
-                    repeatPass.setError(null);
-                }
-            }
-        });
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        FlowManager.init(new FlowConfig.Builder(getContext()).build());
+        preferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar2);
+        relativeLayout = (RelativeLayout) view.findViewById(R.id.RelativeLayout2);
+        name = (EditText) view.findViewById(R.id.name);
+        lastName = (EditText) view.findViewById(R.id.lastName);
+        email = (EditText) view.findViewById(R.id.email);
+        password = (EditText) view.findViewById(R.id.password);
+        register = (Button) view.findViewById(R.id.registracija);
+        OnRegistracijaClick();
+        repeatPass = (EditText) view.findViewById(R.id.passwordcheck);
+        OnTextChanged();
     }
+
     private void DisableProgressBar(){
         relativeLayout.setAlpha(1);
         progressBar.setVisibility(View.GONE);
@@ -90,6 +64,43 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
     private void EnableProgressBar(){
         relativeLayout.setAlpha(0.3f);
         progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void OnRegistracijaClick(){
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (CheckEntry(email, password, name, lastName, repeatPass)) {
+                    EnableProgressBar();
+                    WebServiceCaller wsc = new WebServiceCaller(RegistracijaFragment.this);
+                    wsc.Registrate(email.getText().toString(), password.getText().toString(), name.getText().toString(), lastName.getText().toString());
+                } else {
+                    Toast.makeText(getContext(), "Correct errors", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+    private void OnTextChanged(){
+        repeatPass.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!password.getText().toString().equals(repeatPass.getText().toString())) {
+                    repeatPass.setError("Passwords do not match");
+                } else {
+                    repeatPass.setError(null);
+                }
+            }
+        });
     }
 
 
@@ -100,17 +111,17 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
 
         if (login.getReturnValue().equals("1")) {
             SetLoginSession(email.getText().toString());
-            startActivity(new Intent(getBaseContext(), MainMenuActivity.class));
-            finish();
+            startActivity(new Intent(getContext(), MainMenuActivity.class));
+            getActivity().finish();
         } else {
-            Toast.makeText(this, "Registracija neuspjesna", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Registracija neuspjesna", Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onServiceFail(Object message) {
         DisableProgressBar();
-        Toast.makeText(this, (String) message, Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), (String) message, Toast.LENGTH_LONG).show();
     }
 
     private boolean CheckIndividualEntry(EditText check, String error) {
@@ -146,9 +157,12 @@ public class RegistracijaActivity extends AppCompatActivity implements OnService
     }
 
     private void SetLoginSession(String email) {
+        preferences= PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("Email", email);
         editor.apply();
     }
+
+
 }
 

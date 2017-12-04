@@ -1,0 +1,15 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.mihovil.digitalnomad.LoginActivity"
+    android:descendantFocusability="beforeDescendants"
+    android:id="@+id/login_content"
+    android:focusableInTouchMode="true">
+
+
+
+</RelativeLayout>
+
