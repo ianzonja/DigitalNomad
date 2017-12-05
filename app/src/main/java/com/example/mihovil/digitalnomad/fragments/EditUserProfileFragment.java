@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.mihovil.digitalnomad.R;
+import com.example.mihovil.digitalnomad.files.LoadingData;
 import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.WebServiceCaller;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
@@ -64,7 +65,8 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
                     String email = preferences.getString("Email", null);
                     WebServiceCaller wsc = new WebServiceCaller(EditUserProfileFragment.this);
                     wsc.changePassword(email, oldPassword.getText().toString(), newPassword.getText().toString());
-                    EnableProgressBar();
+                    LoadingData.EnableProgressBar(relativeLayout,progressBar);
+                    resetAll();
                 }
             }
         });
@@ -121,28 +123,17 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
         repeatPassword.setText(null);
     }
 
-    private void DisableProgressBar() {
-        relativeLayout.setAlpha(1);
-        progressBar.setVisibility(View.GONE);
-    }
-
-    private void EnableProgressBar() {
-        relativeLayout.setAlpha(0.3f);
-        progressBar.setVisibility(View.VISIBLE);
-        resetAll();
-    }
-
 
     @Override
     public void onServiceDone(Object response) {
         ServiceResponse res = (ServiceResponse) response;
         Toast.makeText(getContext(), res.getResponseMessage(), Toast.LENGTH_LONG).show();
-        DisableProgressBar();
+        LoadingData.DisableProgressBar(relativeLayout,progressBar);
     }
 
     @Override
     public void onServiceFail(Object message) {
         Toast.makeText(getContext(), (String) message, Toast.LENGTH_LONG).show();
-        DisableProgressBar();
+        LoadingData.DisableProgressBar(relativeLayout,progressBar);
     }
 }
