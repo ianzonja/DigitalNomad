@@ -10,8 +10,6 @@ import android.support.annotation.Nullable;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mihovil.digitalnomad.files.LoadingData;
 import com.example.mihovil.digitalnomad.MainMenuActivity;
 import com.example.mihovil.digitalnomad.R;
 import com.example.webservice.interfaces.ServiceResponse;
@@ -49,13 +48,12 @@ import java.util.Arrays;
 public class LoginFragment extends Fragment implements OnServiceFinished {
     private EditText mail;
     private EditText pass;
-
     private ProgressBar progressBar;
     private RelativeLayout relativeLayout;
-
     private SharedPreferences preferences;
     private LoginButton loginButton;
     private CallbackManager callbackManager;
+    private TextView signUp;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,21 +78,7 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
         pass = (EditText) view.findViewById(R.id.pass);
 
 
-        TextView signUp = (TextView) view.findViewById(R.id.signup);
-        Button login = (Button) view.findViewById(R.id.button);
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (CheckEntry(mail, pass)) {
-                    EnableProgressBar();
-                    WebServiceCaller wsc = new WebServiceCaller(LoginFragment.this);
-                    wsc.Login(mail.getText().toString(), pass.getText().toString());
-                } else {
-                    Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
+        signUp = (TextView) view.findViewById(R.id.signup);
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,6 +90,19 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
             }
         });
 
+        Button login = (Button) view.findViewById(R.id.button);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (CheckEntry(mail, pass)) {
+                    LoadingData.EnableProgressBar(relativeLayout,progressBar);
+                    WebServiceCaller wsc = new WebServiceCaller(LoginFragment.this);
+                    wsc.Login(mail.getText().toString(), pass.getText().toString());
+                } else {
+                    Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         //facebook
         loginButton = (LoginButton) view.findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList(
@@ -190,20 +187,9 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
         return success;
     }
 
-
-    private void DisableProgressBar() {
-        relativeLayout.setAlpha(1);
-        progressBar.setVisibility(View.GONE);
-    }
-
-    private void EnableProgressBar() {
-        relativeLayout.setAlpha(0.3f);
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
     @Override
     public void onServiceDone(Object response) {
-        DisableProgressBar();
+        LoadingData.DisableProgressBar(relativeLayout,progressBar);
         ServiceResponse login = (ServiceResponse) response;
         if (login.isPostoji()) {
             SetLoginSession(mail.getText().toString());
@@ -217,7 +203,7 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
     @Override
     public void onServiceFail(Object message) {
         Toast.makeText(getActivity(), (String) message, Toast.LENGTH_LONG).show();
-        DisableProgressBar();
+        LoadingData.DisableProgressBar(relativeLayout,progressBar);
     }
     private void SetLoginSession(String email) {
         preferences= PreferenceManager.getDefaultSharedPreferences(getContext());

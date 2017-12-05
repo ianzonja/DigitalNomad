@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.mihovil.digitalnomad.files.LoadingData;
 import com.example.mihovil.digitalnomad.MainMenuActivity;
 import com.example.mihovil.digitalnomad.R;
 import com.example.webservice.interfaces.ServiceResponse;
@@ -57,21 +58,12 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
         OnTextChanged();
     }
 
-    private void DisableProgressBar(){
-        relativeLayout.setAlpha(1);
-        progressBar.setVisibility(View.GONE);
-    }
-    private void EnableProgressBar(){
-        relativeLayout.setAlpha(0.3f);
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
     private void OnRegistracijaClick(){
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (CheckEntry(email, password, name, lastName, repeatPass)) {
-                    EnableProgressBar();
+                    LoadingData.EnableProgressBar(relativeLayout,progressBar);
                     WebServiceCaller wsc = new WebServiceCaller(RegistracijaFragment.this);
                     wsc.Registrate(email.getText().toString(), password.getText().toString(), name.getText().toString(), lastName.getText().toString());
                 } else {
@@ -106,7 +98,7 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
 
     @Override
     public void onServiceDone(Object response) {
-        DisableProgressBar();
+        LoadingData.DisableProgressBar(relativeLayout,progressBar);
         ServiceResponse login = (ServiceResponse) response;
 
         if (login.getReturnValue().equals("1")) {
@@ -120,7 +112,7 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
 
     @Override
     public void onServiceFail(Object message) {
-        DisableProgressBar();
+        LoadingData.DisableProgressBar(relativeLayout,progressBar);
         Toast.makeText(getContext(), (String) message, Toast.LENGTH_LONG).show();
     }
 
