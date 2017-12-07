@@ -8,6 +8,6 @@ import android.widget.RelativeLayout;
  */
 
 public interface OnServiceCalled {
-    void EnableProgressBar(RelativeLayout relativeLayout, ProgressBar progressBar);
-    void DisableProgressBar(RelativeLayout relativeLayout, ProgressBar progressBar);
+    void EnableProgressBar();
+    void DisableProgressBar();
 }

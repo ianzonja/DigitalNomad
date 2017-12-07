@@ -1,7 +1,6 @@
 package com.example.mihovil.digitalnomad.fragments;
 
 
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -62,7 +61,6 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
-        loader = new LoadingData();
     }
 
     @Nullable
@@ -77,6 +75,7 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
 
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         relativeLayout = (RelativeLayout) view.findViewById(R.id.RelativeLayout1);
+        loader = new LoadingData(relativeLayout,progressBar);
         mail = (EditText) view.findViewById(R.id.email);
         pass = (EditText) view.findViewById(R.id.pass);
 
@@ -98,7 +97,7 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
             @Override
             public void onClick(View view) {
                 if (CheckEntry(mail, pass)) {
-                    loader.EnableProgressBar(relativeLayout,progressBar);
+                    loader.EnableProgressBar();
                     WebServiceCaller wsc = new WebServiceCaller(LoginFragment.this);
                     wsc.Login(mail.getText().toString(), pass.getText().toString());
                 } else {
@@ -134,7 +133,7 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
                                     }
 
                                     WebServiceCaller wsc = new WebServiceCaller(LoginFragment.this);
-                                    wsc.FacebookLogin(email,first_name,last_name,image_url);
+                                    wsc.FacebookLogin(email, first_name, last_name, image_url);
 
                                     Intent i = new Intent(getContext(), MainMenuActivity.class);
                                     startActivity(i);
@@ -182,7 +181,7 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
         }
         if (password.getText().toString().isEmpty()) {
             password.setError("Enter password");
-            success=false;
+            success = false;
         } else {
             password.setError(null);
         }
@@ -192,7 +191,7 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
 
     @Override
     public void onServiceDone(Object response) {
-        loader.DisableProgressBar(relativeLayout,progressBar);
+        loader.DisableProgressBar();
         ServiceResponse login = (ServiceResponse) response;
         if (login.isPostoji()) {
             SetLoginSession(mail.getText().toString());
@@ -206,10 +205,11 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
     @Override
     public void onServiceFail(Object message) {
         Toast.makeText(getActivity(), (String) message, Toast.LENGTH_LONG).show();
-        loader.DisableProgressBar(relativeLayout,progressBar);
+        loader.DisableProgressBar();
     }
+
     private void SetLoginSession(String email) {
-        preferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("Email", email);
         editor.apply();

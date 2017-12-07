@@ -41,7 +41,6 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loader = new LoadingData();
     }
 
     @Override
@@ -61,6 +60,7 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
         repeatPassword = (EditText) view.findViewById(R.id.user_profile_edit_profile_txtRepeatPassword);
         relativeLayout = (RelativeLayout) view.findViewById(R.id.user_profile_fragment_relative_layout);
         progressBar = (ProgressBar) view.findViewById(R.id.user_profile_fragment_progress_bar);
+        loader = new LoadingData(relativeLayout,progressBar);
 
         final Button save = (Button) view.findViewById(R.id.user_profile_edit_user_btnSpremi);
         save.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +72,7 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
                     String email = preferences.getString("Email", null);
                     WebServiceCaller wsc = new WebServiceCaller(EditUserProfileFragment.this);
                     wsc.changePassword(email, oldPassword.getText().toString(), newPassword.getText().toString());
-                    loader.EnableProgressBar(relativeLayout,progressBar);
+                    loader.EnableProgressBar();
                     resetAll();
                 }
             }
@@ -97,8 +97,6 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
 
             }
         });
-
-
     }
 
     private boolean checkIfEmpty(EditText oldP, EditText newP, EditText repeatP) {
@@ -135,12 +133,12 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
     public void onServiceDone(Object response) {
         ServiceResponse res = (ServiceResponse) response;
         Toast.makeText(getContext(), res.getResponseMessage(), Toast.LENGTH_LONG).show();
-        loader.DisableProgressBar(relativeLayout,progressBar);
+        loader.DisableProgressBar();
     }
 
     @Override
     public void onServiceFail(Object message) {
         Toast.makeText(getContext(), (String) message, Toast.LENGTH_LONG).show();
-        loader.DisableProgressBar(relativeLayout,progressBar);
+        loader.DisableProgressBar();
     }
 }

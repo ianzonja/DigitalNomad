@@ -39,7 +39,6 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loader = new LoadingData();
     }
 
     @Nullable
@@ -56,6 +55,7 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
         preferences= PreferenceManager.getDefaultSharedPreferences(getContext());
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar2);
         relativeLayout = (RelativeLayout) view.findViewById(R.id.RelativeLayout2);
+        loader = new LoadingData(relativeLayout,progressBar);
         name = (EditText) view.findViewById(R.id.name);
         lastName = (EditText) view.findViewById(R.id.lastName);
         email = (EditText) view.findViewById(R.id.email);
@@ -71,7 +71,7 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
             @Override
             public void onClick(View v) {
                 if (CheckEntry(email, password, name, lastName, repeatPass)) {
-                    loader.EnableProgressBar(relativeLayout,progressBar);
+                    loader.EnableProgressBar();
                     WebServiceCaller wsc = new WebServiceCaller(RegistracijaFragment.this);
                     wsc.Registrate(email.getText().toString(), password.getText().toString(), name.getText().toString(), lastName.getText().toString());
                 } else {
@@ -106,7 +106,7 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
 
     @Override
     public void onServiceDone(Object response) {
-        loader.DisableProgressBar(relativeLayout,progressBar);
+        loader.DisableProgressBar();
         ServiceResponse login = (ServiceResponse) response;
 
         if (login.getReturnValue().equals("1")) {
@@ -120,7 +120,7 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
 
     @Override
     public void onServiceFail(Object message) {
-        loader.DisableProgressBar(relativeLayout,progressBar);
+        loader.DisableProgressBar();
         Toast.makeText(getContext(), (String) message, Toast.LENGTH_LONG).show();
     }
 

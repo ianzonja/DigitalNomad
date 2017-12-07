@@ -11,14 +11,23 @@ import com.example.mihovil.digitalnomad.Interface.OnServiceCalled;
  */
 
 public  class LoadingData implements OnServiceCalled {
+
+    private RelativeLayout relativeLayout;
+    private ProgressBar progressBar;
+
+    public LoadingData(RelativeLayout relativeLayout, ProgressBar progressBar) {
+        this.relativeLayout = relativeLayout;
+        this.progressBar = progressBar;
+    }
+
     @Override
-    public void EnableProgressBar(RelativeLayout relativeLayout, ProgressBar progressBar) {
+    public void EnableProgressBar() {
         relativeLayout.setAlpha(0.3f);
         progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void DisableProgressBar(RelativeLayout relativeLayout, ProgressBar progressBar) {
+    public void DisableProgressBar() {
         relativeLayout.setAlpha(1);
         progressBar.setVisibility(View.GONE);
     }
