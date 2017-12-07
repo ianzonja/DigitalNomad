@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.mihovil.digitalnomad.Interface.OnServiceCalled;
 import com.example.mihovil.digitalnomad.files.LoadingData;
 import com.example.mihovil.digitalnomad.MainMenuActivity;
 import com.example.mihovil.digitalnomad.R;
@@ -33,6 +34,13 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
     private RelativeLayout relativeLayout;
     private SharedPreferences preferences;
     private Button register;
+    private OnServiceCalled loader;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        loader = new LoadingData();
+    }
 
     @Nullable
     @Override
@@ -63,7 +71,7 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
             @Override
             public void onClick(View v) {
                 if (CheckEntry(email, password, name, lastName, repeatPass)) {
-                    LoadingData.EnableProgressBar(relativeLayout,progressBar);
+                    loader.EnableProgressBar(relativeLayout,progressBar);
                     WebServiceCaller wsc = new WebServiceCaller(RegistracijaFragment.this);
                     wsc.Registrate(email.getText().toString(), password.getText().toString(), name.getText().toString(), lastName.getText().toString());
                 } else {
@@ -98,7 +106,7 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
 
     @Override
     public void onServiceDone(Object response) {
-        LoadingData.DisableProgressBar(relativeLayout,progressBar);
+        loader.DisableProgressBar(relativeLayout,progressBar);
         ServiceResponse login = (ServiceResponse) response;
 
         if (login.getReturnValue().equals("1")) {
@@ -112,7 +120,7 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
 
     @Override
     public void onServiceFail(Object message) {
-        LoadingData.DisableProgressBar(relativeLayout,progressBar);
+        loader.DisableProgressBar(relativeLayout,progressBar);
         Toast.makeText(getContext(), (String) message, Toast.LENGTH_LONG).show();
     }
 

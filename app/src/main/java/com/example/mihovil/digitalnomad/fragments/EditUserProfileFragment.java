@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.mihovil.digitalnomad.Interface.OnServiceCalled;
 import com.example.mihovil.digitalnomad.R;
 import com.example.mihovil.digitalnomad.files.LoadingData;
 import com.example.webservice.interfaces.ServiceResponse;
@@ -35,7 +36,13 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
     private EditText repeatPassword;
     private RelativeLayout relativeLayout;
     private ProgressBar progressBar;
+    private OnServiceCalled loader;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        loader = new LoadingData();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,7 +72,7 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
                     String email = preferences.getString("Email", null);
                     WebServiceCaller wsc = new WebServiceCaller(EditUserProfileFragment.this);
                     wsc.changePassword(email, oldPassword.getText().toString(), newPassword.getText().toString());
-                    LoadingData.EnableProgressBar(relativeLayout,progressBar);
+                    loader.EnableProgressBar(relativeLayout,progressBar);
                     resetAll();
                 }
             }
@@ -128,12 +135,12 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
     public void onServiceDone(Object response) {
         ServiceResponse res = (ServiceResponse) response;
         Toast.makeText(getContext(), res.getResponseMessage(), Toast.LENGTH_LONG).show();
-        LoadingData.DisableProgressBar(relativeLayout,progressBar);
+        loader.DisableProgressBar(relativeLayout,progressBar);
     }
 
     @Override
     public void onServiceFail(Object message) {
         Toast.makeText(getContext(), (String) message, Toast.LENGTH_LONG).show();
-        LoadingData.DisableProgressBar(relativeLayout,progressBar);
+        loader.DisableProgressBar(relativeLayout,progressBar);
     }
 }
