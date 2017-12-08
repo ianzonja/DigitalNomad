@@ -19,7 +19,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mihovil.digitalnomad.Interface.OnServiceCalled;
 import com.example.mihovil.digitalnomad.files.LoadingData;
 import com.example.mihovil.digitalnomad.MainMenuActivity;
 import com.example.mihovil.digitalnomad.R;
@@ -54,7 +53,6 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
     private LoginButton loginButton;
     private CallbackManager callbackManager;
     private TextView signUp;
-    private OnServiceCalled loader;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,7 +73,6 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
 
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         relativeLayout = (RelativeLayout) view.findViewById(R.id.RelativeLayout1);
-        loader = new LoadingData(relativeLayout,progressBar);
         mail = (EditText) view.findViewById(R.id.email);
         pass = (EditText) view.findViewById(R.id.pass);
 
@@ -97,7 +94,7 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
             @Override
             public void onClick(View view) {
                 if (CheckEntry(mail, pass)) {
-                    loader.EnableProgressBar();
+                    LoadingData.EnableProgressBar(relativeLayout,progressBar);
                     WebServiceCaller wsc = new WebServiceCaller(LoginFragment.this);
                     wsc.Login(mail.getText().toString(), pass.getText().toString());
                 } else {
@@ -191,7 +188,7 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
 
     @Override
     public void onServiceDone(Object response) {
-        loader.DisableProgressBar();
+        LoadingData.DisableProgressBar(relativeLayout,progressBar);
         ServiceResponse login = (ServiceResponse) response;
         if (login.isPostoji()) {
             SetLoginSession(mail.getText().toString());
@@ -205,7 +202,7 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
     @Override
     public void onServiceFail(Object message) {
         Toast.makeText(getActivity(), (String) message, Toast.LENGTH_LONG).show();
-        loader.DisableProgressBar();
+        LoadingData.DisableProgressBar(relativeLayout,progressBar);
     }
 
     private void SetLoginSession(String email) {

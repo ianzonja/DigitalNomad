@@ -4,30 +4,18 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.example.mihovil.digitalnomad.Interface.OnServiceCalled;
-
 /**
  * Created by Mihovil on 5.12.2017..
  */
 
-public  class LoadingData implements OnServiceCalled {
+public  class LoadingData  {
 
-    private RelativeLayout relativeLayout;
-    private ProgressBar progressBar;
-
-    public LoadingData(RelativeLayout relativeLayout, ProgressBar progressBar) {
-        this.relativeLayout = relativeLayout;
-        this.progressBar = progressBar;
-    }
-
-    @Override
-    public void EnableProgressBar() {
+    public static void EnableProgressBar(RelativeLayout relativeLayout,ProgressBar progressBar) {
         relativeLayout.setAlpha(0.3f);
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void DisableProgressBar() {
+    public static void DisableProgressBar(RelativeLayout relativeLayout,ProgressBar progressBar) {
         relativeLayout.setAlpha(1);
         progressBar.setVisibility(View.GONE);
     }
