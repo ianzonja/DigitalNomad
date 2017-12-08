@@ -1,12 +1,12 @@
 package com.example.webservice.interfaces.interfaces;
 
 import com.example.webservice.interfaces.ServiceResponse;
+import com.example.webservice.interfaces.WorkspaceValue;
+
+import java.util.List;
 
 import retrofit.Call;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
-import retrofit.http.POST;
 import retrofit.http.Query;
 
 /**
@@ -28,11 +28,11 @@ public interface APIinterface {
     @GET("userProfile.php")
     Call<ServiceResponse> getUserProfile(@Query("email") String email);
 
-    @GET("imeservisa.php")
-    Call<ServiceResponse> getUserWorkspaces(@Query("user_id") int id);
+    @GET("prikazWorkspacea.php")
+    Call<List<WorkspaceValue>> getUserWorkspaces(@Query("email") String email);
 
-    @GET("imeservisa.php")
-    Call<ServiceResponse> addWorkspaceAndGetConfirmation(@Query("name") String name, @Query("country") String country, @Query("city") String city, @Query("adress") String adress);
+    @GET("registracijaWorkspacea.php")
+    Call<ServiceResponse> addWorkspaceAndGetConfirmation(@Query("email") String mail, @Query("name") String name, @Query("description") String description, @Query("adress") String adress, @Query("country") String country, @Query("town") String town, @Query("longitude") String longitude, @Query("latitude") String latitude);
 
     @GET("changePassword.php")
     Call<ServiceResponse> changePassword(@Query("email") String email,@Query("oldPass") String oldPass,@Query("newPass") String newPass);

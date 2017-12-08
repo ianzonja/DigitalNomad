@@ -1,5 +1,8 @@
 package com.example.webservice.interfaces;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * Created by Mihovil on 28.10.2017..
  */
@@ -14,11 +17,18 @@ public class ServiceResponse {
         return returnValue;
     }
 
+    public JSONArray getPosts() {
+        return posts;
+    }
+
+    private JSONArray posts;
+
     private int reponseId;
     private String email;
     private String name;
     private String urlPicture;
     private String responseMessage;
+
 
     public String getResponseMessage() {
         return responseMessage;

@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.mihovil.digitalnomad.files.UserToJsonFile;
+import com.example.mihovil.digitalnomad.fragments.EnterWorkspaceFragment;
 import com.example.mihovil.digitalnomad.fragments.RecyclerViewFragment;
 import com.example.mihovil.digitalnomad.fragments.UserProfileFragment;
 import com.example.webservice.interfaces.ServiceResponse;
@@ -106,6 +107,8 @@ public class MainMenuActivity extends AppCompatActivity
 
     private void displaySelectedFragment(int id) {
         Fragment fragment = null;
+        Bundle valueBundle = new Bundle();
+        valueBundle.putString("email", preferences.getString("Email", null));
 
         switch (id) {
             case R.id.nav_user_profile:
@@ -113,6 +116,11 @@ public class MainMenuActivity extends AppCompatActivity
                 break;
             case R.id.nav_workspaces:
                 fragment = new RecyclerViewFragment();
+                fragment.setArguments(valueBundle);
+                break;
+            case R.id.nav_add_workspace:
+                fragment = new EnterWorkspaceFragment();
+                fragment.setArguments(valueBundle);
                 break;
             case R.id.nav_logout:
                 Logout();

@@ -5,6 +5,7 @@ import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 
 import com.squareup.okhttp.OkHttpClient;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import retrofit.Call;
@@ -23,6 +24,7 @@ public class WebServiceCaller {
     private Retrofit retrofit;
     private APIinterface serviceCaller;
     private Call<ServiceResponse> call;
+    private Call<List<WorkspaceValue>> callWorkspaces;
 
     public WebServiceCaller(OnServiceFinished listener) {
         final String baseUrl = "http://jospudjaatfoi.000webhostapp.com/";
@@ -76,15 +78,15 @@ public class WebServiceCaller {
         CheckCall();
     }
 
-    public void GetClientWorkspaces(int id){
+    public void GetClientWorkspaces(String mail){
         CreateCaller();
-        call = serviceCaller.getUserWorkspaces(id);
-        CheckCall();
+        callWorkspaces = serviceCaller.getUserWorkspaces(mail);
+        CheckWorkspaceCall();
     }
 
-    public void addWorkspaceAsUser(String name, String country, String city, String  adress){
+    public void addWorkspaceAsUser(String mail, String name, String desc, String  adress, String country, String city, String longi, String lati){
         CreateCaller();
-        call = serviceCaller.addWorkspaceAndGetConfirmation(name, country, city, adress);
+        call = serviceCaller.addWorkspaceAndGetConfirmation(mail, name, desc, adress, country, city, longi, lati);
         CheckCall();
     }
 
@@ -96,9 +98,11 @@ public class WebServiceCaller {
 
     private void CheckCall(){
         if (call != null) {
+            System.out.println(call.toString());
             call.enqueue(new Callback<ServiceResponse>() {
                 @Override
                 public void onResponse(Response<ServiceResponse> response, Retrofit retrofit) {
+                    System.out.println("uso u response");
                     try {
                         if (response.isSuccess()){
                             listener.onServiceDone(response.body());
@@ -111,9 +115,25 @@ public class WebServiceCaller {
                 @Override
                 public void onFailure(Throwable t) {
                     t.printStackTrace();
-                    listener.onServiceFail("Check your internet connection");
+                    listener.onServiceFail("Check your internet connection uso u call");
+                    System.out.println("nisam uso u response");
                 }
             });
         }
+    }
+
+    private void CheckWorkspaceCall(){
+        callWorkspaces.enqueue(new Callback<List<WorkspaceValue>>() {
+            @Override
+            public void onResponse(Response<List<WorkspaceValue>> response, Retrofit retrofit) {
+                if(response.isSuccess())
+                    listener.onServiceDone(response.body());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                System.out.println("kurcina");
+            }
+        });
     }
 }

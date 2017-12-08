@@ -1,10 +1,7 @@
 package com.example.mihovil.digitalnomad.fragments;
 
-import android.app.Activity;
-
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,11 +12,14 @@ import android.view.ViewGroup;
 import com.example.mihovil.digitalnomad.R;
 import com.example.mihovil.digitalnomad.controller.RecyclerViewAdapter;
 import com.example.mihovil.digitalnomad.models.Workspace;
+import com.example.webservice.interfaces.WebServiceCaller;
+import com.example.webservice.interfaces.WorkspaceValue;
+import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewFragment extends Fragment {
+public class RecyclerViewFragment extends Fragment implements OnServiceFinished {
 
     List<Workspace> workspaces;
     private RecyclerView rv;
@@ -38,24 +38,25 @@ public class RecyclerViewFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
-        Workspace ws = new Workspace("qweqwe", "44");
-        Workspace ws2 = new Workspace("adasdsad", "44");
-        Workspace ws3 = new Workspace("adasdsad", "44");
-        Workspace ws4 = new Workspace("adasdsad", "44");
-        Workspace ws5 = new Workspace("adasdsad", "44");
-        Workspace ws6 = new Workspace("adasdsad", "44");
-        Workspace ws7 = new Workspace("adasdsad", "44");
-        Workspace ws8 = new Workspace("adasdsad", "44");
         workspaces = new ArrayList<Workspace>();
-        workspaces.add(ws);
-        workspaces.add(ws2);
-        workspaces.add(ws3);
-        workspaces.add(ws4);
-        workspaces.add(ws5);
-        workspaces.add(ws6);
-        workspaces.add(ws7);
-        workspaces.add(ws8);
+        WebServiceCaller wsc = new WebServiceCaller(RecyclerViewFragment.this);
+        wsc.GetClientWorkspaces(getArguments().getString("email"));
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(workspaces);
         rv.setAdapter(adapter);
+    }
+
+    @Override
+    public void onServiceDone(Object response) {
+        List<WorkspaceValue> jsonResponse = (List<WorkspaceValue>) response;
+        for(int i=0; i<jsonResponse.size(); i++){
+            workspaces.add(new Workspace(jsonResponse.get(i).getName(), jsonResponse.get(i).getCountry()));
+        }
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(workspaces);
+        rv.setAdapter(adapter);
+    }
+
+    @Override
+    public void onServiceFail(Object message) {
+        System.out.print("nope");
     }
 }
