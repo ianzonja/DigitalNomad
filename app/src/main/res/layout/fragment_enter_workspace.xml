@@ -5,78 +5,69 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <EditText
-        android:id="@+id/add_workspace_mail"
-        android:layout_width="276dp"
-        android:layout_height="79dp"
-        android:backgroundTint="@color/gray"
-        android:hint="mail"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintLeft_creator="1"
-        android:layout_marginLeft="45dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginStart="45dp" />
-
     <EditText
         android:id="@+id/add_workspace_country"
-        android:layout_width="417dp"
-        android:layout_height="95dp"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
         android:backgroundTint="@color/gray"
         android:hint="Country"
         tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
-        android:layout_marginLeft="29dp"
-        android:layout_marginTop="262dp" />
+        android:layout_alignBottom="@+id/add_workspace_city"
+        android:layout_alignStart="@+id/add_workspace_city"
+        android:layout_marginBottom="80dp" />
 
     <EditText
         android:id="@+id/add_workspace_city"
-        android:layout_width="350dp"
-        android:layout_height="100dp"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
         android:backgroundTint="@color/gray"
         android:hint="City"
         tools:layout_constraintTop_creator="1"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintBottom_creator="1"
-        android:layout_marginEnd="15dp"
         tools:layout_constraintLeft_creator="1"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="404dp" />
+        android:layout_alignBottom="@+id/add_workspace_adress"
+        android:layout_alignStart="@+id/add_workspace_adress"
+        android:layout_marginBottom="76dp" />
 
     <EditText
         android:id="@+id/add_workspace_adress"
-        android:layout_width="353dp"
-        android:layout_height="93dp"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
         android:backgroundTint="@color/gray"
         android:hint="Adress"
-        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
-        android:layout_marginLeft="45dp"
-        android:layout_marginTop="153dp" />" />
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1"
+        android:layout_above="@+id/add_Workspace_button"
+        android:layout_alignStart="@+id/add_workspace_name"
+        android:layout_marginBottom="11dp" />
 
     <Button
         android:id="@+id/add_Workspace_button"
         android:layout_width="300dp"
-        android:layout_height="200dp"
+        android:layout_height="70dp"
         android:text="Add"
         tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
-        android:layout_marginLeft="70dp"
-        android:layout_alignTop="@+id/add_workspace_city"
-        android:layout_toEndOf="@+id/add_workspace_country"
-        android:layout_marginTop="67dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/add_workspace_mail" />
 
     <EditText
         android:id="@+id/add_workspace_name"
-        android:layout_width="353dp"
+        android:layout_width="359dp"
         android:layout_height="99dp"
         android:backgroundTint="@color/gray"
         android:hint="Name"
         tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
-        android:layout_marginLeft="29dp"
-        android:layout_alignTop="@+id/add_workspace_mail"
-        android:layout_toEndOf="@+id/add_workspace_city"
-        android:layout_marginStart="22dp" />
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
