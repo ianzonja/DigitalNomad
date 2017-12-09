@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,7 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         View rootView = inflater.inflate(R.layout.login_fragment, container, false);
         return rootView;
     }
@@ -82,7 +84,7 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
             @Override
             public void onClick(View view) {
                 Fragment fragment = new RegistracijaFragment();
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack("LoginFragment");
                 ft.replace(R.id.login_content, fragment);
                 ft.commit();
 
