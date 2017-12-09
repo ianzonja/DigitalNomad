@@ -6,9 +6,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.example.mihovil.digitalnomad.fragments.LoginFragment;
 
@@ -41,4 +41,23 @@ public class LoginActivity extends AppCompatActivity{
         ft.commit();
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+
+                while (getSupportFragmentManager().getBackStackEntryCount() > 0){
+                    getSupportFragmentManager().popBackStackImmediate();
+                }
+
+                Fragment fragment = new LoginFragment();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.login_content, fragment);
+                ft.commit();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
