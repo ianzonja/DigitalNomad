@@ -33,7 +33,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/gray"
-            android:hint="@string/name" />
+            android:hint="@string/name"
+            android:textColorHint="@color/dnBlue"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -48,7 +49,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/gray"
-            android:hint="@string/country" />
+            android:hint="@string/country"
+            android:textColorHint="@color/dnBlue"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -63,7 +65,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/gray"
-            android:hint="@string/city" />
+            android:hint="@string/city"
+            android:textColorHint="@color/dnBlue"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -78,7 +81,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/gray"
-            android:hint="@string/adress" />
+            android:hint="@string/adress"
+            android:textColorHint="@color/dnBlue"/>
 
     </android.support.design.widget.TextInputLayout>
 

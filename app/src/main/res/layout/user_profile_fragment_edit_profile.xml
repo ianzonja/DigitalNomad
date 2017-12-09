@@ -17,7 +17,8 @@
        android:layout_width="80dp"
        android:layout_height="80dp"
        android:background="@drawable/lock"
-       android:layout_centerHorizontal="true"/>
+       android:layout_centerHorizontal="true"
+       android:contentDescription="@string/lockPass"/>
 
    <TextView
        android:id="@+id/changepass"
@@ -50,7 +51,8 @@
                 android:ems="10"
                 android:fontFamily="sans-serif"
                 android:hint="@string/enter_old_password"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:textColorHint="@color/dnBlue"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -69,7 +71,8 @@
                 android:ems="10"
                 android:fontFamily="sans-serif"
                 android:hint="@string/enter_new_password"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:textColorHint="@color/dnBlue"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -88,7 +91,8 @@
                 android:ems="10"
                 android:fontFamily="sans-serif"
                 android:hint="@string/repeat_password"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:textColorHint="@color/dnBlue"/>
 
         </android.support.design.widget.TextInputLayout>
 
