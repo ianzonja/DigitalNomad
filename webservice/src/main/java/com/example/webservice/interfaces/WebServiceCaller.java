@@ -102,7 +102,6 @@ public class WebServiceCaller {
             call.enqueue(new Callback<ServiceResponse>() {
                 @Override
                 public void onResponse(Response<ServiceResponse> response, Retrofit retrofit) {
-                    System.out.println("uso u response");
                     try {
                         if (response.isSuccess()){
                             listener.onServiceDone(response.body());
@@ -116,7 +115,6 @@ public class WebServiceCaller {
                 public void onFailure(Throwable t) {
                     t.printStackTrace();
                     listener.onServiceFail("Check your internet connection uso u call");
-                    System.out.println("nisam uso u response");
                 }
             });
         }
@@ -132,7 +130,6 @@ public class WebServiceCaller {
 
             @Override
             public void onFailure(Throwable t) {
-                System.out.println("kurcina");
             }
         });
     }
