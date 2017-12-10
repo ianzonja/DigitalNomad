@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.example.mihovil.digitalnomad.Interface.OnServiceCalled;
 import com.example.mihovil.digitalnomad.R;
 import com.example.mihovil.digitalnomad.files.LoadingData;
 import com.example.webservice.interfaces.ServiceResponse;
@@ -36,7 +34,6 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
     private EditText repeatPassword;
     private RelativeLayout relativeLayout;
     private ProgressBar progressBar;
-    private OnServiceCalled loader;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,7 +57,6 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
         repeatPassword = (EditText) view.findViewById(R.id.user_profile_edit_profile_txtRepeatPassword);
         relativeLayout = (RelativeLayout) view.findViewById(R.id.user_profile_fragment_relative_layout);
         progressBar = (ProgressBar) view.findViewById(R.id.user_profile_fragment_progress_bar);
-        loader = new LoadingData(relativeLayout,progressBar);
 
         final Button save = (Button) view.findViewById(R.id.user_profile_edit_user_btnSpremi);
         save.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +68,7 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
                     String email = preferences.getString("Email", null);
                     WebServiceCaller wsc = new WebServiceCaller(EditUserProfileFragment.this);
                     wsc.changePassword(email, oldPassword.getText().toString(), newPassword.getText().toString());
-                    loader.EnableProgressBar();
+                    LoadingData.EnableProgressBar(relativeLayout, progressBar);
                     resetAll();
                 }
             }
@@ -133,12 +129,12 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
     public void onServiceDone(Object response) {
         ServiceResponse res = (ServiceResponse) response;
         Toast.makeText(getContext(), res.getResponseMessage(), Toast.LENGTH_LONG).show();
-        loader.DisableProgressBar();
+        LoadingData.DisableProgressBar(relativeLayout, progressBar);
     }
 
     @Override
     public void onServiceFail(Object message) {
         Toast.makeText(getContext(), (String) message, Toast.LENGTH_LONG).show();
-        loader.DisableProgressBar();
+        LoadingData.DisableProgressBar(relativeLayout, progressBar);
     }
 }

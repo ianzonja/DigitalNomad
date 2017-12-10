@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mihovil.digitalnomad.Interface.OnServiceCalled;
 import com.example.mihovil.digitalnomad.files.LoadingData;
 import com.example.mihovil.digitalnomad.MainMenuActivity;
 import com.example.mihovil.digitalnomad.R;
@@ -54,7 +54,6 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
     private LoginButton loginButton;
     private CallbackManager callbackManager;
     private TextView signUp;
-    private OnServiceCalled loader;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +65,7 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         View rootView = inflater.inflate(R.layout.login_fragment, container, false);
         return rootView;
     }
@@ -75,7 +75,6 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
 
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         relativeLayout = (RelativeLayout) view.findViewById(R.id.RelativeLayout1);
-        loader = new LoadingData(relativeLayout,progressBar);
         mail = (EditText) view.findViewById(R.id.email);
         pass = (EditText) view.findViewById(R.id.pass);
 
@@ -85,7 +84,7 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
             @Override
             public void onClick(View view) {
                 Fragment fragment = new RegistracijaFragment();
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack("LoginFragment");
                 ft.replace(R.id.login_content, fragment);
                 ft.commit();
 
@@ -97,7 +96,7 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
             @Override
             public void onClick(View view) {
                 if (CheckEntry(mail, pass)) {
-                    loader.EnableProgressBar();
+                    LoadingData.EnableProgressBar(relativeLayout,progressBar);
                     WebServiceCaller wsc = new WebServiceCaller(LoginFragment.this);
                     wsc.Login(mail.getText().toString(), pass.getText().toString());
                 } else {
@@ -191,7 +190,7 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
 
     @Override
     public void onServiceDone(Object response) {
-        loader.DisableProgressBar();
+        LoadingData.DisableProgressBar(relativeLayout,progressBar);
         ServiceResponse login = (ServiceResponse) response;
         if (login.isPostoji()) {
             SetLoginSession(mail.getText().toString());
@@ -205,7 +204,7 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
     @Override
     public void onServiceFail(Object message) {
         Toast.makeText(getActivity(), (String) message, Toast.LENGTH_LONG).show();
-        loader.DisableProgressBar();
+        LoadingData.DisableProgressBar(relativeLayout,progressBar);
     }
 
     private void SetLoginSession(String email) {

@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -17,7 +18,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.example.mihovil.digitalnomad.Interface.OnServiceCalled;
 import com.example.mihovil.digitalnomad.files.LoadingData;
 import com.example.mihovil.digitalnomad.MainMenuActivity;
 import com.example.mihovil.digitalnomad.R;
@@ -34,7 +34,6 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
     private RelativeLayout relativeLayout;
     private SharedPreferences preferences;
     private Button register;
-    private OnServiceCalled loader;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +44,7 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         View rootView = inflater.inflate(R.layout.registracija_fragment, container, false);
         return rootView;
     }
@@ -55,7 +55,6 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
         preferences= PreferenceManager.getDefaultSharedPreferences(getContext());
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar2);
         relativeLayout = (RelativeLayout) view.findViewById(R.id.RelativeLayout2);
-        loader = new LoadingData(relativeLayout,progressBar);
         name = (EditText) view.findViewById(R.id.name);
         lastName = (EditText) view.findViewById(R.id.lastName);
         email = (EditText) view.findViewById(R.id.email);
@@ -71,7 +70,7 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
             @Override
             public void onClick(View v) {
                 if (CheckEntry(email, password, name, lastName, repeatPass)) {
-                    loader.EnableProgressBar();
+                    LoadingData.EnableProgressBar(relativeLayout,progressBar);
                     WebServiceCaller wsc = new WebServiceCaller(RegistracijaFragment.this);
                     wsc.Registrate(email.getText().toString(), password.getText().toString(), name.getText().toString(), lastName.getText().toString());
                 } else {
@@ -106,7 +105,7 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
 
     @Override
     public void onServiceDone(Object response) {
-        loader.DisableProgressBar();
+        LoadingData.DisableProgressBar(relativeLayout,progressBar);
         ServiceResponse login = (ServiceResponse) response;
 
         if (login.getReturnValue().equals("1")) {
@@ -120,7 +119,7 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
 
     @Override
     public void onServiceFail(Object message) {
-        loader.DisableProgressBar();
+        LoadingData.DisableProgressBar(relativeLayout,progressBar);
         Toast.makeText(getContext(), (String) message, Toast.LENGTH_LONG).show();
     }
 

@@ -50,7 +50,7 @@ public class FolderManagment extends AsyncTask<Void, Integer, Void> {
         }
     }
 
-    private void DohvatiSliku() throws IOException {
+    private void getPicture() throws IOException {
 
         URL url = new URL(urlProfile);
 
@@ -60,7 +60,7 @@ public class FolderManagment extends AsyncTask<Void, Integer, Void> {
         // SpremiSliku();
     }
 
-    private void SpremiSliku() throws IOException {
+    private void savePicture() throws IOException {
         ContextWrapper cw = new ContextWrapper(context);
         File directory = cw.getDir("Slike", Context.MODE_PRIVATE);
         File myPath = new File(directory, name + ".jpg");
@@ -79,7 +79,7 @@ public class FolderManagment extends AsyncTask<Void, Integer, Void> {
         }
     }
 
-    public Bitmap PostaviSliku() {
+    public Bitmap setPicture() {
         ContextWrapper cw = new ContextWrapper(context);
         File directory = cw.getDir("Slike", Context.MODE_PRIVATE);
         directory.mkdirs();
@@ -99,7 +99,7 @@ public class FolderManagment extends AsyncTask<Void, Integer, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         try {
-            DohvatiSliku();
+            getPicture();
         } catch (IOException e) {
             e.printStackTrace();
         }
