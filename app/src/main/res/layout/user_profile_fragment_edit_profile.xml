@@ -14,8 +14,8 @@
 
    <ImageView
        android:id="@+id/imglock"
-       android:layout_width="80dp"
-       android:layout_height="80dp"
+       android:layout_width="60dp"
+       android:layout_height="60dp"
        android:background="@drawable/lock"
        android:layout_centerHorizontal="true"
        android:contentDescription="@string/lockPass"/>
@@ -40,19 +40,19 @@
         <android.support.design.widget.TextInputLayout
             android:id="@+id/user_profile_edit_mdesign"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColorHint="@color/dnBlue">
 
             <EditText
                 android:id="@+id/user_profile_edit_profile_txtEnterPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:backgroundTint="@color/gray"
                 android:ems="10"
                 android:fontFamily="sans-serif"
                 android:hint="@string/enter_old_password"
-                android:inputType="textPassword"
-                android:textColorHint="@color/dnBlue"/>
+                android:inputType="textPassword"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -60,19 +60,18 @@
             android:id="@+id/user_profile_edit_mdesign_newpass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/user_profile_edit_mdesign">
+            android:layout_below="@+id/user_profile_edit_mdesign"
+            android:textColorHint="@color/dnBlue">
 
             <EditText
                 android:id="@+id/user_profile_edit_profile_txtEnterNewPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:backgroundTint="@color/gray"
                 android:ems="10"
                 android:fontFamily="sans-serif"
                 android:hint="@string/enter_new_password"
-                android:inputType="textPassword"
-                android:textColorHint="@color/dnBlue"/>
+                android:inputType="textPassword"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -80,19 +79,18 @@
             android:id="@+id/user_profile_edit_mdesign_repeatpass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/user_profile_edit_mdesign_newpass">
+            android:layout_below="@+id/user_profile_edit_mdesign_newpass"
+            android:textColorHint="@color/dnBlue">
 
             <EditText
                 android:id="@+id/user_profile_edit_profile_txtRepeatPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:backgroundTint="@color/gray"
                 android:ems="10"
                 android:fontFamily="sans-serif"
                 android:hint="@string/repeat_password"
-                android:inputType="textPassword"
-                android:textColorHint="@color/dnBlue"/>
+                android:inputType="textPassword"/>
 
         </android.support.design.widget.TextInputLayout>
 

@@ -26,15 +26,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtview_add_worskpace"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="50dp"
+        android:textColorHint="@color/dnBlue">
 
         <EditText
             android:id="@+id/add_workspace_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/gray"
-            android:hint="@string/name"
-            android:textColorHint="@color/dnBlue"/>
+            android:hint="@string/name" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -42,15 +42,15 @@
         android:id="@+id/workspace_country"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/workspace_name">
+        android:layout_below="@+id/workspace_name"
+        android:textColorHint="@color/dnBlue">
 
         <EditText
             android:id="@+id/add_workspace_country"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/gray"
-            android:hint="@string/country"
-            android:textColorHint="@color/dnBlue"/>
+            android:hint="@string/country"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -58,15 +58,15 @@
         android:id="@+id/workspace_city"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/workspace_country">
+        android:layout_below="@+id/workspace_country"
+        android:textColorHint="@color/dnBlue">
 
         <EditText
             android:id="@+id/add_workspace_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/gray"
-            android:hint="@string/city"
-            android:textColorHint="@color/dnBlue"/>
+            android:hint="@string/city"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -74,17 +74,56 @@
         android:id="@+id/workspace_adress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/workspace_city">
+        android:layout_below="@+id/workspace_city"
+        android:textColorHint="@color/dnBlue">
 
         <EditText
             android:id="@+id/add_workspace_adress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/gray"
-            android:hint="@string/adress"
-            android:textColorHint="@color/dnBlue"/>
+            android:hint="@string/address"/>
 
     </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/workspace_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/workspace_adress"
+        android:textColorHint="@color/dnBlue">
+
+        <EditText
+            android:id="@+id/add_workspace_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/gray"
+            android:hint="@string/description"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:id="@+id/txt_add_workspace_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/upload_a_photo"
+        android:layout_below="@id/workspace_description"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/dnBlue"
+        android:textSize="18sp"/>
+
+    <Button
+        android:id="@+id/add_workspace_photo"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@id/workspace_description"
+        android:layout_toEndOf="@+id/txt_add_workspace_photo"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
+        android:background="@color/dnBlue"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:text="@string/addPlus"/>
 
     <Button
         android:id="@+id/add_Workspace_button"
@@ -95,8 +134,9 @@
         android:background="@color/dnBlue"
         android:textColor="#ffffff"
         android:textStyle="bold"
-        android:layout_below="@+id/workspace_adress"/>
+        android:layout_below="@+id/add_workspace_photo"/>
     </RelativeLayout>
+
     <ProgressBar
         android:id="@+id/progressBar_enter_workspace"
         style="?android:attr/progressBarStyle"
@@ -105,6 +145,5 @@
         android:layout_marginBottom="0dp"
         android:indeterminate="false"
         android:visibility="gone" />
-
 
 </RelativeLayout>
