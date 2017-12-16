@@ -59,7 +59,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(final WorkspaceViewHolder holder, int position) {
         holder.workspaceName.setText(workspaces.get(position).name);
-        holder.workspaceAge.setText(workspaces.get(position).age);
+        holder.workspaceAge.setText(workspaces.get(position).country);
         holder.itemView.setLongClickable(true);
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
             @Override

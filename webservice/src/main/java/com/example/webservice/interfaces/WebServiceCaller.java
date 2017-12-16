@@ -96,6 +96,18 @@ public class WebServiceCaller {
         CheckCall();
     }
 
+    public void deleteWorkspace(String id){
+        CreateCaller();
+        call = serviceCaller.deleteWorkspace(id);
+        CheckCall();
+    }
+
+    public void editWorkspace(String id, String name, String description, String adress, String country, String town, String longitude, String latitude){
+        CreateCaller();
+        call = serviceCaller.editWorkspace(id, name, description, adress, country, town, longitude, latitude);
+        CheckCall();
+    }
+
     private void CheckCall(){
         if (call != null) {
             System.out.println(call.toString());

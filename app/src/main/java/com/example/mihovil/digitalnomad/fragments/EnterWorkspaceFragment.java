@@ -14,19 +14,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mihovil.digitalnomad.R;
 import com.example.mihovil.digitalnomad.files.LoadingData;
+import com.example.mihovil.digitalnomad.models.Workspace;
 import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.WebServiceCaller;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
+import com.google.gson.Gson;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class EnterWorkspaceFragment extends Fragment implements OnServiceFinished {
     String userMail = "";
+    Workspace workspace = null;
     private RelativeLayout relativeLayout;
     private ProgressBar progressBar;
 
@@ -39,8 +43,10 @@ public class EnterWorkspaceFragment extends Fragment implements OnServiceFinishe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        if (getArguments() != null)
+        if(getArguments().getString("email") != null)
             userMail = getArguments().getString("email");
+        else if(getArguments().getString("record") != null)
+            workspace = new Gson().fromJson(getArguments().getString("record"), Workspace.class);
         return inflater.inflate(R.layout.fragment_enter_workspace, container, false);
     }
 
@@ -57,6 +63,14 @@ public class EnterWorkspaceFragment extends Fragment implements OnServiceFinishe
         final EditText workspaceAdress = (EditText) view.findViewById(R.id.add_workspace_adress);
         final Button addWorkspaceButton = (Button) view.findViewById(R.id.add_Workspace_button);
 
+        if(workspace != null){
+            workspaceName.setText(workspace.name, TextView.BufferType.EDITABLE);
+            workspaceCountry.setText(workspace.country, TextView.BufferType.EDITABLE);
+            workspaceCity.setText(workspace.town, TextView.BufferType.EDITABLE);
+            workspaceAdress.setText(workspace.adress, TextView.BufferType.EDITABLE);
+            addWorkspaceButton.setText("EDIT");
+        }
+
         addWorkspaceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +80,11 @@ public class EnterWorkspaceFragment extends Fragment implements OnServiceFinishe
                 String longitude = "0";
                 String latitude = "0";
                 System.out.println("unos:" + userMail + ", " + workspaceName.getText().toString() + ", " + description + "," + workspaceAdress.getText().toString() + "," + workspaceCountry.getText().toString() + "," + workspaceCity.getText().toString() + "," + longitude + "," + latitude);
-                wsc.addWorkspaceAsUser(userMail, workspaceName.getText().toString(), description, workspaceAdress.getText().toString(), workspaceCountry.getText().toString(), workspaceCity.getText().toString(), longitude, latitude);
+                System.out.println("id: " + workspace.id);
+                if(workspace == null)
+                    wsc.addWorkspaceAsUser(userMail, workspaceName.getText().toString(), description, workspaceAdress.getText().toString(), workspaceCountry.getText().toString(), workspaceCity.getText().toString(), longitude, latitude);
+                else
+                    wsc.editWorkspace(workspace.id, workspaceName.getText().toString(), workspace.description, workspaceAdress.getText().toString(), workspaceCountry.getText().toString(), workspaceCity.getText().toString(), workspace.longitude, workspace.latitude);
                 LoadingData.EnableProgressBar(relativeLayout, progressBar);
             }else{
                 Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();

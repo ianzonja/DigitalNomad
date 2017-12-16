@@ -19,7 +19,10 @@ import com.example.mihovil.digitalnomad.models.Workspace;
 import com.example.webservice.interfaces.WebServiceCaller;
 import com.example.webservice.interfaces.WorkspaceValue;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +32,7 @@ public class RecyclerViewFragment extends Fragment implements OnServiceFinished,
     List<Workspace> workspaces;
     private RecyclerView rv;
     View view;
+    List<WorkspaceValue> jsonResponse;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.activity_recycler_view, container, false);
@@ -53,9 +57,10 @@ public class RecyclerViewFragment extends Fragment implements OnServiceFinished,
     @Override
     public void onServiceDone(Object response) {
         System.out.println("prazan response");
-        List<WorkspaceValue> jsonResponse = (List<WorkspaceValue>) response;
+        jsonResponse = (List<WorkspaceValue>) response;
+        workspaces.clear();
         for(int i=0; i<jsonResponse.size(); i++){
-            workspaces.add(new Workspace(jsonResponse.get(i).getName(), jsonResponse.get(i).getCountry()));
+            workspaces.add(new Workspace(jsonResponse.get(i).getIdworkspace(), jsonResponse.get(i).getName(), jsonResponse.get(i).getDescription(), jsonResponse.get(i).getAdress(), jsonResponse.get(i).getCountry(), jsonResponse.get(i).getTown(), jsonResponse.get(i).getLongitude(), jsonResponse.get(i).getLatitude()));
         }
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(workspaces,  RecyclerViewFragment.this);
         rv.setAdapter(adapter);
@@ -69,13 +74,17 @@ public class RecyclerViewFragment extends Fragment implements OnServiceFinished,
     @Override
     public void onLongPressAction(int position) {
         FragmentManager fm = getFragmentManager();
+        Bundle valueBundle = new Bundle();
+        valueBundle.putString("record", new Gson().toJson(workspaces.get(position)));
         PopUpWorkspacesMessage dialog = new PopUpWorkspacesMessage();
+        dialog.setArguments(valueBundle);
         dialog.show(getFragmentManager(), "sdfdsf");
         fm.executePendingTransactions();
         dialog.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                System.out.println("izaso i vratio vrijednost:" + returningValue);
+                WebServiceCaller wsc = new WebServiceCaller(RecyclerViewFragment.this);
+                wsc.GetClientWorkspaces(getArguments().getString("email"));
             }
         });
     }

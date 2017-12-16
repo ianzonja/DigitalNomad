@@ -36,4 +36,11 @@ public interface APIinterface {
 
     @GET("changePassword.php")
     Call<ServiceResponse> changePassword(@Query("email") String email,@Query("oldPass") String oldPass,@Query("newPass") String newPass);
+
+    @GET("deleteWorkspace.php")
+    Call<ServiceResponse> deleteWorkspace(@Query("idWorkspace") String id);
+
+    @GET("updateWorkspace.php")
+    Call<ServiceResponse> editWorkspace(@Query("idWorkspace") String id, @Query("name") String name, @Query("description") String description, @Query("adress") String adress, @Query("country") String country, @Query("town") String town, @Query("longitude") String longitude, @Query("latitude") String latitude);
+
 }
