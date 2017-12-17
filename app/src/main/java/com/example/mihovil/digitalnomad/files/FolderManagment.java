@@ -60,42 +60,6 @@ public class FolderManagment extends AsyncTask<Void, Integer, Void> {
         // SpremiSliku();
     }
 
-    private void savePicture() throws IOException {
-        ContextWrapper cw = new ContextWrapper(context);
-        File directory = cw.getDir("Slike", Context.MODE_PRIVATE);
-        File myPath = new File(directory, name + ".jpg");
-
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(myPath);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public Bitmap setPicture() {
-        ContextWrapper cw = new ContextWrapper(context);
-        File directory = cw.getDir("Slike", Context.MODE_PRIVATE);
-        directory.mkdirs();
-        File myPath = new File(directory, name + ".jpg");
-        FileOutputStream fos = null;
-        try {
-            Log.d("TAG", "isNull " + (myPath != null));
-            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(myPath));
-            return b;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
     @Override
     protected Void doInBackground(Void... params) {
         try {
