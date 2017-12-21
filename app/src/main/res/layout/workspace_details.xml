@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Gallery
+        android:id="@+id/workspace_image_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/com_facebook_button_border_color_focused"/>
+
+    <TextView
+        android:id="@+id/workspace_name_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name"
+        android:layout_marginTop="15dp"
+        android:padding="10dp"
+        android:layout_below="@+id/workspace_image_gallery"/>
+
+    <TextView
+        android:id="@+id/workspace_country_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/country"
+        android:padding="10dp"
+        android:layout_below="@id/workspace_name_detail"/>
+
+    <TextView
+        android:id="@+id/workspace_city_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/city"
+        android:padding="10dp"
+        android:layout_below="@+id/workspace_name_detail"
+        android:layout_toEndOf="@id/workspace_country_detail"/>
+
+    <TextView
+        android:id="@+id/workspace_address_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/address"
+        android:padding="10dp"
+        android:layout_below="@id/workspace_country_detail"/>
+
+    <TextView
+        android:id="@+id/workspace_description_detail"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:text="@string/opis_workspace_a"
+        android:padding="10dp"
+        android:layout_below="@id/workspace_address_detail"/>
+
+    <TextView
+        android:id="@+id/workspace_reviews_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reviews"
+        android:padding="10dp"
+        android:layout_below="@id/workspace_description_detail"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/button_reservation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:src="@android:drawable/ic_dialog_email" />
+
+</RelativeLayout>
