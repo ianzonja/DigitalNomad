@@ -4,61 +4,147 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Gallery
+    <android.support.v4.view.ViewPager
         android:id="@+id/workspace_image_gallery"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="@color/com_facebook_button_border_color_focused"/>
+        android:background="@color/com_facebook_button_border_color_focused">
+    </android.support.v4.view.ViewPager>
 
-    <TextView
-        android:id="@+id/workspace_name_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/name"
-        android:layout_marginTop="15dp"
-        android:padding="10dp"
-        android:layout_below="@+id/workspace_image_gallery"/>
-
-    <TextView
-        android:id="@+id/workspace_country_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/country"
-        android:padding="10dp"
-        android:layout_below="@id/workspace_name_detail"/>
-
-    <TextView
-        android:id="@+id/workspace_city_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/city"
-        android:padding="10dp"
-        android:layout_below="@+id/workspace_name_detail"
-        android:layout_toEndOf="@id/workspace_country_detail"/>
-
-    <TextView
-        android:id="@+id/workspace_address_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/address"
-        android:padding="10dp"
-        android:layout_below="@id/workspace_country_detail"/>
-
-    <TextView
-        android:id="@+id/workspace_description_detail"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:text="@string/opis_workspace_a"
-        android:padding="10dp"
-        android:layout_below="@id/workspace_address_detail"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/workspace_image_gallery">
 
-    <TextView
-        android:id="@+id/workspace_reviews_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/reviews"
-        android:padding="10dp"
-        android:layout_below="@id/workspace_description_detail"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/relativelayout_workspace_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/workspace_name_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name"
+                    android:layout_marginTop="15dp"
+                    android:padding="10dp"
+                    android:textColor="@color/dnBlue"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_centerHorizontal="true"/>
+
+                <RelativeLayout
+                    android:id="@+id/relativelayout_country_city_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/workspace_name_detail"
+                    android:layout_centerInParent="true">
+
+                    <TextView
+                        android:id="@+id/workspace_country_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/country"
+                        android:padding="10dp" />
+
+                    <TextView
+                        android:id="@+id/workspace_city_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/city"
+                        android:padding="10dp"
+                        android:layout_toEndOf="@id/workspace_country_detail"/>
+
+                    <TextView
+                        android:id="@+id/workspace_address_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/address"
+                        android:padding="10dp"
+                        android:layout_toEndOf="@id/workspace_city_detail"/>
+
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#d3d3d3"
+                android:layout_below="@id/relativelayout_workspace_name"
+                android:layout_margin="5dp"/>
+
+            <RelativeLayout
+                android:id="@+id/relativelayout_workspace_extras"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/relativelayout_workspace_name"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/workspace_accommodation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/accomodation"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:id="@+id/workspace_food"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/food"
+                    android:padding="10dp"
+                    android:layout_toEndOf="@id/workspace_accommodation"/>
+
+                <TextView
+                    android:id="@+id/workspace_wifi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wifi"
+                    android:padding="10dp"
+                    android:layout_toEndOf="@id/workspace_food"/>
+
+                <TextView
+                    android:id="@+id/workspace_social_activities"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/social_activities"
+                    android:padding="10dp"
+                    android:layout_toEndOf="@id/workspace_wifi"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/workspace_rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ocjena"
+                android:padding="10dp"
+                android:layout_below="@id/relativelayout_workspace_extras"/>
+
+            <TextView
+                android:id="@+id/workspace_description_detail"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:text="@string/opis_workspace_a"
+                android:padding="10dp"
+                android:layout_below="@id/workspace_rating"/>
+
+            <TextView
+                android:id="@+id/workspace_reviews_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reviews"
+                android:padding="10dp"
+                android:layout_below="@id/workspace_description_detail"/>
+
+        </RelativeLayout>
+    </ScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/button_reservation"

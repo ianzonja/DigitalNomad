@@ -51,4 +51,11 @@
     <string name="description">Description</string>
     <string name="upload_a_photo">Upload a photo</string>
     <string name="addPlus">+</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="ocjena">Ocjena</string>
+    <string name="accomodation">Accommodation</string>
+    <string name="food">Food</string>
+    <string name="wifi">WiFi</string>
+    <string name="social_activities">Social activities</string>
 </resources>

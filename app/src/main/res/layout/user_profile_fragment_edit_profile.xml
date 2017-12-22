@@ -14,8 +14,8 @@
 
    <ImageView
        android:id="@+id/imglock"
-       android:layout_width="60dp"
-       android:layout_height="60dp"
+       android:layout_width="50dp"
+       android:layout_height="50dp"
        android:background="@drawable/lock"
        android:layout_centerHorizontal="true"
        android:contentDescription="@string/lockPass"/>
