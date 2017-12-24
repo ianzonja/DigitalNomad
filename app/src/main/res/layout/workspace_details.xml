@@ -76,7 +76,8 @@
                 android:layout_height="1dp"
                 android:background="#d3d3d3"
                 android:layout_below="@id/relativelayout_workspace_name"
-                android:layout_margin="5dp"/>
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"/>
 
             <RelativeLayout
                 android:id="@+id/relativelayout_workspace_extras"

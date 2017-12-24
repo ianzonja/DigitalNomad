@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">map</string>
+    <string name="filtriraj">Filter:</string>
+    <string name="accommodation">Accommodation</string>
+    <string name="food">Food</string>
+    <string name="wifi">WiFi</string>
+    <string name="social_activities">Social activities</string>
+    <string name="sort">Sort:</string>
+    <string name="a_z">A-Z</string>
+    <string name="price_lowest_highest">Price(lowest-highest)</string>
+</resources>
