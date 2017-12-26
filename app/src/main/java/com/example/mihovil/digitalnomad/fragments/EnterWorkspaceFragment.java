@@ -80,7 +80,6 @@ public class EnterWorkspaceFragment extends Fragment implements OnServiceFinishe
                 String longitude = "0";
                 String latitude = "0";
                 System.out.println("unos:" + userMail + ", " + workspaceName.getText().toString() + ", " + description + "," + workspaceAdress.getText().toString() + "," + workspaceCountry.getText().toString() + "," + workspaceCity.getText().toString() + "," + longitude + "," + latitude);
-                System.out.println("id: " + workspace.id);
                 if(workspace == null)
                     wsc.addWorkspaceAsUser(userMail, workspaceName.getText().toString(), description, workspaceAdress.getText().toString(), workspaceCountry.getText().toString(), workspaceCity.getText().toString(), longitude, latitude);
                 else
