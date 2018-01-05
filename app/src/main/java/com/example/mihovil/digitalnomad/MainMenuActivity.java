@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.map.MapFragment;
 import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.mihovil.digitalnomad.fragments.EnterWorkspaceFragment;
 import com.example.mihovil.digitalnomad.fragments.RecyclerViewFragment;
@@ -111,6 +112,9 @@ public class MainMenuActivity extends AppCompatActivity
         valueBundle.putString("email", preferences.getString("Email", null));
 
         switch (id) {
+            case R.id.nav_search:
+                fragment = new MapFragment();
+                break;
             case R.id.nav_user_profile:
                 fragment = new UserProfileFragment();
                 break;
