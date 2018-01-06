@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.mihovil.digitalnomad.files.ImageSaver;
 import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 import com.example.mihovil.digitalnomad.R;
@@ -72,6 +73,12 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
         });
 
         profilePicture = (ImageView) view.findViewById(R.id.profilePic);
+        Bitmap profileBitmap = new ImageSaver(getContext()).
+                setFileName("ProfilePic.png").
+                setDirectoryName("ProfilePicture").
+                load();
+        profilePicture.setImageBitmap(profileBitmap);
+
         profilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,9 +129,13 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
             } else {
                 Uri selectedImageUri = data.getData();
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
-                    profilePicture.setImageBitmap(bitmap);
-                    Log.d("TAG", "result:\n" + getEncoded64ImageStringFromBitmap(bitmap));
+                    Bitmap ProfileBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
+                    profilePicture.setImageBitmap(ProfileBitmap);
+                    new ImageSaver(getContext()).
+                            setFileName("ProfilePic.png").
+                            setDirectoryName("ProfilePicture").
+                            save(ProfileBitmap);
+                    Log.d("TAG", "result:\n" + GetImage.getEncoded64ImageStringFromBitmap(ProfileBitmap));
                  /*   WebServiceCaller wsc = new WebServiceCaller(UserProfileFragment.this);
                     wsc.UploadImage(getEncoded64ImageStringFromBitmap(bitmap), email);*/
                 } catch (IOException e) {
@@ -140,6 +151,14 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     public void onImageDownload(Bitmap image) {
         if (profilePicture != null) {
             profilePicture.setImageBitmap(image);
+            try {
+                new ImageSaver(getContext()).
+                        setFileName("ProfilePic.png").
+                        setDirectoryName("ProfilePicture").
+                        save(image);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -152,14 +171,6 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     public void onServiceFail(Object message) {
         Toast.makeText(getContext(), "Picture failed to upload", Toast.LENGTH_LONG).show();
     }
-
-    public String getEncoded64ImageStringFromBitmap(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteFormat = stream.toByteArray();
-        return Base64.encodeToString(byteFormat, Base64.NO_WRAP);
-    }
-
 
     @Override
     public void onClick(DialogInterface dialog, int which) {

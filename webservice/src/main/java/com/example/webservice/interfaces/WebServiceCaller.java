@@ -132,7 +132,7 @@ public class WebServiceCaller {
                 @Override
                 public void onFailure(Throwable t) {
                     t.printStackTrace();
-                    listener.onServiceFail("Check your internet connection uso u call");
+                    listener.onServiceFail("Check your internet connection!");
                 }
             });
         }

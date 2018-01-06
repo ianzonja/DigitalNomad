@@ -5,10 +5,12 @@ import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
 
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -63,6 +65,13 @@ public class GetImage extends AsyncTask<Void, Integer, Void> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String getEncoded64ImageStringFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteFormat = stream.toByteArray();
+        return Base64.encodeToString(byteFormat, Base64.NO_WRAP);
     }
 
 }
