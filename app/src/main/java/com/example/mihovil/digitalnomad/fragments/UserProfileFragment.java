@@ -1,10 +1,11 @@
 package com.example.mihovil.digitalnomad.fragments;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,7 +25,6 @@ import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 import com.example.mihovil.digitalnomad.R;
 import com.example.mihovil.digitalnomad.files.GetImage;
-import com.example.webservice.interfaces.WebServiceCaller;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 
 
@@ -75,12 +75,31 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
         profilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                Intent intent = new Intent();
+                                intent.setType("image/*");
+                                intent.setAction(Intent.ACTION_GET_CONTENT);
+                                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Select image from gallery?").setPositiveButton("Yes",dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
+
             }
         });
+
 
         EditText txtName = (EditText) view.findViewById(R.id.user_profile_txtName);
         EditText txtEmail = (EditText) view.findViewById(R.id.user_profile_txtEmail);
@@ -155,4 +174,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
         byte[] byteFormat = stream.toByteArray();
         return Base64.encodeToString(byteFormat, Base64.NO_WRAP);
     }
+
+
+
 }
