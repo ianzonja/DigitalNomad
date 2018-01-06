@@ -20,9 +20,7 @@ import java.net.URL;
  * Created by Mihovil on 27.11.2017..
  */
 
-public class FolderManagment extends AsyncTask<Void, Integer, Void> {
-    private Context context;
-    private String  name;
+public class GetImage extends AsyncTask<Void, Integer, Void> {
     private String urlProfile;
 
     private Bitmap bitmap;
@@ -30,10 +28,8 @@ public class FolderManagment extends AsyncTask<Void, Integer, Void> {
 
     private OnImageDownload myListener;
 
-    public FolderManagment(String name,String url, Context context, OnImageDownload imageListener) {
-        this.name = name;
+    public GetImage(String url, OnImageDownload imageListener) {
         this.urlProfile = url;
-        this.context = context;
         myListener = imageListener;
 
     }
@@ -57,7 +53,6 @@ public class FolderManagment extends AsyncTask<Void, Integer, Void> {
         bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
         publishProgress(1);
-        // SpremiSliku();
     }
 
     @Override

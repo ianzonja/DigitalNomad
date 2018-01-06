@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 import com.example.mihovil.digitalnomad.R;
-import com.example.mihovil.digitalnomad.files.FolderManagment;
+import com.example.mihovil.digitalnomad.files.GetImage;
 
 
 import org.json.JSONException;
@@ -77,7 +77,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload {
         txtEmail.setText(email);
         txtName.setText(name);
 
-        FolderManagment fm = new FolderManagment(name, url, getContext(), this);
+        GetImage fm = new GetImage(url, this);
         fm.execute();
 
     }
