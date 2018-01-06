@@ -40,7 +40,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by Mihovil on 17.11.2017..
  */
 
-public class UserProfileFragment extends Fragment implements OnImageDownload, OnServiceFinished {
+public class UserProfileFragment extends Fragment implements OnImageDownload, OnServiceFinished, DialogInterface.OnClickListener {
 
     ImageView profilePicture;
     String name;
@@ -76,22 +76,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
             @Override
             public void onClick(View v) {
 
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
-                            case DialogInterface.BUTTON_POSITIVE:
-                                Intent intent = new Intent();
-                                intent.setType("image/*");
-                                intent.setAction(Intent.ACTION_GET_CONTENT);
-                                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
-                                break;
-
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                break;
-                        }
-                    }
-                };
+                DialogInterface.OnClickListener dialogClickListener = UserProfileFragment.this;
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setMessage("Select image from gallery?").setPositiveButton("Yes",dialogClickListener)
@@ -176,5 +161,19 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     }
 
 
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        switch (which){
+            case DialogInterface.BUTTON_POSITIVE:
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+                break;
 
+            case DialogInterface.BUTTON_NEGATIVE:
+                Toast.makeText(getContext(), "Request canceled", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
 }
