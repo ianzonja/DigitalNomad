@@ -11,6 +11,8 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +24,15 @@ import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 import com.example.mihovil.digitalnomad.R;
 import com.example.mihovil.digitalnomad.files.GetImage;
+import com.example.webservice.interfaces.WebServiceCaller;
+import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -33,7 +40,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by Mihovil on 17.11.2017..
  */
 
-public class UserProfileFragment extends Fragment implements OnImageDownload {
+public class UserProfileFragment extends Fragment implements OnImageDownload, OnServiceFinished {
 
     ImageView profilePicture;
     String name;
@@ -107,15 +114,21 @@ public class UserProfileFragment extends Fragment implements OnImageDownload {
 
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK) {
             if (data == null) {
-                Toast.makeText(getContext(),"No image selected.",Toast.LENGTH_LONG).show();
-            }
-            else{
+                Toast.makeText(getContext(), "No image selected.", Toast.LENGTH_LONG).show();
+            } else {
                 Uri selectedImageUri = data.getData();
-                profilePicture.setImageURI(selectedImageUri);
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
+                    profilePicture.setImageBitmap(bitmap);
+                    Log.d("TAG", "result:\n" + getEncoded64ImageStringFromBitmap(bitmap));
+                 /*   WebServiceCaller wsc = new WebServiceCaller(UserProfileFragment.this);
+                    wsc.UploadImage(getEncoded64ImageStringFromBitmap(bitmap), email);*/
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-        }
-        else{
-            Toast.makeText(getContext(),"No image selected.",Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(getContext(), "No image selected.", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -126,4 +139,20 @@ public class UserProfileFragment extends Fragment implements OnImageDownload {
         }
     }
 
+    @Override
+    public void onServiceDone(Object response) {
+        Toast.makeText(getContext(), "Picture uploaded", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onServiceFail(Object message) {
+        Toast.makeText(getContext(), "Picture failed to upload", Toast.LENGTH_LONG).show();
+    }
+
+    public String getEncoded64ImageStringFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteFormat = stream.toByteArray();
+        return Base64.encodeToString(byteFormat, Base64.NO_WRAP);
+    }
 }

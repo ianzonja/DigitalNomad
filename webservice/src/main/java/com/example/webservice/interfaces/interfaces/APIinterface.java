@@ -43,4 +43,6 @@ public interface APIinterface {
     @GET("updateWorkspace.php")
     Call<ServiceResponse> editWorkspace(@Query("idWorkspace") String id, @Query("name") String name, @Query("description") String description, @Query("adress") String adress, @Query("country") String country, @Query("town") String town, @Query("longitude") String longitude, @Query("latitude") String latitude);
 
+    @GET("uploadImage.php")
+    Call<ServiceResponse> uploadImage(@Query("bitmapInB64") String image,@Query("email") String email );
 }

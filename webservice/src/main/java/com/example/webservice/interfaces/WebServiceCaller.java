@@ -72,6 +72,12 @@ public class WebServiceCaller {
         });
     }
 
+    public void UploadImage(String image, String email){
+        CreateCaller();
+        call = serviceCaller.uploadImage(image,email);
+        CheckCall();
+    }
+
     public void GetUserProfile(String email){
         CreateCaller();
         call = serviceCaller.getUserProfile(email);
