@@ -77,8 +77,8 @@ public class UserProfileFragment extends Fragment implements OnImageDownload {
         txtEmail.setText(email);
         txtName.setText(name);
 
-        GetImage fm = new GetImage(url, this);
-        fm.execute();
+        GetImage getImage = new GetImage(url, this);
+        getImage.execute();
 
     }
 
