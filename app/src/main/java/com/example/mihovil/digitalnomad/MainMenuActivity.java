@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.map.MapFragment;
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
+import com.example.mihovil.digitalnomad.files.GetImage;
 import com.example.mihovil.digitalnomad.files.ImageSaver;
 import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.mihovil.digitalnomad.fragments.EnterWorkspaceFragment;
@@ -71,10 +72,10 @@ public class MainMenuActivity extends AppCompatActivity
         FlowManager.init(new FlowConfig.Builder(this).build());
 
         navProfilePicture = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.MainMenuImageView);
-        navProfilePicture.setImageBitmap( new ImageSaver(this).
+        navProfilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap( new ImageSaver(this).
                 setFileName("ProfilePic.png").
                 setDirectoryName("ProfilePicture").
-                load());
+                load()));
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         //ToDo: usporediti podatke na serveru i lokalno
@@ -213,6 +214,6 @@ public class MainMenuActivity extends AppCompatActivity
 
     @Override
     public void onImageDownload(Bitmap image) {
-        navProfilePicture.setImageBitmap(image);
+        navProfilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(image));
     }
 }

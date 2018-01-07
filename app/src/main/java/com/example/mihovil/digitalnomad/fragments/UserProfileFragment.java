@@ -88,7 +88,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
                 setFileName("ProfilePic.png").
                 setDirectoryName("ProfilePicture").
                 load();
-        profilePicture.setImageBitmap(profileBitmap);
+        profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(profileBitmap));
 
         profilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,7 +141,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
                 Uri selectedImageUri = data.getData();
                 try {
                     Bitmap profileBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
-                    profilePicture.setImageBitmap(profileBitmap);
+                    profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(profileBitmap));
                     new ImageSaver(getContext()).
                             setFileName("ProfilePic.png").
                             setDirectoryName("ProfilePicture").
@@ -162,7 +162,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     @Override
     public void onImageDownload(Bitmap image) {
         if (profilePicture != null) {
-            profilePicture.setImageBitmap(image);
+            profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(image));
             listener.onImageDownload(image);
             try {
                 new ImageSaver(getContext()).
