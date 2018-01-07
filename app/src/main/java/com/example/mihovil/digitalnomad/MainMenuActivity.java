@@ -3,6 +3,7 @@ package com.example.mihovil.digitalnomad;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
@@ -17,9 +18,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.map.MapFragment;
+import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
+import com.example.mihovil.digitalnomad.files.ImageSaver;
 import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.mihovil.digitalnomad.fragments.EnterWorkspaceFragment;
 import com.example.mihovil.digitalnomad.fragments.RecyclerViewFragment;
@@ -41,8 +46,10 @@ import java.util.List;
 import entities.Workspace;
 
 public class MainMenuActivity extends AppCompatActivity
-        implements OnServiceFinished, NavigationView.OnNavigationItemSelectedListener {
+        implements OnServiceFinished, NavigationView.OnNavigationItemSelectedListener,OnImageDownload {
     SharedPreferences preferences;
+
+    ImageView navProfilePicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +69,12 @@ public class MainMenuActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         FlowManager.init(new FlowConfig.Builder(this).build());
+
+        navProfilePicture = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.MainMenuImageView);
+        navProfilePicture.setImageBitmap( new ImageSaver(this).
+                setFileName("ProfilePic.png").
+                setDirectoryName("ProfilePicture").
+                load());
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         //ToDo: usporediti podatke na serveru i lokalno
@@ -196,5 +209,10 @@ public class MainMenuActivity extends AppCompatActivity
         String country = workspace.get(0).getCountry();
         String town = workspace.get(0).getCity();
         String address = workspace.get(0).getAddress();
+    }
+
+    @Override
+    public void onImageDownload(Bitmap image) {
+        navProfilePicture.setImageBitmap(image);
     }
 }

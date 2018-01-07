@@ -1,8 +1,10 @@
 package com.example.mihovil.digitalnomad.fragments;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.mihovil.digitalnomad.MainMenuActivity;
 import com.example.mihovil.digitalnomad.files.ImageSaver;
 import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
@@ -47,6 +50,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     String name;
     String email;
     String url;
+    OnImageDownload listener;
 
     private static final int PICK_IMAGE = 282;
 
@@ -55,6 +59,13 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.user_profile_fragment, container, false);
         return rootView;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Activity mainMenu = (Activity) context;
+        listener = (OnImageDownload) mainMenu;
     }
 
     @Override
@@ -71,7 +82,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
                 ft.commit();
             }
         });
-
+        listener = (OnImageDownload) getActivity();
         profilePicture = (ImageView) view.findViewById(R.id.profilePic);
         Bitmap profileBitmap = new ImageSaver(getContext()).
                 setFileName("ProfilePic.png").
@@ -129,13 +140,14 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
             } else {
                 Uri selectedImageUri = data.getData();
                 try {
-                    Bitmap ProfileBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
-                    profilePicture.setImageBitmap(ProfileBitmap);
+                    Bitmap profileBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
+                    profilePicture.setImageBitmap(profileBitmap);
                     new ImageSaver(getContext()).
                             setFileName("ProfilePic.png").
                             setDirectoryName("ProfilePicture").
-                            save(ProfileBitmap);
-                    Log.d("TAG", "result:\n" + GetImage.getEncoded64ImageStringFromBitmap(ProfileBitmap));
+                            save(profileBitmap);
+
+                    listener.onImageDownload(profileBitmap);
                  /*   WebServiceCaller wsc = new WebServiceCaller(UserProfileFragment.this);
                     wsc.UploadImage(getEncoded64ImageStringFromBitmap(bitmap), email);*/
                 } catch (IOException e) {
@@ -151,6 +163,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     public void onImageDownload(Bitmap image) {
         if (profilePicture != null) {
             profilePicture.setImageBitmap(image);
+            listener.onImageDownload(image);
             try {
                 new ImageSaver(getContext()).
                         setFileName("ProfilePic.png").
