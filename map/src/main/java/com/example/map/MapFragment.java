@@ -85,8 +85,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
                             Location currentLocation = (Location) task.getResult();
-                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
-                        } else {
+                            if(currentLocation == null){
+                                moveCamera(new LatLng(46.312, 16.361), DEFAULT_ZOOM);
+                            }else{
+                                moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
+                            }
+                        }else{
                             Toast.makeText(getContext(), "unable to get current location", Toast.LENGTH_SHORT).show();
                         }
                     }
