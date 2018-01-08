@@ -88,6 +88,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
                 setFileName("ProfilePic.png").
                 setDirectoryName("ProfilePicture").
                 load();
+        if(profileBitmap!=null)
         profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(profileBitmap));
 
         profilePicture.setOnClickListener(new View.OnClickListener() {

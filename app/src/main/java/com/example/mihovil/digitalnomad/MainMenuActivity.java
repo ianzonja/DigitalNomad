@@ -45,6 +45,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import java.util.List;
 
 import entities.Workspace;
+import retrofit.http.GET;
 
 public class MainMenuActivity extends AppCompatActivity
         implements OnServiceFinished, NavigationView.OnNavigationItemSelectedListener,OnImageDownload {
@@ -72,10 +73,14 @@ public class MainMenuActivity extends AppCompatActivity
         FlowManager.init(new FlowConfig.Builder(this).build());
 
         navProfilePicture = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.MainMenuImageView);
-        navProfilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap( new ImageSaver(this).
+
+        Bitmap bitmap =  new ImageSaver(this).
                 setFileName("ProfilePic.png").
                 setDirectoryName("ProfilePicture").
-                load()));
+                load();
+        if(bitmap !=null) {
+            navProfilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(bitmap));
+        }
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         //ToDo: usporediti podatke na serveru i lokalno
