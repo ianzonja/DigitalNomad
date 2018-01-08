@@ -116,9 +116,11 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
             e.printStackTrace();
         }
         try {
-            name = object.getString("name");
-            email = object.getString("email");
-            url = object.getString("url");
+            if (object !=null) {
+                name = object.getString("name");
+                email = object.getString("email");
+                url = object.getString("url");
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
