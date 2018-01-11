@@ -29,6 +29,8 @@ import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 import com.example.mihovil.digitalnomad.R;
 import com.example.mihovil.digitalnomad.files.GetImage;
+import com.example.webservice.interfaces.ServiceResponse;
+import com.example.webservice.interfaces.WebServiceCaller;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 
 
@@ -51,6 +53,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     String email;
     String url;
     OnImageDownload listener;
+    WebServiceCaller webServiceCallerForActivity;
 
     private static final int PICK_IMAGE = 282;
 
@@ -66,6 +69,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
         super.onAttach(context);
         Activity mainMenu = (Activity) context;
         listener = (OnImageDownload) mainMenu;
+        webServiceCallerForActivity =  new WebServiceCaller((OnServiceFinished) mainMenu);
     }
 
     @Override
@@ -144,6 +148,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
                 Uri selectedImageUri = data.getData();
                 try {
                     Bitmap profileBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
+                    String newBitmap = GetImage.getEncoded64ImageStringFromBitmap(profileBitmap);
                     profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(profileBitmap));
                     new ImageSaver(getContext()).
                             setFileName("ProfilePic.png").
@@ -151,8 +156,8 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
                             save(profileBitmap);
 
                     listener.onImageDownload(profileBitmap);
-                 /*   WebServiceCaller wsc = new WebServiceCaller(UserProfileFragment.this);
-                    wsc.UploadImage(getEncoded64ImageStringFromBitmap(bitmap), email);*/
+                    WebServiceCaller wsc = new WebServiceCaller(UserProfileFragment.this);
+                    wsc.UploadImage(email,'"'+newBitmap+'"');
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -164,7 +169,6 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
 
     @Override
     public void onImageDownload(Bitmap image) {
-        if (profilePicture != null) {
             profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(image));
             listener.onImageDownload(image);
             try {
@@ -176,11 +180,19 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
                 e.printStackTrace();
             }
         }
-    }
 
     @Override
     public void onServiceDone(Object response) {
-        Toast.makeText(getContext(), "Picture uploaded", Toast.LENGTH_LONG).show();
+        ServiceResponse isSuccess = (ServiceResponse) response;
+        if (isSuccess.isPostoji()) {
+            Toast.makeText(getContext(), "Image uploaded to server", Toast.LENGTH_LONG).show();
+            webServiceCallerForActivity.GetUserProfile(email);
+        }
+        else{
+            Log.d("TAG","ispostoje = false");
+            Toast.makeText(getContext(), "Something went wrong, try again later", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     @Override

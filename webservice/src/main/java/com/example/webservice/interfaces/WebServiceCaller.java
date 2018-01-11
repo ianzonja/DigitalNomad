@@ -1,5 +1,7 @@
 package com.example.webservice.interfaces;
 
+import android.util.Log;
+
 import com.example.webservice.interfaces.interfaces.APIinterface;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 
@@ -72,9 +74,9 @@ public class WebServiceCaller {
         });
     }
 
-    public void UploadImage(String image, String email){
+    public void UploadImage(String email, String image){
         CreateCaller();
-        call = serviceCaller.uploadImage(image,email);
+        call = serviceCaller.uploadImage(email,image);
         CheckCall();
     }
 
@@ -116,7 +118,6 @@ public class WebServiceCaller {
 
     private void CheckCall(){
         if (call != null) {
-            System.out.println(call.toString());
             call.enqueue(new Callback<ServiceResponse>() {
                 @Override
                 public void onResponse(Response<ServiceResponse> response, Retrofit retrofit) {

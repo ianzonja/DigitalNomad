@@ -86,7 +86,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         if (task.isSuccessful()) {
                             Location currentLocation = (Location) task.getResult();
                             if(currentLocation == null){
-                                moveCamera(new LatLng(46.312, 16.361), DEFAULT_ZOOM);
+                                getDeviceLocation();
                             }else{
                                 moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
                             }
