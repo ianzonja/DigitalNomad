@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.map.MapFragment;
@@ -52,6 +53,8 @@ public class MainMenuActivity extends AppCompatActivity
     SharedPreferences preferences;
 
     ImageView navProfilePicture;
+    TextView navName;
+    TextView navEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,8 @@ public class MainMenuActivity extends AppCompatActivity
         FlowManager.init(new FlowConfig.Builder(this).build());
 
         navProfilePicture = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.MainMenuImageView);
+        navName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.MainMenuNameLastName);
+        navEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.MainMenuEmail);
 
         Bitmap bitmap =  new ImageSaver(this).
                 setFileName("ProfilePic.png").
@@ -191,9 +196,12 @@ public class MainMenuActivity extends AppCompatActivity
 
     @Override
     public void onServiceDone(Object response) {
+
         ServiceResponse user = (ServiceResponse) response;
         UserToJsonFile obj = new UserToJsonFile(user.getName(), user.getEmail(), user.getReponseId(), user.getUrlPicture(), getBaseContext());
 
+        navName.setText(user.getName());
+        navEmail.setText(user.getEmail());
         try {
             obj.makeJSONObject();
             obj.SaveToFile();
