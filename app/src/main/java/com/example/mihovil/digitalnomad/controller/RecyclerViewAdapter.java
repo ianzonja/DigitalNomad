@@ -1,25 +1,18 @@
 package com.example.mihovil.digitalnomad.controller;
 
-import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mihovil.digitalnomad.Interface.ClickListener;
 import com.example.mihovil.digitalnomad.Interface.LongPressListener;
 import com.example.mihovil.digitalnomad.R;
-import com.example.mihovil.digitalnomad.fragments.PopUpWorkspacesMessage;
 import com.example.mihovil.digitalnomad.models.Workspace;
 
-import java.security.AccessController;
 import java.util.List;
 
 /**
@@ -42,11 +35,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     List<Workspace> workspaces;
-    LongPressListener listener;
+    LongPressListener longListener;
+    ClickListener clickListener;
 
-    public RecyclerViewAdapter(List<Workspace> workspaces, LongPressListener listener){
+    public RecyclerViewAdapter(List<Workspace> workspaces, LongPressListener listener, ClickListener clistener){
         this.workspaces = workspaces;
-        this.listener = listener;
+        longListener = listener;
+        clickListener = clistener;
     }
 
     @Override
@@ -66,8 +61,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public boolean onLongClick(View view) {
                 Toast.makeText(holder.itemView.getContext(), "Position is " + holder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
                 holder.positionClicked = holder.getAdapterPosition();
-                listener.onLongPressAction(holder.getAdapterPosition());
+                longListener.onLongPressAction(holder.getAdapterPosition());
                 return false;
+            }
+        });
+        holder.itemView.setClickable(true);
+        holder.itemView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(holder.itemView.getContext(), "Position is " + holder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                holder.positionClicked = holder.getAdapterPosition();
+                clickListener.onPressAction(holder.getAdapterPosition());
             }
         });
     }
