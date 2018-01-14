@@ -49,4 +49,7 @@ public interface APIinterface {
     @FormUrlEncoded
     @POST("pictureUrl_test.php")
     Call<ServiceResponse> uploadImage(@Field("email")String email, @Field("imageURL") String image );
+
+    @GET("reviewWorkspace.php")
+    Call<ServiceResponse> uploadRatingAndComments(@Query("email") String email, @Query("idWorkspace") String id, @Query("grade") float grade, @Query("review") String comment);
 }

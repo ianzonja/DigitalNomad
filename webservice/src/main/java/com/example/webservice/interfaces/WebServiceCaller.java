@@ -116,6 +116,12 @@ public class WebServiceCaller {
         CheckCall();
     }
 
+    public void uploadRatingAndComments(String email, String id, float grade, String comment){
+        CreateCaller();
+        call = serviceCaller.uploadRatingAndComments(email,id,grade,comment);
+        CheckCall();
+    }
+
     private void CheckCall(){
         if (call != null) {
             call.enqueue(new Callback<ServiceResponse>() {
