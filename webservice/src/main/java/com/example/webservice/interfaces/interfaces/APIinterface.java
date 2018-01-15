@@ -52,4 +52,7 @@ public interface APIinterface {
 
     @GET("reviewWorkspace.php")
     Call<ServiceResponse> uploadRatingAndComments(@Query("email") String email, @Query("idWorkspace") String id, @Query("grade") float grade, @Query("review") String comment);
+
+    @GET("prikazRecenzije.php")
+    Call<ServiceResponse> showReviews(@Query("idWorkspace") String id);
 }
