@@ -1,10 +1,7 @@
 package com.example.webservice.interfaces;
 
-import android.util.Log;
-
 import com.example.webservice.interfaces.interfaces.APIinterface;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
-
 import com.squareup.okhttp.OkHttpClient;
 
 import java.util.List;
@@ -27,6 +24,7 @@ public class WebServiceCaller {
     private APIinterface serviceCaller;
     private Call<ServiceResponse> call;
     private Call<List<WorkspaceValue>> callWorkspaces;
+    private Call<WorkspaceDetailsResponse> workspaceCall;
 
     public WebServiceCaller(OnServiceFinished listener) {
         final String baseUrl = "http://jospudjaatfoi.000webhostapp.com/";
@@ -92,9 +90,9 @@ public class WebServiceCaller {
         CheckWorkspaceCall();
     }
 
-    public void addWorkspaceAsUser(String mail, String name, String desc, String  adress, String country, String city, String longi, String lati){
+    public void addWorkspaceAsUser(String mail, String name, String desc, String  adress, String country, String city, String longi, String lati, String accomodation, String food, String wifi, String activities){
         CreateCaller();
-        call = serviceCaller.addWorkspaceAndGetConfirmation(mail, name, desc, adress, country, city, longi, lati);
+        call = serviceCaller.addWorkspaceAndGetConfirmation(mail, name, desc, adress, country, city, longi, lati, accomodation, food, wifi, activities);
         CheckCall();
     }
 
@@ -110,10 +108,15 @@ public class WebServiceCaller {
         CheckCall();
     }
 
-    public void editWorkspace(String id, String name, String description, String adress, String country, String town, String longitude, String latitude){
+    public void editWorkspace(String id, String name, String description, String adress, String country, String town, String longitude, String latitude, String accomodation, String food, String wifi, String activities){
         CreateCaller();
-        call = serviceCaller.editWorkspace(id, name, description, adress, country, town, longitude, latitude);
+        call = serviceCaller.editWorkspace(id, name, description, adress, country, town, longitude, latitude, accomodation, food, wifi, activities);
         CheckCall();
+    }
+    public void getWorkspaceDetails(String id) {
+        CreateCaller();
+        workspaceCall = serviceCaller.getWorkspaceDetails(id);
+        CheckWorkspaceDetailsCall();
     }
 
     private void CheckCall(){
@@ -149,6 +152,21 @@ public class WebServiceCaller {
 
             @Override
             public void onFailure(Throwable t) {
+                System.out.println("nevalja!!!!!");
+            }
+        });
+    }
+
+    public void CheckWorkspaceDetailsCall(){
+        workspaceCall.enqueue(new Callback<WorkspaceDetailsResponse>() {
+            @Override
+            public void onResponse(Response<WorkspaceDetailsResponse> response, Retrofit retrofit) {
+                listener.onServiceDone(response.body());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                System.out.println("zesci fejl!!!!!");
             }
         });
     }

@@ -49,7 +49,10 @@ public class RecyclerViewFragment extends Fragment implements OnServiceFinished,
         rv.setHasFixedSize(true);
         workspaces = new ArrayList<Workspace>();
         WebServiceCaller wsc = new WebServiceCaller(RecyclerViewFragment.this);
-        wsc.GetClientWorkspaces(getArguments().getString("email"));
+        if(getArguments().get("email") != null)
+            wsc.GetClientWorkspaces(getArguments().getString("email"));
+        else
+            wsc.GetClientWorkspaces(getArguments().getString("email")); //ubuduce napravit novi upit ovisno o lokaciji
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(workspaces, RecyclerViewFragment.this, RecyclerViewFragment.this);
         rv.setAdapter(adapter);
     }
