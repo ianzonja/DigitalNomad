@@ -122,6 +122,12 @@ public class WebServiceCaller {
         CheckCall();
     }
 
+    public void showReviews(String id){
+        CreateCaller();
+        call = serviceCaller.showReviews(id);
+        CheckCall();
+    }
+
     private void CheckCall(){
         if (call != null) {
             call.enqueue(new Callback<ServiceResponse>() {
