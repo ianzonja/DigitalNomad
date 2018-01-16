@@ -23,7 +23,8 @@
             <RelativeLayout
                 android:id="@+id/relativelayout_workspace_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true">
 
                 <TextView
                     android:id="@+id/workspace_name_detail"
