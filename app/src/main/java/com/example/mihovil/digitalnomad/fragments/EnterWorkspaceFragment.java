@@ -1,16 +1,14 @@
 package com.example.mihovil.digitalnomad.fragments;
 
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -20,7 +18,6 @@ import android.widget.Toast;
 import com.example.mihovil.digitalnomad.R;
 import com.example.mihovil.digitalnomad.files.LoadingData;
 import com.example.mihovil.digitalnomad.models.Workspace;
-import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.WebServiceCaller;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 import com.google.gson.Gson;
@@ -62,6 +59,10 @@ public class EnterWorkspaceFragment extends Fragment implements OnServiceFinishe
         final EditText workspaceCity = (EditText) view.findViewById(R.id.add_workspace_city);
         final EditText workspaceAdress = (EditText) view.findViewById(R.id.add_workspace_adress);
         final Button addWorkspaceButton = (Button) view.findViewById(R.id.add_Workspace_button);
+        final CheckBox foodCheckbox = (CheckBox) view.findViewById(R.id.food_checkbox);
+        final CheckBox accomodationCheckbox = (CheckBox) view.findViewById(R.id.acc_checkbox);
+        final CheckBox wifiCkeckbox = (CheckBox) view.findViewById(R.id.acc_checkbox);
+        final CheckBox activityCheckbox = (CheckBox) view.findViewById(R.id.act_checkbox);
 
         if(workspace != null){
             workspaceName.setText(workspace.name, TextView.BufferType.EDITABLE);
@@ -81,9 +82,9 @@ public class EnterWorkspaceFragment extends Fragment implements OnServiceFinishe
                 String latitude = "0";
                 System.out.println("unos:" + userMail + ", " + workspaceName.getText().toString() + ", " + description + "," + workspaceAdress.getText().toString() + "," + workspaceCountry.getText().toString() + "," + workspaceCity.getText().toString() + "," + longitude + "," + latitude);
                 if(workspace == null)
-                    wsc.addWorkspaceAsUser(userMail, workspaceName.getText().toString(), description, workspaceAdress.getText().toString(), workspaceCountry.getText().toString(), workspaceCity.getText().toString(), longitude, latitude);
+                    wsc.addWorkspaceAsUser(userMail, workspaceName.getText().toString(), description, workspaceAdress.getText().toString(), workspaceCountry.getText().toString(), workspaceCity.getText().toString(), longitude, latitude, String.valueOf(accomodationCheckbox.isChecked()), String.valueOf(foodCheckbox.isChecked()), String.valueOf(wifiCkeckbox.isChecked()), String.valueOf(activityCheckbox.isChecked()));
                 else
-                    wsc.editWorkspace(workspace.id, workspaceName.getText().toString(), workspace.description, workspaceAdress.getText().toString(), workspaceCountry.getText().toString(), workspaceCity.getText().toString(), workspace.longitude, workspace.latitude);
+                    wsc.editWorkspace(workspace.id, workspaceName.getText().toString(), workspace.description, workspaceAdress.getText().toString(), workspaceCountry.getText().toString(), workspaceCity.getText().toString(), workspace.longitude, workspace.latitude, String.valueOf(accomodationCheckbox.isChecked()), String.valueOf(foodCheckbox.isChecked()), String.valueOf(wifiCkeckbox.isChecked()), String.valueOf(activityCheckbox.isChecked()));
                 LoadingData.EnableProgressBar(relativeLayout, progressBar);
             }else{
                 Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();

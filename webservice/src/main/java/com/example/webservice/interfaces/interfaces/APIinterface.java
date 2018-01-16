@@ -1,6 +1,7 @@
 package com.example.webservice.interfaces.interfaces;
 
 import com.example.webservice.interfaces.ServiceResponse;
+import com.example.webservice.interfaces.WorkspaceDetailsResponse;
 import com.example.webservice.interfaces.WorkspaceValue;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public interface APIinterface {
     Call<List<WorkspaceValue>> getUserWorkspaces(@Query("email") String email);
 
     @GET("registracijaWorkspacea.php")
-    Call<ServiceResponse> addWorkspaceAndGetConfirmation(@Query("email") String mail, @Query("name") String name, @Query("description") String description, @Query("adress") String adress, @Query("country") String country, @Query("town") String town, @Query("longitude") String longitude, @Query("latitude") String latitude);
+    Call<ServiceResponse> addWorkspaceAndGetConfirmation(@Query("email") String mail, @Query("name") String name, @Query("description") String description, @Query("adress") String adress, @Query("country") String country, @Query("town") String town, @Query("longitude") String longitude, @Query("latitude") String latitude, @Query("accomodation") String accomodation, @Query("food") String food, @Query("wifi") String wifi, @Query("activities") String activities);
 
     @GET("changePassword.php")
     Call<ServiceResponse> changePassword(@Query("email") String email,@Query("oldPass") String oldPass,@Query("newPass") String newPass);
@@ -44,7 +45,7 @@ public interface APIinterface {
     Call<ServiceResponse> deleteWorkspace(@Query("idWorkspace") String id);
 
     @GET("updateWorkspace.php")
-    Call<ServiceResponse> editWorkspace(@Query("idWorkspace") String id, @Query("name") String name, @Query("description") String description, @Query("adress") String adress, @Query("country") String country, @Query("town") String town, @Query("longitude") String longitude, @Query("latitude") String latitude);
+    Call<ServiceResponse> editWorkspace(@Query("idWorkspace") String id, @Query("name") String name, @Query("description") String description, @Query("adress") String adress, @Query("country") String country, @Query("town") String town, @Query("longitude") String longitude, @Query("latitude") String latitude, @Query("accomodation") String accomodation, @Query("food") String food, @Query("wifi") String wifi, @Query("activities") String activities);
 
     @FormUrlEncoded
     @POST("pictureUrl_test.php")
@@ -52,4 +53,7 @@ public interface APIinterface {
 
     @GET("reviewWorkspace.php")
     Call<ServiceResponse> uploadRatingAndComments(@Query("email") String email, @Query("idWorkspace") String id, @Query("grade") float grade, @Query("review") String comment);
+
+    @GET("prikazDetaljaWorkspacea.php")
+    Call<WorkspaceDetailsResponse> getWorkspaceDetails(@Query("idworkspace")String id);
 }

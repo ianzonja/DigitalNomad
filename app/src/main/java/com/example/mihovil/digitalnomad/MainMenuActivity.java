@@ -6,11 +6,9 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-
-
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,18 +40,20 @@ import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import entities.Workspace;
-import retrofit.http.GET;
 
 public class MainMenuActivity extends AppCompatActivity
         implements OnServiceFinished, NavigationView.OnNavigationItemSelectedListener,OnImageDownload {
     SharedPreferences preferences;
-
+    List<MenuItem> menuItems;
+    NavigationView navigationView;
     ImageView navProfilePicture;
     TextView navName;
     TextView navEmail;
+    int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +68,11 @@ public class MainMenuActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(this);
+
+        position = 0;
 
         FlowManager.init(new FlowConfig.Builder(this).build());
 
@@ -95,7 +96,7 @@ public class MainMenuActivity extends AppCompatActivity
             WebServiceCaller wsc = new WebServiceCaller(MainMenuActivity.this);
             wsc.GetUserProfile(email);
         }
-
+        displaySelectedFragment(R.id.nav_workspaces);
     }
 
     @Override
@@ -133,7 +134,10 @@ public class MainMenuActivity extends AppCompatActivity
     private void displaySelectedFragment(int id) {
         Fragment fragment = null;
         Bundle valueBundle = new Bundle();
-        valueBundle.putString("email", preferences.getString("Email", null));
+        if(position != 0)
+            valueBundle.putString("email", preferences.getString("Email", null));
+        else
+            valueBundle.putString("email", preferences.getString("Email", null)); //zasad ista stvar kao i kod workspaceova usera, ali prominiti da salje trenutnu lokaciju
 
         switch (id) {
             case R.id.nav_search:
@@ -163,17 +167,27 @@ public class MainMenuActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-
     }
 
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-
         int id = item.getItemId();
+        getSelectedItemPosition();
+        position = menuItems.indexOf(item);
+        if(position == 0)
+            id = R.id.nav_workspaces;
         displaySelectedFragment(id);
         return true;
+    }
+
+    public void getSelectedItemPosition(){
+        Menu menu = navigationView.getMenu();
+        menuItems=new ArrayList<>();
+        for(int i = 0; i<menu.size(); i++){
+            menuItems.add(menu.getItem(i));
+        }
     }
 
     private void Logout() {
