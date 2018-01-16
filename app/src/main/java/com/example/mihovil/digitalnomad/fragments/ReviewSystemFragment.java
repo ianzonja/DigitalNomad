@@ -18,6 +18,7 @@ import com.example.mihovil.digitalnomad.R;
 import com.example.mihovil.digitalnomad.models.Workspace;
 import com.example.webservice.interfaces.WebServiceCaller;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
+import com.google.gson.Gson;
 
 /**
  * Created by Davor on 9.1.2018..
@@ -30,7 +31,11 @@ public class ReviewSystemFragment extends Fragment implements OnServiceFinished 
     private TextView txtRatingValue;
     private Button btnSubmit;
     private SharedPreferences preferences;
-    Workspace workspaces;
+    Workspace workspace = null;
+
+    public ReviewSystemFragment(){
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -39,8 +44,12 @@ public class ReviewSystemFragment extends Fragment implements OnServiceFinished 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View rootView = inflater.inflate(R.layout.review_workspace,container,false);
-        return rootView;
+
+        if(getArguments().getString("record") != null) {
+            workspace = new Gson().fromJson(getArguments().getString("record"), Workspace.class);
+        }
+
+        return inflater.inflate(R.layout.review_workspace,container,false);
     }
 
     @Override
@@ -58,11 +67,10 @@ public class ReviewSystemFragment extends Fragment implements OnServiceFinished 
             public void onClick(View v) {
 
                 String email = preferences.getString("Email", null);
-                String id = workspaces.id;
 
                 if (CheckEntry(ratingBar, txtRating)) {
                     WebServiceCaller wsc = new WebServiceCaller(ReviewSystemFragment.this);
-                    wsc.uploadRatingAndComments(email, id, ratingBar.getRating(), txtRating.getText().toString());
+                    wsc.uploadRatingAndComments(email, workspace.id, ratingBar.getRating(), txtRating.getText().toString());
                 }
             }
         });
@@ -79,7 +87,6 @@ public class ReviewSystemFragment extends Fragment implements OnServiceFinished 
     private boolean CheckEntry(RatingBar rating, EditText comment){
         boolean success = true;
         if(rating.getRating() == 0){
-            rating.setRating(1);
             success = false;
         }
 
