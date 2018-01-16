@@ -13,4 +13,71 @@
         tools:context=".MapFragment"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
 
+    <RelativeLayout
+        android:id="@+id/search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:elevation="10dp"
+        android:background="@color/whiteColor">
+
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/search_icon"
+            android:contentDescription="@string/searchicon" />
+
+        <EditText
+            android:id="@+id/search_input"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/search_icon"
+            android:layout_marginStart="10dp"
+            android:layout_centerVertical="true"
+            android:inputType="text"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:background="@null"
+            android:hint="@string/search"
+            android:imeOptions="actionSearch"/>
+
+        <ImageView
+            android:id="@+id/location_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/ic_my_location"
+            android:contentDescription="@string/locationicon" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_alignParentBottom="true">
+
+        <SeekBar
+            android:id="@+id/search_radius"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@color/whiteColor"/>
+
+        <Button
+            android:id="@+id/btnSearch_za_lokaciju"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/search_radius"
+            android:text="@string/use_location"
+            android:background="@color/dnBlue"
+            android:textColor="@color/whiteColor"/>
+
+    </RelativeLayout>
+
 </RelativeLayout>

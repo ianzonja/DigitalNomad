@@ -8,4 +8,8 @@
     <string name="sort">Sort:</string>
     <string name="a_z">A-Z</string>
     <string name="price_lowest_highest">Price(lowest-highest)</string>
+    <string name="search">Search</string>
+    <string name="use_location">Use location</string>
+    <string name="searchicon">SearchIcon</string>
+    <string name="locationicon">LocationIcon</string>
 </resources>
