@@ -45,7 +45,7 @@ import java.util.Arrays;
  * Created by Mihovil on 4.12.2017..
  */
 
-public class LoginFragment extends Fragment implements OnServiceFinished {
+public class LoginFragment extends Fragment implements OnServiceFinished,View.OnClickListener,FacebookCallback<LoginResult>{
     private EditText mail;
     private EditText pass;
     private ProgressBar progressBar;
@@ -54,6 +54,8 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
     private LoginButton loginButton;
     private CallbackManager callbackManager;
     private TextView signUp;
+    private Button login;
+    private WebServiceCaller wsc;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,102 +75,36 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
+        initView(view);
+        initListeners();
+
+        //facebook permissions
+        loginButton.setReadPermissions(Arrays.asList(
+                "public_profile", "email"));
+        loginButton.setFragment(this);
+
+    }
+    private void initView(View view){
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         relativeLayout = (RelativeLayout) view.findViewById(R.id.RelativeLayout1);
         mail = (EditText) view.findViewById(R.id.email);
         pass = (EditText) view.findViewById(R.id.pass);
-
-
         signUp = (TextView) view.findViewById(R.id.signup);
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment fragment = new RegistracijaFragment();
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack("LoginFragment");
-                ft.replace(R.id.login_content, fragment);
-                ft.commit();
+        login = (Button) view.findViewById(R.id.button);
 
-            }
-        });
-
-        Button login = (Button) view.findViewById(R.id.button);
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (CheckEntry(mail, pass)) {
-                    LoadingData.EnableProgressBar(relativeLayout,progressBar);
-                    WebServiceCaller wsc = new WebServiceCaller(LoginFragment.this);
-                    wsc.Login(mail.getText().toString(), pass.getText().toString());
-                } else {
-                    Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        //facebook
+        //facebook login button
         loginButton = (LoginButton) view.findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList(
-                "public_profile", "email"));
+    }
+
+    private void initListeners(){
+        signUp.setOnClickListener( this);
+        login.setOnClickListener(this);
+        loginButton.registerCallback(callbackManager,  this);
         loginButton.setFragment(this);
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(JSONObject object, GraphResponse response) {
-                                try {
-                                    String id = object.getString("id");
-                                    String first_name = object.getString("first_name");
-                                    String last_name = object.getString("last_name");
-                                    String image_url = "https://graph.facebook.com/" + id + "/picture?type=large";
-
-
-                                    String email = null;
-                                    if (object.has("email")) {
-                                        email = object.getString("email");
-                                        SetLoginSession(email);
-                                    }
-
-                                    WebServiceCaller wsc = new WebServiceCaller(LoginFragment.this);
-                                    wsc.FacebookLogin(email, first_name, last_name, image_url);
-
-                                    Intent i = new Intent(getContext(), MainMenuActivity.class);
-                                    startActivity(i);
-                                    getActivity().finish();
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,first_name,last_name,email");
-                request.setParameters(parameters);
-                request.executeAsync();
-
-            }
-
-            @Override
-            public void onCancel() {
-                LoginManager.getInstance().logOut();
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-
-            }
-        });
+        wsc = new WebServiceCaller(this);
     }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-    }
-
+    //metoda za provjeru unosa vrijednosti u polje.
     private boolean CheckEntry(EditText email, EditText password) {
         boolean success = true;
 
@@ -188,6 +124,8 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
         return success;
     }
 
+    //OnServiceFinished implementacija start
+    //odgovor od servisa koji ukoliko su uneseni tocni podaci prosljeduje korisnika u glavni izbornik
     @Override
     public void onServiceDone(Object response) {
         LoadingData.DisableProgressBar(relativeLayout,progressBar);
@@ -206,12 +144,94 @@ public class LoginFragment extends Fragment implements OnServiceFinished {
         Toast.makeText(getActivity(), (String) message, Toast.LENGTH_LONG).show();
         LoadingData.DisableProgressBar(relativeLayout,progressBar);
     }
+    //OnServiceFinished implementacija end
 
+    //spremanje korisnikovog emaila u shared preferences
     private void SetLoginSession(String email) {
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("Email", email);
         editor.apply();
     }
+
+    //button click interface implementation
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+            case R.id.signup:
+                Fragment fragment = new RegistracijaFragment();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack("LoginFragment");
+                ft.replace(R.id.login_content, fragment);
+                ft.commit();
+                break;
+            case R.id.button:
+                if (CheckEntry(mail, pass)) {
+                    LoadingData.EnableProgressBar(relativeLayout,progressBar);
+                    wsc.Login(mail.getText().toString(), pass.getText().toString());
+                } else {
+                    Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
+                }
+        }
+    }
+
+    //Facebook callback interface implementation start
+    @Override
+    public void onSuccess(LoginResult loginResult) {
+
+        GraphRequest request = GraphRequest.newMeRequest(
+                loginResult.getAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        try {
+                            String id = object.getString("id");
+                            String first_name = object.getString("first_name");
+                            String last_name = object.getString("last_name");
+                            String image_url = "https://graph.facebook.com/" + id + "/picture?type=large";
+
+
+                            String email = null;
+                            if (object.has("email")) {
+                                email = object.getString("email");
+                                SetLoginSession(email);
+                            }
+
+                            WebServiceCaller wsc = new WebServiceCaller(LoginFragment.this);
+                            wsc.FacebookLogin(email, first_name, last_name, image_url);
+
+                            Intent i = new Intent(getContext(), MainMenuActivity.class);
+                            startActivity(i);
+                            getActivity().finish();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,first_name,last_name,email");
+        request.setParameters(parameters);
+        request.executeAsync();
+
+    }
+
+    @Override
+    public void onCancel() {
+
+    }
+
+    @Override
+    public void onError(FacebookException error) {
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+    //Facebook interface implementation end
+
 
 }
