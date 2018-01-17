@@ -12,4 +12,6 @@
     <string name="use_location">Use location</string>
     <string name="searchicon">SearchIcon</string>
     <string name="locationicon">LocationIcon</string>
+    <string name="_2_km">2 km</string>
+    <string name="_50_km">50 km</string>
 </resources>
