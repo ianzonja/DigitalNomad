@@ -36,6 +36,8 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
     TextView workspaceRating;
     TextView workspaceDescription;
 
+    String worskpaceUserEmail;
+
     public WorkspaceDetailsFragment() {
         // Required empty public constructor
     }
@@ -89,6 +91,9 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
         workspaceAdress.setText(serviceResponse.getDetails().getAdress());
         workspaceRating.setText("sadasd");
         workspaceDescription.setText(serviceResponse.getDetails().getDescription());
+
+        worskpaceUserEmail = serviceResponse.getDetails().getEmail();
+
         if (serviceResponse.getServices().getAccomodation() == true)
             workspaceAccomodation.setBackgroundColor(getResources().getColor(R.color.green));
        // else
@@ -107,7 +112,7 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
     //metoda koja otvara gmail racun. ssp (abc@gmail.com) zamijeniti sa emailom osobe ciji je workspace
     private void makeReservation(){
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                "mailto", "abc@gmail.com", null));
+                "mailto", worskpaceUserEmail, null));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Digital Nomad");
         emailIntent.putExtra(Intent.EXTRA_TEXT,"I would like to make a reservation on Your Workspace");
         startActivity(Intent.createChooser(emailIntent, null));

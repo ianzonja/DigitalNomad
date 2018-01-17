@@ -36,6 +36,18 @@ public class Details {
         @Expose
         private String userIduser;
 
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+    @SerializedName("email")
+        @Expose
+        private String email;
+
         public String getIdworkspace() {
             return idworkspace;
         }
