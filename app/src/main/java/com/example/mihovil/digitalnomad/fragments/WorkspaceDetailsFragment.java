@@ -109,7 +109,7 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
 
     }
 
-    //metoda koja otvara gmail racun. ssp (abc@gmail.com) zamijeniti sa emailom osobe ciji je workspace
+    //metoda koja otvara gmail racun i prosljeduje odredene parametre
     private void makeReservation(){
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                 "mailto", worskpaceUserEmail, null));

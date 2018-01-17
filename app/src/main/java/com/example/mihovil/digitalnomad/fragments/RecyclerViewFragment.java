@@ -99,7 +99,7 @@ public class RecyclerViewFragment extends Fragment implements OnServiceFinished,
         valueBundle.putString("record", new Gson().toJson(workspaces.get(position)));
         Fragment fragment = new WorkspaceDetailsFragment();
         fragment.setArguments(valueBundle);
-        FragmentTransaction ft = fm.beginTransaction();
+        FragmentTransaction ft = fm.beginTransaction().addToBackStack(null);
         ft.replace(R.id.content_frame, fragment);
         ft.commit();
     }

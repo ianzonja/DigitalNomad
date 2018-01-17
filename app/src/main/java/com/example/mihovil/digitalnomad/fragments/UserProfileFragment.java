@@ -81,7 +81,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
             @Override
             public void onClick(View v) {
                 Fragment fragment = new EditUserProfileFragment();
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
                 ft.replace(R.id.content_frame, fragment);
                 ft.commit();
             }
