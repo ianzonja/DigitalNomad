@@ -27,13 +27,16 @@ import com.example.webservice.interfaces.WebServiceCaller;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
+import butterknife.OnTextChanged;
 
-public class RegistracijaFragment extends Fragment implements OnServiceFinished {
+
+public class RegistracijaFragment extends Fragment implements OnServiceFinished, View.OnClickListener, TextWatcher {
     private EditText name, lastName, password, email, repeatPass;
     private ProgressBar progressBar;
     private RelativeLayout relativeLayout;
     private SharedPreferences preferences;
     private Button register;
+    WebServiceCaller wsc;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +55,13 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         FlowManager.init(new FlowConfig.Builder(getContext()).build());
-        preferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        initView(view);
+        initListeners();
+
+    }
+
+    private void initView(View view) {
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar2);
         relativeLayout = (RelativeLayout) view.findViewById(R.id.RelativeLayout2);
         name = (EditText) view.findViewById(R.id.name);
@@ -60,52 +69,18 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
         email = (EditText) view.findViewById(R.id.email);
         password = (EditText) view.findViewById(R.id.password);
         register = (Button) view.findViewById(R.id.registracija);
-        OnRegistracijaClick();
         repeatPass = (EditText) view.findViewById(R.id.passwordcheck);
-        OnTextChanged();
     }
 
-    private void OnRegistracijaClick(){
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (CheckEntry(email, password, name, lastName, repeatPass)) {
-                    LoadingData.EnableProgressBar(relativeLayout,progressBar);
-                    WebServiceCaller wsc = new WebServiceCaller(RegistracijaFragment.this);
-                    wsc.Registrate(email.getText().toString(), password.getText().toString(), name.getText().toString(), lastName.getText().toString());
-                } else {
-                    Toast.makeText(getContext(), "Correct errors", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+    private void initListeners() {
+        register.setOnClickListener(this);
+        repeatPass.addTextChangedListener(this);
+        wsc = new WebServiceCaller(this);
     }
-    private void OnTextChanged(){
-        repeatPass.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!password.getText().toString().equals(repeatPass.getText().toString())) {
-                    repeatPass.setError("Passwords do not match");
-                } else {
-                    repeatPass.setError(null);
-                }
-            }
-        });
-    }
-
 
     @Override
     public void onServiceDone(Object response) {
-        LoadingData.DisableProgressBar(relativeLayout,progressBar);
+        LoadingData.DisableProgressBar(relativeLayout, progressBar);
         ServiceResponse login = (ServiceResponse) response;
 
         if (login.getReturnValue().equals("1")) {
@@ -119,7 +94,7 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
 
     @Override
     public void onServiceFail(Object message) {
-        LoadingData.DisableProgressBar(relativeLayout,progressBar);
+        LoadingData.DisableProgressBar(relativeLayout, progressBar);
         Toast.makeText(getContext(), (String) message, Toast.LENGTH_LONG).show();
     }
 
@@ -156,12 +131,44 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished 
     }
 
     private void SetLoginSession(String email) {
-        preferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("Email", email);
         editor.apply();
     }
 
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if (!password.getText().toString().equals(repeatPass.getText().toString())) {
+            repeatPass.setError("Passwords do not match");
+        } else {
+            repeatPass.setError(null);
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.registracija:
+                if (CheckEntry(email, password, name, lastName, repeatPass)) {
+                    LoadingData.EnableProgressBar(relativeLayout, progressBar);
+                    wsc.Registrate(email.getText().toString(), password.getText().toString(), name.getText().toString(), lastName.getText().toString());
+                } else {
+                    Toast.makeText(getContext(), "Correct errors", Toast.LENGTH_SHORT).show();
+                }
+        }
+    }
 }
 
