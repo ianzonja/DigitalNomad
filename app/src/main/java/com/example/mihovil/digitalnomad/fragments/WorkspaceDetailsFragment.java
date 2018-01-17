@@ -1,8 +1,11 @@
 package com.example.mihovil.digitalnomad.fragments;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +66,16 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
         workspaceActivities = (TextView) view.findViewById(R.id.workspace_social_activities);
         workspaceRating = (TextView) view.findViewById(R.id.workspace_rating);
         workspaceDescription = (TextView) view.findViewById(R.id.workspace_description_detail);
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.button_reservation);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                makeReservation();
+
+            }
+        });
+
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -89,5 +102,14 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
     @Override
     public void onServiceFail(Object message) {
 
+    }
+
+    //metoda koja otvara gmail racun. ssp (abc@gmail.com) zamijeniti sa emailom osobe ciji je workspace
+    private void makeReservation(){
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto", "abc@gmail.com", null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Digital Nomad");
+        emailIntent.putExtra(Intent.EXTRA_TEXT,"I would like to make a reservation on Your Workspace");
+        startActivity(Intent.createChooser(emailIntent, null));
     }
 }
