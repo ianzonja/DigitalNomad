@@ -55,6 +55,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     String url;
     String rank;
     WebServiceCaller webServiceCallerForActivity;
+    OnImageDownload listener;
 
     private static final int PICK_IMAGE = 282;
 
@@ -69,6 +70,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     public void onAttach(Context context) {
         super.onAttach(context);
         Activity mainMenu = (Activity) context;
+        listener = (OnImageDownload) mainMenu;
         webServiceCallerForActivity =  new WebServiceCaller((OnServiceFinished) mainMenu);
     }
 
@@ -171,6 +173,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     @Override
     public void onImageDownload(Bitmap image) {
             profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(image));
+            listener.onImageDownload(image);
             try {
                 new ImageSaver(getContext()).
                         setFileName("ProfilePic.png").
