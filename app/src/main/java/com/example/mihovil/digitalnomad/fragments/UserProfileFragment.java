@@ -3,7 +3,6 @@ package com.example.mihovil.digitalnomad.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,7 +13,6 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,21 +21,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.mihovil.digitalnomad.MainMenuActivity;
-import com.example.mihovil.digitalnomad.files.ImageSaver;
-import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 import com.example.mihovil.digitalnomad.R;
 import com.example.mihovil.digitalnomad.files.GetImage;
+import com.example.mihovil.digitalnomad.files.ImageSaver;
+import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.WebServiceCaller;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
@@ -147,13 +142,14 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
             } else {
                 Uri selectedImageUri = data.getData();
                 try {
-                    Bitmap profileBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
-                    String newBitmap = GetImage.getEncoded64ImageStringFromBitmap(profileBitmap);
-                    profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(profileBitmap));
+                    Bitmap[] profileBitmap = new Bitmap[1];
+                    profileBitmap[0] = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
+                    String newBitmap = GetImage.getEncoded64ImageStringFromBitmap(profileBitmap[0]);
+                    profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(profileBitmap[0]));
                     new ImageSaver(getContext()).
                             setFileName("ProfilePic.png").
                             setDirectoryName("ProfilePicture").
-                            save(profileBitmap);
+                            save(profileBitmap[0]);
 
                     listener.onImageDownload(profileBitmap);
                     WebServiceCaller wsc = new WebServiceCaller(UserProfileFragment.this);
@@ -168,14 +164,16 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     }
 
     @Override
-    public void onImageDownload(Bitmap image) {
-            profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(image));
+    public void onImageDownload(Bitmap[] image) {
+            System.out.println("velicina: " + image.length);
+            Bitmap picture = image[0];
+            profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(picture));
             listener.onImageDownload(image);
             try {
                 new ImageSaver(getContext()).
                         setFileName("ProfilePic.png").
                         setDirectoryName("ProfilePicture").
-                        save(image);
+                        save(image[0]);
             } catch (IOException e) {
                 e.printStackTrace();
             }

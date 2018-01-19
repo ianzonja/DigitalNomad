@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,13 +25,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public static class WorkspaceViewHolder extends RecyclerView.ViewHolder {
         public CardView mCardView;
         public TextView workspaceName;
-        public TextView workspaceAge;
+        public TextView workspaceCountry;
+        public TextView workspaceTown;
+        public ImageView workspaceImage;
         public int positionClicked;
         WorkspaceViewHolder(final View itemView){
             super(itemView);
             mCardView = (CardView)itemView.findViewById(R.id.cv);
-            workspaceName = (TextView)itemView.findViewById(R.id.workspace_name);
-            workspaceAge = (TextView) itemView.findViewById(R.id.workspace_age);
+            workspaceName = (TextView)itemView.findViewById(R.id.recycler_workspace_name);
+            workspaceCountry = (TextView) itemView.findViewById(R.id.recycler_workspace_country);
+            workspaceTown = (TextView) itemView.findViewById(R.id.recycler_workspace_town);
+            workspaceImage = (ImageView) itemView.findViewById(R.id.recycler_workspace_photo);
         }
     }
 
@@ -48,13 +53,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public WorkspaceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_item, parent, false);
         WorkspaceViewHolder wvh = new WorkspaceViewHolder(v);
+
         return wvh;
     }
 
     @Override
     public void onBindViewHolder(final WorkspaceViewHolder holder, int position) {
         holder.workspaceName.setText(workspaces.get(position).name);
-        holder.workspaceAge.setText(workspaces.get(position).country);
+        holder.workspaceCountry.setText(workspaces.get(position).country);
+        holder.workspaceTown.setText(workspaces.get(position).town);
+        holder.workspaceImage.setImageBitmap(workspaces.get(position).workspaceImage);
         holder.itemView.setLongClickable(true);
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
             @Override

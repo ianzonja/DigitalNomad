@@ -30,4 +30,28 @@ public class Services {
     public void setWifi(Boolean wifi) {
         this.wifi = wifi;
     }
+
+    public Boolean getFood() {
+        return food;
+    }
+
+    public void setFood(Boolean food) {
+        this.food = food;
+    }
+
+    @SerializedName("food")
+    @Expose
+    private Boolean food;
+
+    public Boolean getActivities() {
+        return activities;
+    }
+
+    public void setActivities(Boolean activities) {
+        this.activities = activities;
+    }
+
+    @SerializedName("activities")
+    @Expose
+    private Boolean activities;
 }

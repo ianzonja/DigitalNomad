@@ -97,4 +97,16 @@ public class WorkspaceValue {
     @SerializedName("latitude")
     @Expose
     private String latitude;
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    @SerializedName("path")
+    @Expose
+    private String path;
 }
