@@ -47,7 +47,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by Mihovil on 17.11.2017..
  */
 
-public class UserProfileFragment extends Fragment implements OnImageDownload, OnServiceFinished, DialogInterface.OnClickListener {
+public class UserProfileFragment extends Fragment implements OnImageDownload, OnServiceFinished, DialogInterface.OnClickListener, View.OnClickListener {
 
     ImageView profilePicture;
     String name;
@@ -56,6 +56,11 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     String rank;
     WebServiceCaller webServiceCallerForActivity;
     OnImageDownload listener;
+
+    private EditText txtName;
+    private EditText txtEmail;
+    private TextView userRank;
+    private View changedPassword;
 
     private static final int PICK_IMAGE = 282;
 
@@ -71,73 +76,14 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
         super.onAttach(context);
         Activity mainMenu = (Activity) context;
         listener = (OnImageDownload) mainMenu;
-        webServiceCallerForActivity =  new WebServiceCaller((OnServiceFinished) mainMenu);
+        webServiceCallerForActivity = new WebServiceCaller((OnServiceFinished) mainMenu);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        View changePassword = view.findViewById(R.id.user_profile_txtChangePassword);
-        changePassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment fragment = new EditUserProfileFragment();
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
-                ft.replace(R.id.content_frame, fragment);
-                ft.commit();
-            }
-        });
-        profilePicture = (ImageView) view.findViewById(R.id.profilePic);
-        Bitmap profileBitmap = new ImageSaver(getContext()).
-                setFileName("ProfilePic.png").
-                setDirectoryName("ProfilePicture").
-                load();
-        if(profileBitmap!=null)
-        profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(profileBitmap));
-
-        profilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                DialogInterface.OnClickListener dialogClickListener = UserProfileFragment.this;
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setMessage("Select image from gallery?").setPositiveButton("Yes",dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
-
-            }
-        });
-
-
-        EditText txtName = (EditText) view.findViewById(R.id.user_profile_txtName);
-        EditText txtEmail = (EditText) view.findViewById(R.id.user_profile_txtEmail);
-        TextView userRank = (TextView) view.findViewById(R.id.userRank);
-
-        JSONObject object = null;
-        String jsonString = UserToJsonFile.ReadFromFile(getContext());
-        try {
-            object = new JSONObject(jsonString);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (object !=null) {
-                name = object.getString("name");
-                email = object.getString("email");
-                url = object.getString("url");
-                rank = object.getString("rank");
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        txtEmail.setText(email);
-        txtName.setText(name);
-        userRank.setText(rank);
-
-        GetImage getImage = new GetImage(url, this);
-        getImage.execute();
+        initFragment(view);
 
     }
 
@@ -160,7 +106,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
                             save(profileBitmap);
 
                     WebServiceCaller wsc = new WebServiceCaller(UserProfileFragment.this);
-                    wsc.UploadImage(email,'"'+newBitmap+'"');
+                    wsc.UploadImage(email, '"' + newBitmap + '"');
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -170,19 +116,76 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
         }
     }
 
+    private void initFragment(View view){
+        changedPassword = view.findViewById(R.id.user_profile_txtChangePassword);
+        profilePicture = (ImageView) view.findViewById(R.id.profilePic);
+        txtName = (EditText) view.findViewById(R.id.user_profile_txtName);
+        txtEmail = (EditText) view.findViewById(R.id.user_profile_txtEmail);
+        userRank = (TextView) view.findViewById(R.id.userRank);
+
+        initListeners();
+    }
+    private void initListeners(){
+        changedPassword.setOnClickListener(this);
+        profilePicture.setOnClickListener(this);
+
+        checkUserData();
+    }
+
+    private Bitmap loadInternalMemory(){
+        Bitmap profileBitmap = new ImageSaver(getContext()).
+                setFileName("ProfilePic.png").
+                setDirectoryName("ProfilePicture").
+                load();
+        return profileBitmap;
+    }
+
+    private void setView(){
+        profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(loadInternalMemory()));
+        txtEmail.setText(email);
+        txtName.setText(name);
+        userRank.setText(rank);
+    }
+
+    private void checkUserData(){
+        JSONObject object = null;
+        String jsonString = UserToJsonFile.ReadFromFile(getContext());
+        try {
+            object = new JSONObject(jsonString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (object != null) {
+                name = object.getString("name");
+                email = object.getString("email");
+                url = object.getString("url");
+                rank = object.getString("rank");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        //dohvacanje slike sa prosljedenog urla
+        GetImage getImage = new GetImage(url, this);
+        getImage.execute();
+
+        setView();
+    }
+
     @Override
     public void onImageDownload(Bitmap image) {
-            profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(image));
-            listener.onImageDownload(image);
-            try {
-                new ImageSaver(getContext()).
-                        setFileName("ProfilePic.png").
-                        setDirectoryName("ProfilePicture").
-                        save(image);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(image));
+        listener.onImageDownload(image);
+        try {
+            new ImageSaver(getContext()).
+                    setFileName("ProfilePic.png").
+                    setDirectoryName("ProfilePicture").
+                    save(image);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
 
     @Override
     public void onServiceDone(Object response) {
@@ -190,9 +193,8 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
         if (isSuccess.isPostoji()) {
             Toast.makeText(getContext(), "Image uploaded to server", Toast.LENGTH_LONG).show();
             webServiceCallerForActivity.GetUserProfile(email);
-        }
-        else{
-            Log.d("TAG","ispostoje = false");
+        } else {
+            Log.d("TAG", "ispostoje = false");
             Toast.makeText(getContext(), "Something went wrong, try again later", Toast.LENGTH_LONG).show();
         }
 
@@ -205,7 +207,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        switch (which){
+        switch (which) {
             case DialogInterface.BUTTON_POSITIVE:
                 Intent intent = new Intent();
                 intent.setType("image/*");
@@ -217,5 +219,30 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
                 Toast.makeText(getContext(), "Request canceled", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.profilePic: {
+                DialogInterface.OnClickListener dialogClickListener = UserProfileFragment.this;
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Select image from gallery?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
+
+                break;
+
+            }
+            case R.id.user_profile_txtChangePassword:{
+                Fragment fragment = new EditUserProfileFragment();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
+                ft.replace(R.id.content_frame, fragment);
+                ft.commit();
+                break;
+            }
+
+        }
+
     }
 }
