@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mihovil.digitalnomad.MainMenuActivity;
@@ -52,6 +53,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     String name;
     String email;
     String url;
+    String rank;
     OnImageDownload listener;
     WebServiceCaller webServiceCallerForActivity;
 
@@ -111,6 +113,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
 
         EditText txtName = (EditText) view.findViewById(R.id.user_profile_txtName);
         EditText txtEmail = (EditText) view.findViewById(R.id.user_profile_txtEmail);
+        TextView userRank = (TextView) view.findViewById(R.id.userRank);
 
         JSONObject object = null;
         String jsonString = UserToJsonFile.ReadFromFile(getContext());
@@ -124,6 +127,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
                 name = object.getString("name");
                 email = object.getString("email");
                 url = object.getString("url");
+                rank = object.getString("rank");
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -131,6 +135,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
 
         txtEmail.setText(email);
         txtName.setText(name);
+        userRank.setText(rank);
 
         GetImage getImage = new GetImage(url, this);
         getImage.execute();

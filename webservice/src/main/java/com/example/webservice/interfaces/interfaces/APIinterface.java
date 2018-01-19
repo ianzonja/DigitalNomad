@@ -61,5 +61,5 @@ public interface APIinterface {
     Call<WorkspaceDetailsResponse> getWorkspaceDetails(@Query("idworkspace")String id);
 
     @GET("prikazMainMenua")
-    Call<List<WorkspaceValue>> getMainMenu(@Query("longitude") float longitude, @Query("latitude") float latitude, @Query("radius") int radius);
+    Call<List<WorkspaceValue>> getMainMenu(@Query("longitude") double longitude, @Query("latitude") double latitude, @Query("radius") int radius);
 }

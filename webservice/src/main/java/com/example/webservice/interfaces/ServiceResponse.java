@@ -11,6 +11,15 @@ public class ServiceResponse {
     private Boolean postoji;
     public boolean isPostoji() { return postoji; }
 
+    private String rank;
+
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
+    }
 
     private String returnValue;
     public String getReturnValue() {

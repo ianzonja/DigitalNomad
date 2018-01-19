@@ -1,6 +1,8 @@
 package com.example.mihovil.digitalnomad;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -103,6 +105,9 @@ public class MainMenuActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+
+        displaySelectedFragment(R.id.nav_workspaces);
+
         while (getSupportFragmentManager().getBackStackEntryCount() > 1){
             getSupportFragmentManager().popBackStackImmediate();
         }
@@ -218,7 +223,7 @@ public class MainMenuActivity extends AppCompatActivity
     public void onServiceDone(Object response) {
 
         ServiceResponse user = (ServiceResponse) response;
-        UserToJsonFile obj = new UserToJsonFile(user.getName(), user.getEmail(), user.getReponseId(), user.getUrlPicture(), getBaseContext());
+        UserToJsonFile obj = new UserToJsonFile(user.getName(), user.getEmail(), user.getReponseId(), user.getUrlPicture(),user.getRank(), getBaseContext());
 
         navName.setText(user.getName());
         navEmail.setText(user.getEmail());
@@ -228,6 +233,9 @@ public class MainMenuActivity extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        GetImage getImage = new GetImage(user.getUrlPicture(), this);
+        getImage.execute();
 
     }
 

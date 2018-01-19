@@ -84,5 +84,14 @@
             android:layout_marginTop="50dp"
             android:text="@string/change_password"
             android:textColor="@color/dnBlue"/>
+
+        <TextView
+            android:id="@+id/userRank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_profile_txtEmail"
+            android:layout_marginTop="50dp"
+            android:textSize="20sp"
+            android:textColor="@color/dnBlue"/>
     </RelativeLayout>
 </RelativeLayout>

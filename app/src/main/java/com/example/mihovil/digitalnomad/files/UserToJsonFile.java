@@ -23,13 +23,15 @@ public class UserToJsonFile extends JSONObject {
     private String url;
     private JSONObject object;
     private Context context;
+    private String rank;
 
     public JSONObject getObject() {
         return object;
     }
 
-    public UserToJsonFile(String name, String email, int id, String url, Context c) {
+    public UserToJsonFile(String name, String email, int id, String url,String rank, Context c) {
         object = new JSONObject();
+        this.rank = rank;
         this.name = name;
         this.email = email;
         this.id = id;
@@ -42,6 +44,7 @@ public class UserToJsonFile extends JSONObject {
         object.put("email", email);
         object.put("id", id);
         object.put("url", url);
+        object.put("rank", rank);
     }
 
     public void SaveToFile() throws IOException {

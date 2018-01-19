@@ -114,7 +114,7 @@ public class WebServiceCaller {
         CheckCall();
     }
 
-    public void getMainMenu(float longitude, float latitude, int radius){
+    public void getMainMenu(double longitude, double latitude, int radius){
         callWorkspaces = serviceCaller.getMainMenu(longitude,latitude,radius);
         CheckWorkspaceCall();
     }
