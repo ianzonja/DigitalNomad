@@ -27,13 +27,15 @@ import com.example.webservice.interfaces.interfaces.OnServiceFinished;
  * Created by Mihovil on 17.11.2017..
  */
 
-public class EditUserProfileFragment extends Fragment implements OnServiceFinished {
+public class EditUserProfileFragment extends Fragment implements OnServiceFinished, View.OnClickListener, TextWatcher {
     private SharedPreferences preferences;
     private EditText oldPassword;
     private EditText newPassword;
     private EditText repeatPassword;
     private RelativeLayout relativeLayout;
     private ProgressBar progressBar;
+    private Button save;
+    private WebServiceCaller wsc;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,48 +53,24 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initView(view);
+        initListeners();
+    }
+
+    private void initView(View view) {
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         oldPassword = (EditText) view.findViewById(R.id.user_profile_edit_profile_txtEnterPassword);
         newPassword = (EditText) view.findViewById(R.id.user_profile_edit_profile_txtEnterNewPassword);
         repeatPassword = (EditText) view.findViewById(R.id.user_profile_edit_profile_txtRepeatPassword);
         relativeLayout = (RelativeLayout) view.findViewById(R.id.user_profile_fragment_relative_layout);
         progressBar = (ProgressBar) view.findViewById(R.id.user_profile_fragment_progress_bar);
+        save = (Button) view.findViewById(R.id.user_profile_edit_user_btnSpremi);
+    }
 
-        final Button save = (Button) view.findViewById(R.id.user_profile_edit_user_btnSpremi);
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!checkIfEmpty(oldPassword, newPassword, repeatPassword)) {
-                    Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
-                } else {
-                    String email = preferences.getString("Email", null);
-                    WebServiceCaller wsc = new WebServiceCaller(EditUserProfileFragment.this);
-                    wsc.changePassword(email, oldPassword.getText().toString(), newPassword.getText().toString());
-                    LoadingData.EnableProgressBar(relativeLayout, progressBar);
-                    resetAll();
-                }
-            }
-        });
-
-        repeatPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!repeatPassword.getText().toString().equals(newPassword.getText().toString())) {
-                    repeatPassword.setError("Passwords do not match");
-                }
-
-            }
-        });
+    private void initListeners() {
+        save.setOnClickListener(this);
+        repeatPassword.addTextChangedListener(this);
+        wsc = new WebServiceCaller(EditUserProfileFragment.this);
     }
 
     private boolean checkIfEmpty(EditText oldP, EditText newP, EditText repeatP) {
@@ -136,5 +114,40 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
     public void onServiceFail(Object message) {
         Toast.makeText(getContext(), (String) message, Toast.LENGTH_LONG).show();
         LoadingData.DisableProgressBar(relativeLayout, progressBar);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.user_profile_edit_user_btnSpremi: {
+                if (!checkIfEmpty(oldPassword, newPassword, repeatPassword)) {
+                    Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
+                } else {
+                    String email = preferences.getString("Email", null);
+                    WebServiceCaller wsc = new WebServiceCaller(EditUserProfileFragment.this);
+                    wsc.changePassword(email, oldPassword.getText().toString(), newPassword.getText().toString());
+                    LoadingData.EnableProgressBar(relativeLayout, progressBar);
+                    resetAll();
+                }
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if (!repeatPassword.getText().toString().equals(newPassword.getText().toString())) {
+            repeatPassword.setError("Passwords do not match");
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
     }
 }

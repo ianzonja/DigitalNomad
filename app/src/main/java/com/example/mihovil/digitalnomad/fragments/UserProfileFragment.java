@@ -55,6 +55,8 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     String url;
     String rank;
     WebServiceCaller webServiceCallerForActivity;
+
+    WebServiceCaller wsc;
     OnImageDownload listener;
 
     private EditText txtName;
@@ -100,12 +102,12 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
                     Bitmap profileBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
                     String newBitmap = GetImage.getEncoded64ImageStringFromBitmap(profileBitmap);
                     profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(profileBitmap));
+                    listener.onImageDownload(profileBitmap);
                     new ImageSaver(getContext()).
                             setFileName("ProfilePic.png").
                             setDirectoryName("ProfilePicture").
                             save(profileBitmap);
 
-                    WebServiceCaller wsc = new WebServiceCaller(UserProfileFragment.this);
                     wsc.UploadImage(email, '"' + newBitmap + '"');
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -128,6 +130,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     private void initListeners(){
         changedPassword.setOnClickListener(this);
         profilePicture.setOnClickListener(this);
+        wsc = new WebServiceCaller(UserProfileFragment.this);
 
         checkUserData();
     }
