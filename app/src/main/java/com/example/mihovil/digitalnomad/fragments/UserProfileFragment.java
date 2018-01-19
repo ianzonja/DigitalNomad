@@ -54,7 +54,6 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     String email;
     String url;
     String rank;
-    OnImageDownload listener;
     WebServiceCaller webServiceCallerForActivity;
 
     private static final int PICK_IMAGE = 282;
@@ -70,7 +69,6 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     public void onAttach(Context context) {
         super.onAttach(context);
         Activity mainMenu = (Activity) context;
-        listener = (OnImageDownload) mainMenu;
         webServiceCallerForActivity =  new WebServiceCaller((OnServiceFinished) mainMenu);
     }
 
@@ -88,7 +86,6 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
                 ft.commit();
             }
         });
-        listener = (OnImageDownload) getActivity();
         profilePicture = (ImageView) view.findViewById(R.id.profilePic);
         Bitmap profileBitmap = new ImageSaver(getContext()).
                 setFileName("ProfilePic.png").
@@ -160,7 +157,6 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
                             setDirectoryName("ProfilePicture").
                             save(profileBitmap);
 
-                    listener.onImageDownload(profileBitmap);
                     WebServiceCaller wsc = new WebServiceCaller(UserProfileFragment.this);
                     wsc.UploadImage(email,'"'+newBitmap+'"');
                 } catch (IOException e) {
@@ -175,7 +171,6 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     @Override
     public void onImageDownload(Bitmap image) {
             profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(image));
-            listener.onImageDownload(image);
             try {
                 new ImageSaver(getContext()).
                         setFileName("ProfilePic.png").
