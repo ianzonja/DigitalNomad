@@ -81,7 +81,6 @@ public class LoginFragment extends Fragment implements OnServiceFinished,View.On
         //facebook permissions
         loginButton.setReadPermissions(Arrays.asList(
                 "public_profile", "email"));
-        loginButton.setFragment(this);
 
     }
     private void initView(View view){
