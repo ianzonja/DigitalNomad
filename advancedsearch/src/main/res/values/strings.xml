@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">advancedsearch</string>
+    <string name="filtriraj">filter</string>
+    <string name="accommodation">accommodation</string>
+    <string name="food">food</string>
+    <string name="wifi">wifi</string>
+    <string name="social_activities">social_activities</string>
+    <string name="sort">sort</string>
+    <string name="a_z">a_z</string>
+</resources>

@@ -119,22 +119,5 @@
             android:layout_marginEnd="30dp"
             android:layout_below="@+id/txt_sortiraj"
             android:buttonTint="@color/dnBlue"/>
-    <TextView
-        android:id="@+id/txt_sort_cijena"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/price_lowest_highest"
-        android:textSize="18sp"
-        android:layout_marginStart="30dp"
-        android:layout_below="@+id/txt_a_z"
-        android:textColor="@color/dnBlue"/>
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="30dp"
-            android:layout_below="@+id/txt_a_z"
-            android:buttonTint="@color/dnBlue"/>
-
 
 </RelativeLayout>

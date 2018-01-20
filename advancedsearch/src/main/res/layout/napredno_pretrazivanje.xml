@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/name_of_country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:hint="Enter country"
+            android:layout_margin="30dp"/>
+
+        <TextView
+            android:id="@+id/txt_filtriraj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/filtriraj"
+            android:textSize="20sp"
+            android:layout_marginStart="30dp"
+            android:textAllCaps="true"
+            android:textColor="@color/dnBlue"
+            android:layout_below="@+id/name_of_country"/>
+
+        <TextView
+            android:id="@+id/txt_accommodation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/accommodation"
+            android:textSize="18sp"
+            android:layout_marginStart="30dp"
+            android:layout_below="@+id/txt_filtriraj"
+            android:textColor="@color/dnBlue"/>
+        <CheckBox
+            android:id="@+id/checkbox_accommodation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="30dp"
+            android:layout_below="@+id/txt_filtriraj"
+            android:buttonTint="@color/dnBlue"/>
+        <TextView
+            android:id="@+id/txt_food"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/food"
+            android:textSize="18sp"
+            android:layout_below="@id/txt_accommodation"
+            android:layout_marginStart="30dp"
+            android:textColor="@color/dnBlue"/>
+        <CheckBox
+            android:id="@+id/checkbox_food"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_accommodation"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="30dp"
+            android:buttonTint="@color/dnBlue"/>
+        <TextView
+            android:id="@+id/txt_wifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wifi"
+            android:textSize="18sp"
+            android:layout_below="@id/txt_food"
+            android:layout_marginStart="30dp"
+            android:textColor="@color/dnBlue"/>
+        <CheckBox
+            android:id="@+id/checkbox_wifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_food"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="30dp"
+            android:buttonTint="@color/dnBlue"/>
+        <TextView
+            android:id="@+id/txt_soc_act"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/social_activities"
+            android:textSize="18sp"
+            android:layout_below="@id/txt_wifi"
+            android:layout_marginStart="30dp"
+            android:textColor="@color/dnBlue"/>
+        <CheckBox
+            android:id="@+id/checkbox_social_activities"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_wifi"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="30dp"
+            android:buttonTint="@color/dnBlue"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#d3d3d3"
+            android:layout_below="@id/txt_soc_act"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/txt_sortiraj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="@string/sort"
+            android:textSize="20sp"
+            android:layout_marginStart="30dp"
+            android:textAllCaps="true"
+            android:textColor="@color/dnBlue"
+            android:layout_below="@id/txt_soc_act"/>
+
+        <TextView
+            android:id="@+id/txt_a_z"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/a_z"
+            android:textSize="18sp"
+            android:layout_marginStart="30dp"
+            android:layout_below="@+id/txt_sortiraj"
+            android:textColor="@color/dnBlue"/>
+        <CheckBox
+            android:id="@+id/checkbox_az"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="30dp"
+            android:layout_below="@+id/txt_sortiraj"
+            android:buttonTint="@color/dnBlue"/>
+
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pretraži"
+            android:textColor="@color/whiteColor"
+            android:background="@color/dnBlue"
+            android:layout_below="@id/checkbox_az"
+            android:layout_margin="30dp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
