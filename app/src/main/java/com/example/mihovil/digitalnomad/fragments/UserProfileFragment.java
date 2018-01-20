@@ -144,7 +144,9 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
     }
 
     private void setView(){
-        profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(loadInternalMemory()));
+        try {
+            profilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(loadInternalMemory()));
+        }catch(Exception e){}
         txtEmail.setText(email);
         txtName.setText(name);
         userRank.setText(rank);
