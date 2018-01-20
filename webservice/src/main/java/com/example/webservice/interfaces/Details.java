@@ -44,6 +44,18 @@ public class Details {
             this.email = email;
         }
 
+    public String getAveragegrade() {
+        return averagegrade;
+    }
+
+    public void setAveragegrade(String averagegrade) {
+        this.averagegrade = averagegrade;
+    }
+
+    @SerializedName("averagegrade")
+    @Expose
+    private String averagegrade;
+
     @SerializedName("email")
         @Expose
         private String email;

@@ -7,14 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.mihovil.digitalnomad.Interface.ClickListener;
-import com.example.mihovil.digitalnomad.Interface.LongPressListener;
 import com.example.mihovil.digitalnomad.R;
-import com.example.mihovil.digitalnomad.models.Review;
-
-import org.w3c.dom.Text;
+import com.example.webservice.interfaces.Review;
 
 import java.util.List;
 
@@ -39,17 +34,15 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             lastName = (TextView) itemView.findViewById(R.id.lastName);
             grade = (RatingBar) itemView.findViewById(R.id.reviewRatingBar);
             comment = (TextView) itemView.findViewById(R.id.textReview);
+            grade.setClickable(false);
+            grade.setEnabled(false);
         }
     }
 
     List<Review> reviews;
-    LongPressListener longListener;
-    ClickListener clickListener;
 
-    public ReviewAdapter(List<Review> reviews, LongPressListener listener, ClickListener clistener){
+    public ReviewAdapter(List<Review> reviews){
         this.reviews = reviews;
-        longListener = listener;
-        clickListener = clistener;
     }
 
     public ReviewViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -60,20 +53,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     public void onBindViewHolder(final ReviewViewHolder holder, int position){
         holder.name.setText(reviews.get(position).name);
-        holder.lastName.setText(reviews.get(position).lastName);
+        holder.lastName.setText(reviews.get(position).last_name);
         holder.grade.setRating(reviews.get(position).grade);
-        holder.comment.setText(reviews.get(position).comment);
-
-        holder.itemView.setClickable(true);
-
-        holder.itemView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(holder.itemView.getContext(), "Position is " + holder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                holder.position = holder.getAdapterPosition();
-                clickListener.onPressAction(holder.getAdapterPosition());
-            }
-        });
+        holder.comment.setText(reviews.get(position).review);
     }
 
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {

@@ -1,5 +1,6 @@
 package com.example.webservice.interfaces.interfaces;
 
+import com.example.webservice.interfaces.Review;
 import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.WorkspaceDetailsResponse;
 import com.example.webservice.interfaces.WorkspaceValue;
@@ -55,10 +56,10 @@ public interface APIinterface {
     Call<ServiceResponse> uploadRatingAndComments(@Query("email") String email, @Query("idWorkspace") String id, @Query("grade") float grade, @Query("review") String comment);
 
     @GET("prikazRecenzije.php")
-    Call<ServiceResponse> showReviews(@Query("idWorkspace") String id);
+    Call<List<Review>> showReviews(@Query("idWorkspace") String id);
 
     @GET("prikazDetaljaWorkspacea.php")
-    Call<WorkspaceDetailsResponse> getWorkspaceDetails(@Query("idworkspace")String id);
+    Call<WorkspaceDetailsResponse> getWorkspaceDetails(@Query("idWorkspace")String id);
 
     @GET("prikazJavnihWorkspaceova.php")
     Call<List<WorkspaceValue>> getMainMenu(@Query("longitude") String longitude, @Query("latitude") String latitude, @Query("radius") String radius);

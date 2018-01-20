@@ -1,4 +1,4 @@
-package com.example.mihovil.digitalnomad.models;
+package com.example.webservice.interfaces;
 
 /**
  * Created by Davor on 15.1.2018..
@@ -6,9 +6,18 @@ package com.example.mihovil.digitalnomad.models;
 
 public class Review {
     public String name;
-    public String lastName;
+
+    public String getLast_name() {
+        return last_name;
+    }
+
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
+    }
+
+    public String last_name;
     public float grade;
-    public String comment;
+    public String review;
 
     public String getName() {
         return name;
@@ -16,14 +25,6 @@ public class Review {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public float getGrade() {
@@ -34,11 +35,11 @@ public class Review {
         this.grade = grade;
     }
 
-    public String getComment() {
-        return comment;
+    public String getReview() {
+        return review;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setReview(String comment) {
+        this.review = review;
     }
 }

@@ -137,13 +137,15 @@
                 android:padding="10dp"
                 android:layout_below="@id/workspace_rating"/>
 
-            <TextView
+            <Button
                 android:id="@+id/workspace_reviews_detail"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/reviews"
                 android:padding="10dp"
-                android:layout_below="@id/workspace_description_detail"/>
+                android:layout_below="@id/workspace_description_detail"
+                android:background="@color/dnBlue"
+                android:textColor="@color/white"/>
 
         </RelativeLayout>
     </ScrollView>
