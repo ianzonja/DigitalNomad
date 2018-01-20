@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,6 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
     TextView workspaceActivities;
     TextView workspaceRating;
     TextView workspaceDescription;
-    TextView workspaceWifi;
     Button workspaceReviews;
     String id;
 
@@ -72,7 +72,6 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
         workspaceActivities = (TextView) view.findViewById(R.id.workspace_social_activities);
         workspaceRating = (TextView) view.findViewById(R.id.workspace_rating);
         workspaceDescription = (TextView) view.findViewById(R.id.workspace_description_detail);
-        workspaceWifi = (TextView) view.findViewById(R.id.workspace_wifi);
         workspaceReviews = (Button) view.findViewById(R.id.workspace_reviews_detail);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.button_reservation);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -99,8 +98,16 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
 
     @Override
     public void onServiceDone(Object response) {
+
         serviceResponse = (WorkspaceDetailsResponse) response;
-        System.out.println(serviceResponse.getDetails().getName());
+        Log.d("TAG","name" +serviceResponse.getDetails().getName());
+        Log.d("TAG","country"+serviceResponse.getDetails().getCountry());
+        Log.d("TAG","town"+serviceResponse.getDetails().getTown());
+        Log.d("TAG","adress"+serviceResponse.getDetails().getTown());
+        Log.d("TAG","avg"+serviceResponse.getDetails().getAveragegrade());
+        Log.d("TAG","description" +serviceResponse.getDetails().getDescription());
+        Log.d("TAG","email" +serviceResponse.getDetails().getEmail());
+
         workspaceName.setText(serviceResponse.getDetails().getName());
         workspaceCountry.setText(serviceResponse.getDetails().getCountry());
         workspaceCity.setText(serviceResponse.getDetails().getTown());
@@ -109,20 +116,24 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
         workspaceDescription.setText(serviceResponse.getDetails().getDescription());
         worskpaceUserEmail = serviceResponse.getDetails().getEmail();
 
-        if (serviceResponse.getServices().getAccomodation() == true)
+
+
+        if(serviceResponse.getServices().getWifi())
+            workspaceInternet.setBackgroundColor(getResources().getColor(R.color.green));
+        else
+            workspaceInternet.setBackgroundColor(getResources().getColor(R.color.red));
+
+        if (serviceResponse.getServices().getAccomodation())
             workspaceAccomodation.setBackgroundColor(getResources().getColor(R.color.green));
         else
             workspaceAccomodation.setBackgroundColor(getResources().getColor(R.color.red));
 
-        if(serviceResponse.getServices().getWifi() == true)
-            workspaceWifi.setBackgroundColor(getResources().getColor(R.color.green));
-        else
-            workspaceWifi.setBackgroundColor(getResources().getColor(R.color.red));
-        if(serviceResponse.getServices().getFood() == true)
+        if(serviceResponse.getServices().getFood())
             workspaceFood.setBackgroundColor(getResources().getColor(R.color.green));
         else
             workspaceFood.setBackgroundColor(getResources().getColor(R.color.red));
-        if(serviceResponse.getServices().getActivities() == true)
+
+        if(serviceResponse.getServices().getActivities())
             workspaceActivities.setBackgroundColor(getResources().getColor(R.color.green));
         else
             workspaceActivities.setBackgroundColor(getResources().getColor(R.color.red));
@@ -130,7 +141,7 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
 
     @Override
     public void onServiceFail(Object message) {
-
+        Log.d("TAG","tu");
     }
 
     //metoda koja otvara gmail racun i prosljeduje odredene parametre

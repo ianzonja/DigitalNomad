@@ -59,7 +59,7 @@ public interface APIinterface {
     Call<List<Review>> showReviews(@Query("idWorkspace") String id);
 
     @GET("prikazDetaljaWorkspacea.php")
-    Call<WorkspaceDetailsResponse> getWorkspaceDetails(@Query("idWorkspace")String id);
+    Call<WorkspaceDetailsResponse> getWorkspaceDetails(@Query("idworkspace")String id);
 
     @GET("prikazJavnihWorkspaceova.php")
     Call<List<WorkspaceValue>> getMainMenu(@Query("longitude") String longitude, @Query("latitude") String latitude, @Query("radius") String radius);
