@@ -7,10 +7,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.mihovil.digitalnomad.R;
@@ -18,7 +19,6 @@ import com.example.mihovil.digitalnomad.models.Workspace;
 import com.example.webservice.interfaces.WebServiceCaller;
 import com.example.webservice.interfaces.WorkspaceDetailsResponse;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
-import com.google.gson.Gson;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +37,7 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
     TextView workspaceRating;
     TextView workspaceDescription;
     TextView workspaceWifi;
+    Button workspaceReviews;
     String id;
 
     String worskpaceUserEmail;
@@ -72,12 +73,25 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
         workspaceRating = (TextView) view.findViewById(R.id.workspace_rating);
         workspaceDescription = (TextView) view.findViewById(R.id.workspace_description_detail);
         workspaceWifi = (TextView) view.findViewById(R.id.workspace_wifi);
+        workspaceReviews = (Button) view.findViewById(R.id.workspace_reviews_detail);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.button_reservation);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 makeReservation();
 
+            }
+        });
+        workspaceReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new ShowReviewsFragment();
+                Bundle valueBundle = new Bundle();
+                valueBundle.putString("idWorkspace", id);
+                fragment.setArguments(valueBundle);
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, fragment);
+                ft.commit();
             }
         });
         super.onViewCreated(view, savedInstanceState);
@@ -91,9 +105,8 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
         workspaceCountry.setText(serviceResponse.getDetails().getCountry());
         workspaceCity.setText(serviceResponse.getDetails().getTown());
         workspaceAdress.setText(serviceResponse.getDetails().getAdress());
-        workspaceRating.setText("sadasd");
+        workspaceRating.setText(serviceResponse.getDetails().getAveragegrade());
         workspaceDescription.setText(serviceResponse.getDetails().getDescription());
-
         worskpaceUserEmail = serviceResponse.getDetails().getEmail();
 
         if (serviceResponse.getServices().getAccomodation() == true)

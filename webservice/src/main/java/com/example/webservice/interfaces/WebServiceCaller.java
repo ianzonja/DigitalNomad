@@ -25,6 +25,7 @@ public class WebServiceCaller {
     private Call<ServiceResponse> call;
     private Call<List<WorkspaceValue>> callWorkspaces;
     private Call<WorkspaceDetailsResponse> workspaceCall;
+    private Call<List<Review>> reviewsCall;
 
     public WebServiceCaller(OnServiceFinished listener) {
         final String baseUrl = "http://jospudjaatfoi.000webhostapp.com/";
@@ -110,8 +111,8 @@ public class WebServiceCaller {
     }
 
     public void showReviews(String id){
-        call = serviceCaller.showReviews(id);
-        CheckCall();
+        reviewsCall = serviceCaller.showReviews(id);
+        CheckReviewsCall();
     }
 
     public void getMainMenu(String longitude, String latitude, String radius){
@@ -167,6 +168,21 @@ public class WebServiceCaller {
             @Override
             public void onFailure(Throwable t) {
                 System.out.println("zesci fejl!!!!!");
+            }
+        });
+    }
+
+    private void CheckReviewsCall() {
+        reviewsCall.enqueue(new Callback<List<Review>>() {
+            @Override
+            public void onResponse(Response<List<Review>> response, Retrofit retrofit) {
+                if(response.isSuccess())
+                    listener.onServiceDone(response.body());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                System.out.println("nevalja!!!!!");
             }
         });
     }

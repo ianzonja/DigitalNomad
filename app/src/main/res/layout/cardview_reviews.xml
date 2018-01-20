@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/cvr">
 
     <RelativeLayout
@@ -14,25 +14,37 @@
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Name"
+            android:layout_below="@+id/reviewRatingBar"/>
 
         <TextView
             android:id="@+id/lastName"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:text="LastName"
+            android:layout_below="@+id/reviewRatingBar"
+            android:layout_toEndOf="@+id/name"/>
 
         <RatingBar
             android:id="@+id/reviewRatingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="5"
-            android:stepSize="1.0" />
+            android:stepSize="1.0"
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:id="@+id/textReview"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="textReview"
+            android:layout_below="@+id/name"/>
 
     </RelativeLayout>
 
