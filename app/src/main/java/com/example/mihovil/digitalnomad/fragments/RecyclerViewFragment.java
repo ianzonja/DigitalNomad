@@ -1,8 +1,10 @@
 package com.example.mihovil.digitalnomad.fragments;
 
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,8 +16,10 @@ import android.view.ViewGroup;
 
 import com.example.mihovil.digitalnomad.Interface.ClickListener;
 import com.example.mihovil.digitalnomad.Interface.LongPressListener;
+import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 import com.example.mihovil.digitalnomad.R;
 import com.example.mihovil.digitalnomad.controller.RecyclerViewAdapter;
+import com.example.mihovil.digitalnomad.files.GetImage;
 import com.example.mihovil.digitalnomad.models.Workspace;
 import com.example.webservice.interfaces.WebServiceCaller;
 import com.example.webservice.interfaces.WorkspaceValue;
@@ -25,7 +29,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewFragment extends Fragment implements OnServiceFinished, LongPressListener, ClickListener{
+public class RecyclerViewFragment extends Fragment implements OnServiceFinished, LongPressListener, ClickListener, OnImageDownload{
 
     public static String returningValue;
     List<Workspace> workspaces;
@@ -33,6 +37,8 @@ public class RecyclerViewFragment extends Fragment implements OnServiceFinished,
     View view;
     List<WorkspaceValue> jsonResponse;
     Bundle valueBundle;
+    FloatingActionButton fab;
+    ArrayList<Bitmap> workspaceBitmapList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.activity_recycler_view, container, false);
@@ -48,13 +54,32 @@ public class RecyclerViewFragment extends Fragment implements OnServiceFinished,
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
         workspaces = new ArrayList<Workspace>();
+        workspaceBitmapList = new ArrayList<>();
+        fab = (FloatingActionButton) view.findViewById(R.id.add_new_fab);
         WebServiceCaller wsc = new WebServiceCaller(RecyclerViewFragment.this);
-        if(getArguments().get("email") != null)
+        if(getArguments().get("email") != null){
             wsc.GetClientWorkspaces(getArguments().getString("email"));
-        else
+            fab.setVisibility(view.VISIBLE);
+        }
+        else{
             wsc.GetClientWorkspaces(getArguments().getString("email")); //ubuduce napravit novi upit ovisno o lokaciji
+            fab.setVisibility(view.GONE);
+        }
+
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(workspaces, RecyclerViewFragment.this, RecyclerViewFragment.this);
         rv.setAdapter(adapter);
+
+        fab.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Fragment fragment = new EnterWorkspaceFragment();
+                Bundle valueBundle = new Bundle();
+                valueBundle.putString("email", getArguments().getString("email"));
+                fragment.setArguments(valueBundle);
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
+                ft.replace(R.id.content_frame, fragment);
+                ft.commit();
+            }
+        });
     }
 
     @Override
@@ -62,11 +87,12 @@ public class RecyclerViewFragment extends Fragment implements OnServiceFinished,
         System.out.println("prazan response");
         jsonResponse = (List<WorkspaceValue>) response;
         workspaces.clear();
+        ArrayList<String> urls = new ArrayList<>();
         for(int i=0; i<jsonResponse.size(); i++){
-            workspaces.add(new Workspace(jsonResponse.get(i).getIdworkspace(), jsonResponse.get(i).getName(), jsonResponse.get(i).getDescription(), jsonResponse.get(i).getAdress(), jsonResponse.get(i).getCountry(), jsonResponse.get(i).getTown(), jsonResponse.get(i).getLongitude(), jsonResponse.get(i).getLatitude()));
+            urls.add("http://jospudjaatfoi.000webhostapp.com/Pictures/Workspaces/Screenshot_1.png");
         }
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(workspaces,  RecyclerViewFragment.this, RecyclerViewFragment.this);
-        rv.setAdapter(adapter);
+        GetImage getImage = new GetImage(urls, this);
+        getImage.execute();
     }
 
     @Override
@@ -94,13 +120,22 @@ public class RecyclerViewFragment extends Fragment implements OnServiceFinished,
 
     @Override
     public void onPressAction(int position){
-        FragmentManager fm = getFragmentManager();
+        System.out.println("eee klik!");
+        Fragment workspaceDetailsFragment = new EnterWorkspaceFragment();
         valueBundle = new Bundle();
         valueBundle.putString("record", new Gson().toJson(workspaces.get(position)));
-        Fragment fragment = new WorkspaceDetailsFragment();
-        fragment.setArguments(valueBundle);
-        FragmentTransaction ft = fm.beginTransaction().addToBackStack(null);
-        ft.replace(R.id.content_frame, fragment);
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
+        ft.replace(R.id.content_frame, workspaceDetailsFragment);
         ft.commit();
+    }
+
+    @Override
+    public void onImageDownload(Bitmap[] images) {
+        System.out.println("on image download");
+        for(int i=0; i<jsonResponse.size(); i++){
+            workspaces.add(new Workspace(jsonResponse.get(i).getIdworkspace(), jsonResponse.get(i).getName(), jsonResponse.get(i).getDescription(), jsonResponse.get(i).getAdress(), jsonResponse.get(i).getCountry(), jsonResponse.get(i).getTown(), jsonResponse.get(i).getLongitude(), jsonResponse.get(i).getLatitude(), jsonResponse.get(i).getPath(), images[i]));
+        }
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(workspaces,  RecyclerViewFragment.this, RecyclerViewFragment.this);
+        rv.setAdapter(adapter);
     }
 }

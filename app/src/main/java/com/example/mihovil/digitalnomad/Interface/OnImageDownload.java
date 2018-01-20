@@ -7,5 +7,5 @@ import android.graphics.Bitmap;
  */
 
 public interface OnImageDownload {
-    void onImageDownload(Bitmap image);
+    void onImageDownload(Bitmap[] image);
 }

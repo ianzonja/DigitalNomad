@@ -13,14 +13,14 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:id="@+id/person_photo"
+            android:id="@+id/recycler_workspace_photo"
             android:contentDescription="@string/workspace_photo"
             android:background="@color/com_facebook_button_border_color_focused"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:layout_alignBottom="@+id/person_photo"
+            android:layout_alignBottom="@+id/recycler_workspace_photo"
             android:layout_alignParentStart="true"
             android:padding="20dp"
             android:paddingLeft="20dp"
@@ -29,14 +29,14 @@
             android:alpha="0.4">
 
             <TextView
-                android:id="@+id/workspace_name"
+                android:id="@+id/recycler_workspace_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:textColor="@color/white"/>
 
             <TextView
-                android:id="@+id/workspace_age"
+                android:id="@+id/recycler_workspace_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -44,10 +44,11 @@
                 android:textColor="@color/white"/>
 
             <TextView
+                android:id="@+id/recycler_workspace_town"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@+id/workspace_age"
+                android:layout_below="@+id/recycler_workspace_country"
                 android:text="@string/city"
                 android:textColor="@color/white"/>
         </RelativeLayout>

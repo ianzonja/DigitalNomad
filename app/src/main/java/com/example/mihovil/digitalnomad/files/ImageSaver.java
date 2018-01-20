@@ -3,7 +3,6 @@ package com.example.mihovil.digitalnomad.files;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -75,6 +74,7 @@ public class ImageSaver {
         } finally {
             try {
                 if (inputStream != null) {
+                if (inputStream != null)
                     inputStream.close();
                 }
             } catch (IOException e) {

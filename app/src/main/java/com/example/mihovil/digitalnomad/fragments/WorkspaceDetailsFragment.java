@@ -35,6 +35,7 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
     TextView workspaceActivities;
     TextView workspaceRating;
     TextView workspaceDescription;
+    TextView workspaceWifi;
 
     String worskpaceUserEmail;
 
@@ -68,7 +69,7 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
         workspaceActivities = (TextView) view.findViewById(R.id.workspace_social_activities);
         workspaceRating = (TextView) view.findViewById(R.id.workspace_rating);
         workspaceDescription = (TextView) view.findViewById(R.id.workspace_description_detail);
-
+        workspaceWifi = (TextView) view.findViewById(R.id.workspace_wifi);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.button_reservation);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +78,6 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
 
             }
         });
-
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -96,12 +96,21 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
 
         if (serviceResponse.getServices().getAccomodation() == true)
             workspaceAccomodation.setBackgroundColor(getResources().getColor(R.color.green));
-       // else
-         //   workspaceAccomodation.setBackgroundColor(R.color.red);
-       // if(serviceResponse.getServices().getWifi() == true)
-        //    workspaceFood.setBackgroundColor(R.color.green);
-        //else
-          //  workspaceFood.setBackgroundColor(R.color.red);
+        else
+            workspaceAccomodation.setBackgroundColor(getResources().getColor(R.color.red));
+
+        if(serviceResponse.getServices().getWifi() == true)
+            workspaceWifi.setBackgroundColor(getResources().getColor(R.color.green));
+        else
+            workspaceWifi.setBackgroundColor(getResources().getColor(R.color.red));
+        if(serviceResponse.getServices().getFood() == true)
+            workspaceFood.setBackgroundColor(getResources().getColor(R.color.green));
+        else
+            workspaceFood.setBackgroundColor(getResources().getColor(R.color.red));
+        if(serviceResponse.getServices().getActivities() == true)
+            workspaceActivities.setBackgroundColor(getResources().getColor(R.color.green));
+        else
+            workspaceActivities.setBackgroundColor(getResources().getColor(R.color.red));
     }
 
     @Override
