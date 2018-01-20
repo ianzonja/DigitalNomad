@@ -1,8 +1,6 @@
 package com.example.mihovil.digitalnomad;
 
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -232,7 +230,8 @@ public class MainMenuActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
-        GetImage getImage = new GetImage(user.getUrlPicture(), this);
+        GetImage getImage = new GetImage( this);
+        getImage.setUrl(user.getUrlPicture());
         getImage.execute();
 
     }
@@ -252,7 +251,7 @@ public class MainMenuActivity extends AppCompatActivity
     }
 
     @Override
-    public void onImageDownload(Bitmap[] image) {
-        navProfilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(image[0]));
+    public void onImageDownload(Bitmap image) {
+        navProfilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(image));
     }
 }

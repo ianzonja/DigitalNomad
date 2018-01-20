@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import com.example.mihovil.digitalnomad.Interface.ClickListener;
 import com.example.mihovil.digitalnomad.Interface.LongPressListener;
-import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
+import com.example.mihovil.digitalnomad.Interface.OnPicturesRecived;
 import com.example.mihovil.digitalnomad.R;
 import com.example.mihovil.digitalnomad.controller.RecyclerViewAdapter;
 import com.example.mihovil.digitalnomad.files.GetImage;
@@ -29,7 +29,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewFragment extends Fragment implements OnServiceFinished, LongPressListener, ClickListener, OnImageDownload{
+public class RecyclerViewFragment extends Fragment implements OnServiceFinished, LongPressListener, ClickListener, OnPicturesRecived{
 
     public static String returningValue;
     List<Workspace> workspaces;
@@ -121,21 +121,25 @@ public class RecyclerViewFragment extends Fragment implements OnServiceFinished,
     @Override
     public void onPressAction(int position){
         System.out.println("eee klik!");
-        Fragment workspaceDetailsFragment = new EnterWorkspaceFragment();
         valueBundle = new Bundle();
-        valueBundle.putString("record", new Gson().toJson(workspaces.get(position)));
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
-        ft.replace(R.id.content_frame, workspaceDetailsFragment);
+        valueBundle.putString("id", workspaces.get(position).id);
+
+
+        Fragment fragment = new WorkspaceDetailsFragment();
+        fragment.setArguments(valueBundle);
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
         ft.commit();
     }
 
     @Override
-    public void onImageDownload(Bitmap[] images) {
+    public void picturesReceived(Bitmap[] bitmap) {
         System.out.println("on image download");
         for(int i=0; i<jsonResponse.size(); i++){
-            workspaces.add(new Workspace(jsonResponse.get(i).getIdworkspace(), jsonResponse.get(i).getName(), jsonResponse.get(i).getDescription(), jsonResponse.get(i).getAdress(), jsonResponse.get(i).getCountry(), jsonResponse.get(i).getTown(), jsonResponse.get(i).getLongitude(), jsonResponse.get(i).getLatitude(), jsonResponse.get(i).getPath(), images[i]));
+            workspaces.add(new Workspace(jsonResponse.get(i).getIdworkspace(), jsonResponse.get(i).getName(), jsonResponse.get(i).getDescription(), jsonResponse.get(i).getAdress(), jsonResponse.get(i).getCountry(), jsonResponse.get(i).getTown(), jsonResponse.get(i).getLongitude(), jsonResponse.get(i).getLatitude(), jsonResponse.get(i).getPath(), bitmap[i]));
         }
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(workspaces,  RecyclerViewFragment.this, RecyclerViewFragment.this);
         rv.setAdapter(adapter);
     }
+
 }

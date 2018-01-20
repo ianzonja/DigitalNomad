@@ -1,5 +1,7 @@
 package com.example.mihovil.digitalnomad.files;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -10,13 +12,22 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.util.Base64;
+import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
+import com.example.mihovil.digitalnomad.Interface.OnPicturesRecived;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+
+import retrofit.http.Url;
 
 /**
  * Created by Mihovil on 27.11.2017..
@@ -24,63 +35,61 @@ import java.util.ArrayList;
 
 public class GetImage extends AsyncTask<Void, Integer, Void> {
     private String urlProfile;
-
+    private ArrayList<String> urlArray = null;
     private Bitmap[] bitmap;
-    ArrayList<String> urls;
-    Boolean isGettingSingleUrl;
-    Boolean isReadyToReturnImages = false;
-    int i=0;
+    private Boolean isReadyToReturnImages = false;
+
 
     private OnImageDownload myListener;
+    private OnPicturesRecived listener;
 
-    public GetImage(String url, OnImageDownload imageListener) {
-        this.urlProfile = url;
+    public GetImage( OnImageDownload imageListener) {
         myListener = imageListener;
-        isGettingSingleUrl = true;
         bitmap = new Bitmap[1];
-        this.urls = new ArrayList<String>();
-        this.urls.add(url);
     }
 
-    public GetImage(ArrayList<String> urls, OnImageDownload imageListener) {
-        this.urls = urls;
-        myListener = imageListener;
-        isGettingSingleUrl = false;
+    public GetImage(ArrayList<String> urls, OnPicturesRecived listener) {
+        this.listener = listener;
+        this.urlArray = urls;
         bitmap = new Bitmap[urls.size()];
+    }
+
+    public void setUrl(String urlProfile) {
+        this.urlProfile = urlProfile;
     }
 
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
         if (values.length > 0) {
-            System.out.println("on progress update" + i + "/" + urls.size());
-            System.out.println("daje li" + isReadyToReturnImages.toString());
             if (values[0] == 1) {
-                i++;
-                if (urls.size() == i) {
-                    myListener.onImageDownload(bitmap);
-                }
-            }
+                if(urlArray == null)
+                    myListener.onImageDownload(bitmap[0]);
+                else
+                    if(isReadyToReturnImages)
+                        listener.picturesReceived(bitmap);
             } else {
-                //
+                //myListener.onImageSaved();
             }
         }
+    }
 
     private void getPicture() throws IOException {
 
-        URL url = new URL(urls.get(0));
+        URL url = new URL(urlProfile);
 
-        Bitmap bm = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        bitmap[0] = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
         publishProgress(1);
     }
 
     private void getPictures() throws IOException{
-        for(int i = 0; i<urls.size(); i++){
-            URL url = new URL(urls.get(i));
+        for(int i = 0; i<urlArray.size(); i++){
+            URL url = new URL(urlArray.get(i));
 
-            Bitmap bm = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            bitmap[i] = bm;
+            bitmap[i] = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            if(i == urlArray.size() -1)
+                isReadyToReturnImages = true;
             publishProgress(1);
         }
     }
@@ -88,7 +97,7 @@ public class GetImage extends AsyncTask<Void, Integer, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         try {
-            if(bitmap.length == 1)
+            if(urlArray == null)
                 getPicture();
             else
                 getPictures();

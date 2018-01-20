@@ -49,12 +49,13 @@ import static android.app.Activity.RESULT_OK;
 
 public class UserProfileFragment extends Fragment implements OnImageDownload, OnServiceFinished, DialogInterface.OnClickListener, View.OnClickListener {
 
-    ImageView profilePicture;
-    String name;
-    String email;
-    String url;
-    String rank;
-    WebServiceCaller webServiceCallerForActivity;
+    private ImageView profilePicture;
+    private String name;
+    private String email;
+    private String url;
+    private String rank;
+    private WebServiceCaller webServiceCallerForActivity;
+    private GetImage getImage;
 
     WebServiceCaller wsc;
     OnImageDownload listener;
@@ -131,6 +132,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
         changedPassword.setOnClickListener(this);
         profilePicture.setOnClickListener(this);
         wsc = new WebServiceCaller(UserProfileFragment.this);
+        getImage = new GetImage(this);
 
         checkUserData();
     }
@@ -172,7 +174,8 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
         }
 
         //dohvacanje slike sa prosljedenog urla
-        GetImage getImage = new GetImage(url, this);
+        GetImage getImage = new GetImage(this);
+        getImage.setUrl(url);
         getImage.execute();
 
         setView();

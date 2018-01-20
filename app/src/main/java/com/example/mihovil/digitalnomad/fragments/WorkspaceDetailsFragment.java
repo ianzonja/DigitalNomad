@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
     TextView workspaceRating;
     TextView workspaceDescription;
     TextView workspaceWifi;
+    String id;
 
     String worskpaceUserEmail;
 
@@ -47,12 +49,12 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (getArguments().getString("record") != null) {
-            workspace = new Gson().fromJson(getArguments().getString("record"), Workspace.class);
+        if (getArguments().getString("id") != null) {
+            id = getArguments().getString("id");
         }
-        System.out.println("id: " + workspace.id);
+        System.out.println("id: " + id);
         WebServiceCaller wsc = new WebServiceCaller(WorkspaceDetailsFragment.this);
-        wsc.getWorkspaceDetails(workspace.id);
+        wsc.getWorkspaceDetails(id);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_workspace_details, container, false);
     }
