@@ -127,7 +127,7 @@ public class RecyclerViewFragment extends Fragment implements OnServiceFinished,
 
         Fragment fragment = new WorkspaceDetailsFragment();
         fragment.setArguments(valueBundle);
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
         ft.replace(R.id.content_frame, fragment);
         ft.commit();
     }
