@@ -10,11 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.TextView;
 
 import com.mihovil.advancedsearch.interfaces.OnAdvancedSearch;
-
-import org.w3c.dom.Text;
 
 /**
  * Created by Mihovil on 20.1.2018..
@@ -52,12 +49,12 @@ public class advancedSearchFragment extends Fragment implements View.OnClickList
     }
 
     private void initView(View view) {
-        accomodation = view.findViewById(R.id.checkbox_accommodation);
-        food = view.findViewById(R.id.checkbox_food);
-        wifi = view.findViewById(R.id.checkbox_wifi);
-        socialActivities = view.findViewById(R.id.checkbox_social_activities);
-        aZ = view.findViewById(R.id.checkbox_az);
-        filterOut = view.findViewById(R.id.btnSearch);
+        accomodation = (CheckBox) view.findViewById(R.id.checkbox_accommodation);
+        food = (CheckBox) view.findViewById(R.id.checkbox_food);
+        wifi = (CheckBox) view.findViewById(R.id.checkbox_wifi);
+        socialActivities = (CheckBox) view.findViewById(R.id.checkbox_social_activities);
+        aZ = (CheckBox) view.findViewById(R.id.checkbox_az);
+        filterOut = (Button) view.findViewById(R.id.btnSearch);
     }
 
 

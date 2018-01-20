@@ -27,7 +27,6 @@ import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 import com.example.mihovil.digitalnomad.files.GetImage;
 import com.example.mihovil.digitalnomad.files.ImageSaver;
 import com.example.mihovil.digitalnomad.files.UserToJsonFile;
-import com.example.mihovil.digitalnomad.fragments.EnterWorkspaceFragment;
 import com.example.mihovil.digitalnomad.fragments.RecyclerViewFragment;
 import com.example.mihovil.digitalnomad.fragments.UserProfileFragment;
 import com.example.webservice.interfaces.ServiceResponse;
@@ -40,12 +39,9 @@ import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import entities.Workspace;
 
 public class MainMenuActivity extends AppCompatActivity
         implements OnServiceFinished, NavigationView.OnNavigationItemSelectedListener,OnImageDownload, OnLocationPicked {
@@ -166,10 +162,6 @@ public class MainMenuActivity extends AppCompatActivity
                 break;
             case R.id.nav_workspaces:
                 fragment = new RecyclerViewFragment();
-                fragment.setArguments(valueBundle);
-                break;
-            case R.id.nav_add_workspace:
-                fragment = new EnterWorkspaceFragment();
                 fragment.setArguments(valueBundle);
                 break;
             case R.id.nav_logout:
