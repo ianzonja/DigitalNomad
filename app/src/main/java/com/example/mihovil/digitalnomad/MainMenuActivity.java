@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.map.MapFragment;
+import com.example.map.interfaces.OnLocationPicked;
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 import com.example.mihovil.digitalnomad.files.GetImage;
 import com.example.mihovil.digitalnomad.files.ImageSaver;
@@ -46,14 +48,17 @@ import java.util.List;
 import entities.Workspace;
 
 public class MainMenuActivity extends AppCompatActivity
-        implements OnServiceFinished, NavigationView.OnNavigationItemSelectedListener,OnImageDownload {
+        implements OnServiceFinished, NavigationView.OnNavigationItemSelectedListener,OnImageDownload, OnLocationPicked {
     SharedPreferences preferences;
     List<MenuItem> menuItems;
     NavigationView navigationView;
     ImageView navProfilePicture;
     TextView navName;
     TextView navEmail;
-    int position;
+    private int position;
+    private double longitude = 0,latitude = 0;
+    private int radius = 0;
+    private boolean locationIsReady = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +121,8 @@ public class MainMenuActivity extends AppCompatActivity
         }
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -141,10 +148,14 @@ public class MainMenuActivity extends AppCompatActivity
     private void displaySelectedFragment(int id) {
         Fragment fragment = null;
         Bundle valueBundle = new Bundle();
-        if(position != 0)
+
+        if(!locationIsReady)
             valueBundle.putString("email", preferences.getString("Email", null));
-        else
-            valueBundle.putString("email", preferences.getString("Email", null)); //zasad ista stvar kao i kod workspaceova usera, ali prominiti da salje trenutnu lokaciju
+        else {
+            valueBundle.putString("longitude", Double.toString(longitude));
+            valueBundle.putString("latitude", Double.toString(latitude));
+            valueBundle.putString("radius", Integer.toString(radius));
+        }
 
         switch (id) {
             case R.id.nav_search:
@@ -166,11 +177,14 @@ public class MainMenuActivity extends AppCompatActivity
                 startActivity(new Intent(getBaseContext(), LoginActivity.class));
                 finish();
         }
+
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack(null);
             ft.replace(R.id.content_frame, fragment);
             ft.commit();
         }
+
+        locationIsReady = false;
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -241,17 +255,20 @@ public class MainMenuActivity extends AppCompatActivity
         Toast.makeText(getBaseContext(), (String) message, Toast.LENGTH_LONG).show();
     }
 
-    public void getAllWorkspaces() {
-        final List<Workspace> workspace;
-        workspace = SQLite.select().from(Workspace.class).queryList();
-        String name = workspace.get(0).getName();
-        String country = workspace.get(0).getCountry();
-        String town = workspace.get(0).getCity();
-        String address = workspace.get(0).getAddress();
-    }
-
     @Override
     public void onImageDownload(Bitmap image) {
         navProfilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(image));
+    }
+
+    @Override
+    public void locationArrived(double longitude, double latitude, int radius) {
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.radius = radius;
+
+        locationIsReady = true;
+
+        Log.d("TAG","long\n"+longitude+"\nlat\n"+latitude+"\nradius\n"+radius);
+        displaySelectedFragment(R.id.nav_workspaces);
     }
 }

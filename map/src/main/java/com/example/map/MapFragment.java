@@ -1,6 +1,7 @@
 package com.example.map;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -32,6 +33,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.map.interfaces.OnLocationPicked;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -64,6 +66,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 15f;
+    private  OnLocationPicked listener;
+    private  LatLng userData;
+
+    private Location currentLocation;
 
     private EditText mSearchText;
     private ImageView mGps;
@@ -74,6 +80,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private Boolean mLocationPermissionGranted = false;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Activity mainMenu = (Activity) context;
+        listener = (OnLocationPicked) mainMenu;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -118,6 +132,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
 
+                listener.locationArrived(userData.longitude,userData.latitude,progressChanged);
             }
         });
     }
@@ -157,6 +172,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         if(list.size() > 0){
             Address address = list.get(0);
+            userData = new LatLng(address.getLatitude(),address.getLongitude());
 
             LocationManager manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
             if(manager.isProviderEnabled(LocationManager.GPS_PROVIDER) || manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
@@ -192,7 +208,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
-                            Location currentLocation = (Location) task.getResult();
+                            currentLocation = (Location) task.getResult();
+                            userData = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
                             if(currentLocation == null){
                                 enableLocation();
                             }else{

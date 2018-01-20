@@ -60,6 +60,6 @@ public interface APIinterface {
     @GET("prikazDetaljaWorkspacea.php")
     Call<WorkspaceDetailsResponse> getWorkspaceDetails(@Query("idworkspace")String id);
 
-    @GET("prikazMainMenua")
-    Call<List<WorkspaceValue>> getMainMenu(@Query("longitude") double longitude, @Query("latitude") double latitude, @Query("radius") int radius);
+    @GET("prikazJavnihWorkspaceova.php")
+    Call<List<WorkspaceValue>> getMainMenu(@Query("longitude") String longitude, @Query("latitude") String latitude, @Query("radius") String radius);
 }

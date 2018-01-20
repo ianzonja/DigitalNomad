@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,12 +58,13 @@ public class RecyclerViewFragment extends Fragment implements OnServiceFinished,
         workspaceBitmapList = new ArrayList<>();
         fab = (FloatingActionButton) view.findViewById(R.id.add_new_fab);
         WebServiceCaller wsc = new WebServiceCaller(RecyclerViewFragment.this);
+        Log.d("TAG","long\n"+getArguments().getString("longitude")+"\nlat\n"+getArguments().getString("latitude"));
         if(getArguments().get("email") != null){
             wsc.GetClientWorkspaces(getArguments().getString("email"));
             fab.setVisibility(view.VISIBLE);
         }
         else{
-            wsc.GetClientWorkspaces(getArguments().getString("email")); //ubuduce napravit novi upit ovisno o lokaciji
+            wsc.getMainMenu(getArguments().getString("longitude"), getArguments().getString("latitude"), getArguments().getString("radius"));
             fab.setVisibility(view.GONE);
         }
 
@@ -75,7 +77,7 @@ public class RecyclerViewFragment extends Fragment implements OnServiceFinished,
                 Bundle valueBundle = new Bundle();
                 valueBundle.putString("email", getArguments().getString("email"));
                 fragment.setArguments(valueBundle);
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment);
                 ft.commit();
             }
@@ -127,7 +129,7 @@ public class RecyclerViewFragment extends Fragment implements OnServiceFinished,
 
         Fragment fragment = new WorkspaceDetailsFragment();
         fragment.setArguments(valueBundle);
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().disallowAddToBackStack();
         ft.replace(R.id.content_frame, fragment);
         ft.commit();
     }
@@ -141,5 +143,6 @@ public class RecyclerViewFragment extends Fragment implements OnServiceFinished,
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(workspaces,  RecyclerViewFragment.this, RecyclerViewFragment.this);
         rv.setAdapter(adapter);
     }
+
 
 }
