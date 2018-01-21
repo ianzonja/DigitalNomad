@@ -17,6 +17,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -66,8 +67,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 15f;
-    private  OnLocationPicked listener;
-    private  LatLng userData;
+    private OnLocationPicked listener;
+    private LatLng userData;
 
     private Location currentLocation;
 
@@ -76,6 +77,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private SeekBar seekbar;
     private Button btnSearchLocation;
     private int progressChanged;
+    private SupportMapFragment mapFragment;
 
     private Boolean mLocationPermissionGranted = false;
     private GoogleMap mMap;
@@ -115,6 +117,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progressChanged = progress + 2;
             }
+
             //metoda se ne koristi jer trenutno nije potrebna
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -132,17 +135,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
 
-                listener.locationArrived(userData.longitude,userData.latitude,progressChanged);
+                listener.locationArrived(userData.longitude, userData.latitude, progressChanged);
             }
         });
     }
 
     //inicijalizacija search bar-a
-    private void init(){
+    private void init() {
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN || event.getAction() == KeyEvent.KEYCODE_ENTER){
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN || event.getAction() == KeyEvent.KEYCODE_ENTER) {
                     geoLocate();
                 }
                 return false;
@@ -159,24 +162,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     //metoda za traženje workspace-a na temelju unosa u search bar
-    private void geoLocate(){
+    private void geoLocate() {
         String searchString = mSearchText.getText().toString();
         Geocoder geocoder = new Geocoder(getContext());
         List<Address> list = new ArrayList<>();
 
-        try{
+        try {
             list = geocoder.getFromLocationName(searchString, 1);
-        }catch (IOException e){
+        } catch (IOException e) {
             Log.e(TAG, "geoLocate: IOException" + e.getMessage());
         }
 
-        if(list.size() > 0){
+        if (list.size() > 0) {
             Address address = list.get(0);
-            userData = new LatLng(address.getLatitude(),address.getLongitude());
+            userData = new LatLng(address.getLatitude(), address.getLongitude());
 
             LocationManager manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-            if(manager.isProviderEnabled(LocationManager.GPS_PROVIDER) || manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                moveCamera(new LatLng(address.getLatitude(),address.getLongitude()),DEFAULT_ZOOM,address.getAddressLine(0));
+            if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER) || manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM, address.getAddressLine(0));
             }
 
         }
@@ -209,13 +212,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
                             currentLocation = (Location) task.getResult();
-                            userData = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
-                            if(currentLocation == null){
+                            userData = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                            if (currentLocation == null) {
                                 enableLocation();
-                            }else{
+                            } else {
                                 moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "Your location");
                             }
-                        }else{
+                        } else {
                             Toast.makeText(getContext(), "unable to get current location", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -230,7 +233,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void moveCamera(LatLng latLng, float zoom, String title) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
 
-        if(!title.equals("Your location")){
+        if (!title.equals("Your location")) {
             MarkerOptions options = new MarkerOptions()
                     .position(latLng)
                     .title(title);
@@ -239,9 +242,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    @Override
+    public void onDestroyView() {
+        Fragment f = mapFragment;
+        if (f != null) {
+            getFragmentManager().beginTransaction().remove(f).commit();
+        }
+
+        super.onDestroyView();
+
+}
+
     //metoda za inicijaliziranje mape
     private void initMap() {
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(MapFragment.this);
     }
@@ -289,7 +303,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Toast.makeText(getContext(), "Map is ready", Toast.LENGTH_SHORT).show();
         mMap = googleMap;
 
-        if (mLocationPermissionGranted){
+        if (mLocationPermissionGranted) {
             getDeviceLocation();
 
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -299,21 +313,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
             init();
-        }
-        else{
+        } else {
             Toast.makeText(getContext(), "Enable your location", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void enableLocation(){
+    public void enableLocation() {
         LocationManager manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
 
-        if(!manager.isProviderEnabled(LocationManager.GPS_PROVIDER) || !manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER) || !manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             AlertDialog.Builder bilder = new AlertDialog.Builder(getContext());
             bilder.setTitle("Location is disabled");
             bilder.setMessage("Enable your location service and internet\n" +
-                                "to find current location. Click OK to go to\n" +
-                                "location services settings to let you do so.");
+                    "to find current location. Click OK to go to\n" +
+                    "location services settings to let you do so.");
             bilder.setCancelable(false);
             bilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
