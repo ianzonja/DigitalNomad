@@ -189,6 +189,7 @@ public class MainMenuActivity extends AppCompatActivity
         }
         isAplicationStarted = false;
         locationIsReady = false;
+        advancedSearchIsReady= false;
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
