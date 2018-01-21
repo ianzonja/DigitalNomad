@@ -3,7 +3,9 @@ package com.example.mihovil.digitalnomad.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,6 +31,7 @@ public class ShowReviewsFragment extends Fragment implements OnServiceFinished {
     private RecyclerView rv;
     View view;
     Bundle valueBundle;
+    FloatingActionButton fab;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -44,9 +47,24 @@ public class ShowReviewsFragment extends Fragment implements OnServiceFinished {
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
+
         reviews = new ArrayList<Review>();
         WebServiceCaller wsc = new WebServiceCaller(ShowReviewsFragment.this);
         wsc.showReviews(getArguments().getString("idWorkspace"));
+
+        fab = (FloatingActionButton) view.findViewById(R.id.add_new_fab);
+
+        fab.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Fragment fragment = new ReviewSystemFragment();
+                Bundle valueBundle = new Bundle();
+                valueBundle.putString("idWorkspace", getArguments().getString("idWorkspace"));
+                fragment.setArguments(valueBundle);
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, fragment);
+                ft.commit();
+            }
+        });
     }
 
     public void onServiceDone(Object response){

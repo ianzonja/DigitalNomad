@@ -1,10 +1,11 @@
 package com.example.mihovil.digitalnomad.fragments;
 
-import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mihovil.digitalnomad.R;
-import com.example.mihovil.digitalnomad.models.Workspace;
+import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.WebServiceCaller;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
-import com.google.gson.Gson;
 
 /**
  * Created by Davor on 9.1.2018..
@@ -31,7 +31,6 @@ public class ReviewSystemFragment extends Fragment implements OnServiceFinished 
     private TextView txtRatingValue;
     private Button btnSubmit;
     private SharedPreferences preferences;
-    Workspace workspace = null;
 
     public ReviewSystemFragment(){
 
@@ -44,11 +43,6 @@ public class ReviewSystemFragment extends Fragment implements OnServiceFinished 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-
-        if(getArguments().getString("record") != null) {
-            workspace = new Gson().fromJson(getArguments().getString("record"), Workspace.class);
-        }
-
         return inflater.inflate(R.layout.review_workspace,container,false);
     }
 
@@ -61,23 +55,31 @@ public class ReviewSystemFragment extends Fragment implements OnServiceFinished 
         ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
         txtRating = (EditText) view.findViewById(R.id.txtRating);
         btnSubmit = (Button) view.findViewById(R.id.btnSubmit);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 String email = preferences.getString("Email", null);
-
                 if (CheckEntry(ratingBar, txtRating)) {
                     WebServiceCaller wsc = new WebServiceCaller(ReviewSystemFragment.this);
-                    wsc.uploadRatingAndComments(email, workspace.id, ratingBar.getRating(), txtRating.getText().toString());
+                    System.out.println("mail: " + preferences.getString("Email", null) + " id: " + getArguments().getString("idWorkspace") + " rating: " + ratingBar.getRating() + " comment: " + txtRating.getText().toString());
+                    wsc.uploadRatingAndComments(preferences.getString("Email", null), getArguments().getString("idWorkspace"), ratingBar.getRating(), txtRating.getText().toString());
                 }
             }
         });
     }
 
     public void onServiceDone(Object response){
-        Toast.makeText(getActivity(), "Data stored", Toast.LENGTH_SHORT).show();
+        ServiceResponse isSuccess = (ServiceResponse) response;
+        System.out.println(isSuccess.getReturnValue());
+        if (isSuccess.getReturnValue().equals("1")) {
+            Toast.makeText(getContext(), "Uspjesno dodano", Toast.LENGTH_LONG).show();
+        } else {
+            Log.d("TAG", "ispostoje = false");
+            Toast.makeText(getContext(), "Ne postoji", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void onServiceFail(Object message){
