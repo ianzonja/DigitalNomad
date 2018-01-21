@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.mihovil.digitalnomad.MockData.RegistracijaMockData;
 import com.example.mihovil.digitalnomad.files.LoadingData;
 import com.example.mihovil.digitalnomad.MainMenuActivity;
 import com.example.mihovil.digitalnomad.R;
@@ -163,8 +164,20 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished,
         switch (v.getId()) {
             case R.id.registracija:
                 if (CheckEntry(email, password, name, lastName, repeatPass)) {
-                    LoadingData.EnableProgressBar(relativeLayout, progressBar);
-                    wsc.Registrate(email.getText().toString(), password.getText().toString(), name.getText().toString(), lastName.getText().toString());
+
+                    //MockData za potrebe testiranja Registracije
+                    if(name.getText().toString().equals(RegistracijaMockData.RegistracijanNme) &&
+                            lastName.getText().toString().equals(RegistracijaMockData.RegistracijaLastName) &&
+                            email.getText().toString().equals(RegistracijaMockData.RegistracijaEmail) &&
+                            password.getText().toString().equals(RegistracijaMockData.RegistracijaPassword) &&
+                            repeatPass.getText().toString().equals(RegistracijaMockData.RegistracijaRepeatPassword)){
+                        startActivity(new Intent(getContext(), MainMenuActivity.class));
+                        getActivity().finish();
+
+                    }else {
+                        LoadingData.EnableProgressBar(relativeLayout, progressBar);
+                        wsc.Registrate(email.getText().toString(), password.getText().toString(), name.getText().toString(), lastName.getText().toString());
+                    }
                 } else {
                     Toast.makeText(getContext(), "Correct errors", Toast.LENGTH_SHORT).show();
                 }

@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mihovil.digitalnomad.MockData.LoginMockData;
 import com.example.mihovil.digitalnomad.files.LoadingData;
 import com.example.mihovil.digitalnomad.MainMenuActivity;
 import com.example.mihovil.digitalnomad.R;
@@ -166,8 +168,16 @@ public class LoginFragment extends Fragment implements OnServiceFinished,View.On
                 break;
             case R.id.button:
                 if (CheckEntry(mail, pass)) {
-                    LoadingData.EnableProgressBar(relativeLayout,progressBar);
-                    wsc.Login(mail.getText().toString(), pass.getText().toString());
+                    //Za potrebe testiranja koristenje mock data
+                    if(mail.getText().toString().equals( LoginMockData.loginMail) && pass.getText().toString().equals(LoginMockData.LoginPassword)){
+                        Intent i = new Intent(getContext(), MainMenuActivity.class);
+                        startActivity(i);
+                        getActivity().finish();
+
+                    }else {
+                        LoadingData.EnableProgressBar(relativeLayout, progressBar);
+                        wsc.Login(mail.getText().toString(), pass.getText().toString());
+                    }
                 } else {
                     Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
                 }
