@@ -14,7 +14,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -41,7 +40,6 @@ import com.facebook.login.LoginManager;
 import com.mihovil.advancedsearch.advancedSearchFragment;
 import com.mihovil.advancedsearch.interfaces.OnAdvancedSearch;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +55,8 @@ public class MainMenuActivity extends AppCompatActivity
     private double longitude = 0,latitude = 0;
     private int radius = 0;
     private boolean locationIsReady = false;
+    private boolean advancedSearchIsReady = false;
+    private boolean isAplicationStarted = true;
     private AdvancedResult advancedResult;
 
     @Override
@@ -145,12 +145,21 @@ public class MainMenuActivity extends AppCompatActivity
         Fragment fragment = null;
         Bundle valueBundle = new Bundle();
 
-        if(!locationIsReady)
-            valueBundle.putString("email", preferences.getString("Email", null));
-        else {
+        if(locationIsReady || isAplicationStarted) {
             valueBundle.putString("longitude", Double.toString(longitude));
             valueBundle.putString("latitude", Double.toString(latitude));
             valueBundle.putString("radius", Integer.toString(radius));
+        }
+        else if(advancedSearchIsReady){
+            valueBundle.putString("countryName", advancedResult.getCountry());
+            valueBundle.putString("accomodation", Boolean.toString(advancedResult.getAccomodation()));
+            valueBundle.putString("food", Boolean.toString(advancedResult.getFood()));
+            valueBundle.putString("socialActivities", Boolean.toString(advancedResult.getActivities()));
+            valueBundle.putString("wifi", Boolean.toString(advancedResult.getWifi()));
+            valueBundle.putString("aZ", Boolean.toString(advancedResult.getaZ()));
+        }
+        else {
+            valueBundle.putString("email", preferences.getString("Email", null));
         }
 
         switch (id) {
@@ -178,7 +187,7 @@ public class MainMenuActivity extends AppCompatActivity
             ft.replace(R.id.content_frame, fragment);
             ft.commit();
         }
-
+        isAplicationStarted = false;
         locationIsReady = false;
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -269,7 +278,7 @@ public class MainMenuActivity extends AppCompatActivity
     @Override
     public void onAdvancedResult(String countryName, boolean accomodation, boolean food, boolean wifi, boolean socialActivities, boolean aZ) {
         advancedResult = new AdvancedResult(countryName, accomodation,food,socialActivities,wifi,aZ);
-
+        advancedSearchIsReady = true;
         displaySelectedFragment(R.id.nav_workspaces);
 
     }

@@ -152,8 +152,11 @@ public class WebServiceCaller {
         callWorkspaces.enqueue(new Callback<List<WorkspaceValue>>() {
             @Override
             public void onResponse(Response<List<WorkspaceValue>> response, Retrofit retrofit) {
-                if(response.isSuccess())
+                System.out.println("uso u onResponse");
+                if(response.isSuccess()) {
+                    System.out.println("success!!");
                     listener.onServiceDone(response.body());
+                }
             }
 
             @Override
@@ -181,6 +184,7 @@ public class WebServiceCaller {
         reviewsCall.enqueue(new Callback<List<Review>>() {
             @Override
             public void onResponse(Response<List<Review>> response, Retrofit retrofit) {
+                System.out.println("jel usa tu?");
                 if(response.isSuccess())
                     listener.onServiceDone(response.body());
             }

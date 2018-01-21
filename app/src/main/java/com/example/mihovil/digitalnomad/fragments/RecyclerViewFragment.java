@@ -59,15 +59,20 @@ public class RecyclerViewFragment extends Fragment implements OnServiceFinished,
         fab = (FloatingActionButton) view.findViewById(R.id.add_new_fab);
         WebServiceCaller wsc = new WebServiceCaller(RecyclerViewFragment.this);
         Log.d("TAG","long\n"+getArguments().getString("longitude")+"\nlat\n"+getArguments().getString("latitude"));
+        fab.setVisibility(view.GONE);
         if(getArguments().get("email") != null){
             wsc.GetClientWorkspaces(getArguments().getString("email"));
             fab.setVisibility(view.VISIBLE);
+            System.out.println("workspaceovi korisnika");
+        }
+        else if(getArguments().getString("longitude") != null && getArguments().getString("latitude") != null && getArguments().getString("radius") != null){
+            wsc.getMainMenu(getArguments().getString("longitude"), getArguments().getString("latitude"), getArguments().getString("radius"));
+            System.out.println("main menu");
         }
         else{
-            wsc.getMainMenu(getArguments().getString("longitude"), getArguments().getString("latitude"), getArguments().getString("radius"));
-            fab.setVisibility(view.GONE);
+            wsc.advancedSearch(getArguments().getString("countryName"), getArguments().getString("accomodation"), getArguments().getString("food"), getArguments().getString("socialActivities"), getArguments().getString("wifi"), getArguments().getString("aZ"));
+            System.out.println("country name: " + getArguments().getString("countryName") + " accomodation: " + getArguments().getString("accomodation") + " food: " + getArguments().getString("food") + " activities: " + getArguments().getString("socialActivities") + " wifi: " + getArguments().getString("wifi") + " aZ: " + getArguments().getString("aZ"));
         }
-
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(workspaces, RecyclerViewFragment.this, RecyclerViewFragment.this);
         rv.setAdapter(adapter);
 

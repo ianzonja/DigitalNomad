@@ -109,4 +109,16 @@ public class WorkspaceValue {
     @SerializedName("path")
     @Expose
     private String path;
+
+    public String getUser_iduser() {
+        return user_iduser;
+    }
+
+    public void setUser_iduser(String user_iduser) {
+        this.user_iduser = user_iduser;
+    }
+
+    @SerializedName("user_iduser")
+    @Expose
+    private String user_iduser;
 }

@@ -1,7 +1,6 @@
 package com.mihovil.advancedsearch;
 
 import android.app.Activity;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 
 import com.mihovil.advancedsearch.interfaces.OnAdvancedSearch;
 
@@ -69,6 +66,9 @@ public class advancedSearchFragment extends Fragment implements View.OnClickList
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.btnSearch) {
+            if(countryName.getText().toString().equals(""))
+                countryName.setText("nodata");
+            System.out.println("sta rece: " + countryName.getText().toString());
             listener.onAdvancedResult(countryName.getText().toString(),accomodation.isChecked(),food.isChecked(),wifi.isChecked(),socialActivities.isChecked(),aZ.isChecked());
         }
     }

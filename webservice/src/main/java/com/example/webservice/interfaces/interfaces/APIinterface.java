@@ -64,6 +64,6 @@ public interface APIinterface {
     @GET("prikazJavnihWorkspaceova.php")
     Call<List<WorkspaceValue>> getMainMenu(@Query("longitude") String longitude, @Query("latitude") String latitude, @Query("radius") String radius);
 
-    @GET("advanceSearch.php")
+    @GET("advancedSearch.php")
     Call <List<WorkspaceValue>> advanceSearch(@Query("countryName") String countryName, @Query("accomodation") String accomodation, @Query("food") String food, @Query("wifi") String wifi, @Query("socialActivities") String socialActivities, @Query("aZ") String aZ);
 }
