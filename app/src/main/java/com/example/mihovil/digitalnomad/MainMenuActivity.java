@@ -103,11 +103,11 @@ public class MainMenuActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
 
-        displaySelectedFragment(R.id.nav_workspaces);
-
         while (getSupportFragmentManager().getBackStackEntryCount() > 1){
             getSupportFragmentManager().popBackStackImmediate();
         }
+
+        displaySelectedFragment(R.id.nav_workspaces);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {

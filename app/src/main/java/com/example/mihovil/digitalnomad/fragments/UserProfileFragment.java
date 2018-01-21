@@ -244,7 +244,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
             }
             case R.id.user_profile_txtChangePassword:{
                 Fragment fragment = new EditUserProfileFragment();
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment);
                 ft.commit();
                 break;
