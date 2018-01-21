@@ -120,6 +120,11 @@ public class WebServiceCaller {
         CheckWorkspaceCall();
     }
 
+    public void advancedSearch(String country, String accomodation, String food, String wifi, String activities,String aZ){
+        callWorkspaces = serviceCaller.advanceSearch(country,accomodation,food,wifi,activities,aZ);
+        CheckWorkspaceCall();
+    }
+
     private void CheckCall(){
         if (call != null) {
             call.enqueue(new Callback<ServiceResponse>() {

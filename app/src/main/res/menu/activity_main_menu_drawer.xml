@@ -11,6 +11,10 @@
             android:id="@+id/nav_search"
             android:icon="@drawable/search"
             android:title="@string/search" />
+        <item
+            android:id="@+id/nav_advanced_search"
+            android:icon="@drawable/search"
+            android:title="@string/advancedsearch" />
     </group>
     <group android:checkableBehavior="single"
         android:id="@+id/grupa_profile_wspace">

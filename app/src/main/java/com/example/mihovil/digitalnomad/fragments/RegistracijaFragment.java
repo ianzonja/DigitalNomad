@@ -25,10 +25,7 @@ import com.example.mihovil.digitalnomad.R;
 import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 import com.example.webservice.interfaces.WebServiceCaller;
-import com.raizlabs.android.dbflow.config.FlowConfig;
-import com.raizlabs.android.dbflow.config.FlowManager;
 
-import butterknife.OnTextChanged;
 
 
 public class RegistracijaFragment extends Fragment implements OnServiceFinished, View.OnClickListener, TextWatcher {
@@ -55,7 +52,6 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished,
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        FlowManager.init(new FlowConfig.Builder(getContext()).build());
 
         initView(view);
         initListeners();

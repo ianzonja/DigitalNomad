@@ -29,6 +29,7 @@ import com.example.mihovil.digitalnomad.files.ImageSaver;
 import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.mihovil.digitalnomad.fragments.RecyclerViewFragment;
 import com.example.mihovil.digitalnomad.fragments.UserProfileFragment;
+import com.example.mihovil.digitalnomad.models.AdvancedResult;
 import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.WebServiceCaller;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
@@ -37,14 +38,15 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
-import com.raizlabs.android.dbflow.config.FlowConfig;
-import com.raizlabs.android.dbflow.config.FlowManager;
+import com.mihovil.advancedsearch.advancedSearchFragment;
+import com.mihovil.advancedsearch.interfaces.OnAdvancedSearch;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainMenuActivity extends AppCompatActivity
-        implements OnServiceFinished, NavigationView.OnNavigationItemSelectedListener,OnImageDownload, OnLocationPicked {
+        implements OnServiceFinished, NavigationView.OnNavigationItemSelectedListener,OnImageDownload, OnLocationPicked, OnAdvancedSearch {
     SharedPreferences preferences;
     List<MenuItem> menuItems;
     NavigationView navigationView;
@@ -55,6 +57,7 @@ public class MainMenuActivity extends AppCompatActivity
     private double longitude = 0,latitude = 0;
     private int radius = 0;
     private boolean locationIsReady = false;
+    private AdvancedResult advancedResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +78,6 @@ public class MainMenuActivity extends AppCompatActivity
 
         position = 0;
 
-        FlowManager.init(new FlowConfig.Builder(this).build());
-
         navProfilePicture = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.MainMenuImageView);
         navName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.MainMenuNameLastName);
         navEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.MainMenuEmail);
@@ -90,7 +91,6 @@ public class MainMenuActivity extends AppCompatActivity
         }
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        //ToDo: usporediti podatke na serveru i lokalno
 
         if (preferences.contains("Email")) {
             String email = preferences.getString("Email", null);
@@ -156,6 +156,9 @@ public class MainMenuActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_search:
                 fragment = new MapFragment();
+                break;
+            case R.id.nav_advanced_search:
+                fragment = new advancedSearchFragment();
                 break;
             case R.id.nav_user_profile:
                 fragment = new UserProfileFragment();
@@ -260,7 +263,14 @@ public class MainMenuActivity extends AppCompatActivity
 
         locationIsReady = true;
 
-        Log.d("TAG","long\n"+longitude+"\nlat\n"+latitude+"\nradius\n"+radius);
         displaySelectedFragment(R.id.nav_workspaces);
+    }
+
+    @Override
+    public void onAdvancedResult(String countryName, boolean accomodation, boolean food, boolean wifi, boolean socialActivities, boolean aZ) {
+        advancedResult = new AdvancedResult(countryName, accomodation,food,socialActivities,wifi,aZ);
+
+        displaySelectedFragment(R.id.nav_workspaces);
+
     }
 }

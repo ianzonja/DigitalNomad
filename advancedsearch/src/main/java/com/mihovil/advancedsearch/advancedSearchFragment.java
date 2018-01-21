@@ -1,15 +1,19 @@
 package com.mihovil.advancedsearch;
 
 import android.app.Activity;
-import android.app.Fragment;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 
 import com.mihovil.advancedsearch.interfaces.OnAdvancedSearch;
 
@@ -19,6 +23,7 @@ import com.mihovil.advancedsearch.interfaces.OnAdvancedSearch;
 
 public class advancedSearchFragment extends Fragment implements View.OnClickListener {
 
+    private EditText countryName;
     private CheckBox accomodation;
     private CheckBox food;
     private CheckBox wifi;
@@ -32,13 +37,13 @@ public class advancedSearchFragment extends Fragment implements View.OnClickList
         super.onAttach(context);
         Activity mainMenu = (Activity) context;
         listener = (OnAdvancedSearch) mainMenu;
-        filterOut.setOnClickListener(this);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.napredno_pretrazivanje, container, false);
+        return inflater.inflate(R.layout.napredno_pretrazivanjeee, container, false);
     }
 
     @Override
@@ -46,6 +51,7 @@ public class advancedSearchFragment extends Fragment implements View.OnClickList
         super.onViewCreated(view, savedInstanceState);
 
         initView(view);
+        filterOut.setOnClickListener(this);
     }
 
     private void initView(View view) {
@@ -54,6 +60,7 @@ public class advancedSearchFragment extends Fragment implements View.OnClickList
         wifi = (CheckBox) view.findViewById(R.id.checkbox_wifi);
         socialActivities = (CheckBox) view.findViewById(R.id.checkbox_social_activities);
         aZ = (CheckBox) view.findViewById(R.id.checkbox_az);
+        countryName = (EditText) view.findViewById(R.id.name_of_country);
         filterOut = (Button) view.findViewById(R.id.btnSearch);
     }
 
@@ -62,7 +69,8 @@ public class advancedSearchFragment extends Fragment implements View.OnClickList
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.btnSearch) {
-            listener.onAdvancedResult(accomodation.isChecked(),food.isChecked(),wifi.isChecked(),socialActivities.isChecked(),aZ.isChecked());
+            listener.onAdvancedResult(countryName.getText().toString(),accomodation.isChecked(),food.isChecked(),wifi.isChecked(),socialActivities.isChecked(),aZ.isChecked());
         }
     }
+
 }
