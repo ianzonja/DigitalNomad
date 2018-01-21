@@ -103,18 +103,11 @@ public class MainMenuActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
 
-        while (getSupportFragmentManager().getBackStackEntryCount() > 1){
+        while (getSupportFragmentManager().getBackStackEntryCount() > 0){
             getSupportFragmentManager().popBackStackImmediate();
         }
 
         displaySelectedFragment(R.id.nav_workspaces);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 
 
@@ -183,7 +176,7 @@ public class MainMenuActivity extends AppCompatActivity
         }
 
         if (fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack(null);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction().addToBackStack("mainMenu");
             ft.replace(R.id.content_frame, fragment);
             ft.commit();
         }
