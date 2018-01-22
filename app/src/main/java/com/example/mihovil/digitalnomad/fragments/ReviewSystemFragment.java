@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,8 +79,15 @@ public class ReviewSystemFragment extends Fragment implements OnServiceFinished 
             Toast.makeText(getContext(), "Uspjesno dodano", Toast.LENGTH_LONG).show();
         } else {
             Log.d("TAG", "ispostoje = false");
-            Toast.makeText(getContext(), "Ne postoji", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Neuspjesno!", Toast.LENGTH_LONG).show();
         }
+        Fragment fragment = new ShowReviewsFragment();
+        Bundle valueBundle = new Bundle();
+        valueBundle.putString("idWorkspace", getArguments().getString("idWorkspace"));
+        fragment.setArguments(valueBundle);
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.commit();
     }
 
     public void onServiceFail(Object message){

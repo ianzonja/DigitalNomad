@@ -23,6 +23,7 @@ import com.example.mihovil.digitalnomad.R;
 import com.example.mihovil.digitalnomad.controller.GalleryAdapter;
 import com.example.mihovil.digitalnomad.files.GetImage;
 import com.example.webservice.interfaces.Review;
+import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.WebServiceCaller;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 
@@ -104,7 +105,7 @@ public class ShowWorkspaceGallery extends Fragment implements OnPicturesRecived,
 
 
                     WebServiceCaller wsc = new WebServiceCaller(ShowWorkspaceGallery.this);
-                    wsc.uploadWorkspaceImage(getArguments().getString("id"),newBitmap);
+                    wsc.uploadWorkspaceImage(getArguments().getString("id"), newBitmap);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -132,11 +133,11 @@ public class ShowWorkspaceGallery extends Fragment implements OnPicturesRecived,
 
     @Override
     public void onServiceDone(Object response) {
-
+            Toast.makeText(getContext(), "Image uploaded to server", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onServiceFail(Object message) {
-
+        Toast.makeText(getContext(), "Image failed to upload", Toast.LENGTH_LONG).show();
     }
 }
