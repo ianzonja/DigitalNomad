@@ -59,9 +59,10 @@ public class EnterWorkspaceFragment extends Fragment implements OnServiceFinishe
         final EditText workspaceCity = (EditText) view.findViewById(R.id.add_workspace_city);
         final EditText workspaceAdress = (EditText) view.findViewById(R.id.add_workspace_adress);
         final Button addWorkspaceButton = (Button) view.findViewById(R.id.add_Workspace_button);
+        final EditText workspaceDescription = (EditText) view.findViewById(R.id.add_workspace_description);
         final CheckBox foodCheckbox = (CheckBox) view.findViewById(R.id.food_checkbox);
         final CheckBox accomodationCheckbox = (CheckBox) view.findViewById(R.id.acc_checkbox);
-        final CheckBox wifiCkeckbox = (CheckBox) view.findViewById(R.id.acc_checkbox);
+        final CheckBox wifiCkeckbox = (CheckBox) view.findViewById(R.id.wifi_checkbox);
         final CheckBox activityCheckbox = (CheckBox) view.findViewById(R.id.act_checkbox);
 
         if(workspace != null){
@@ -75,20 +76,20 @@ public class EnterWorkspaceFragment extends Fragment implements OnServiceFinishe
         addWorkspaceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            if (CheckEntry(workspaceName, workspaceCity, workspaceCountry, workspaceAdress)) {
-                WebServiceCaller wsc = new WebServiceCaller(EnterWorkspaceFragment.this);
-                String description = "qwert";
-                String longitude = "0";
-                String latitude = "0";
-                System.out.println("unos:" + userMail + ", " + workspaceName.getText().toString() + ", " + description + "," + workspaceAdress.getText().toString() + "," + workspaceCountry.getText().toString() + "," + workspaceCity.getText().toString() + "," + longitude + "," + latitude);
-                if(workspace == null)
-                    wsc.addWorkspaceAsUser(userMail, workspaceName.getText().toString(), description, workspaceAdress.getText().toString(), workspaceCountry.getText().toString(), workspaceCity.getText().toString(), longitude, latitude, String.valueOf(accomodationCheckbox.isChecked()), String.valueOf(foodCheckbox.isChecked()), String.valueOf(wifiCkeckbox.isChecked()), String.valueOf(activityCheckbox.isChecked()));
-                else
-                    wsc.editWorkspace(workspace.id, workspaceName.getText().toString(), workspace.description, workspaceAdress.getText().toString(), workspaceCountry.getText().toString(), workspaceCity.getText().toString(), workspace.longitude, workspace.latitude, String.valueOf(accomodationCheckbox.isChecked()), String.valueOf(foodCheckbox.isChecked()), String.valueOf(wifiCkeckbox.isChecked()), String.valueOf(activityCheckbox.isChecked()));
-                LoadingData.EnableProgressBar(relativeLayout, progressBar);
-            }else{
-                Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
-            }
+                if (CheckEntry(workspaceName, workspaceCity, workspaceCountry, workspaceAdress)) {
+                    WebServiceCaller wsc = new WebServiceCaller(EnterWorkspaceFragment.this);
+                    String description = workspaceDescription.getText().toString();
+                    String longitude = "0";
+                    String latitude = "0";
+                    System.out.println("unos:" + userMail + ", " + workspaceName.getText().toString() + ", " + description + "," + workspaceAdress.getText().toString() + "," + workspaceCountry.getText().toString() + "," + workspaceCity.getText().toString() + "," + longitude + "," + latitude);
+                    if(workspace == null)
+                        wsc.addWorkspaceAsUser(userMail, workspaceName.getText().toString(), description, workspaceAdress.getText().toString(), workspaceCountry.getText().toString(), workspaceCity.getText().toString(), longitude, latitude, String.valueOf(accomodationCheckbox.isChecked()), String.valueOf(foodCheckbox.isChecked()), String.valueOf(wifiCkeckbox.isChecked()), String.valueOf(activityCheckbox.isChecked()));
+                    else
+                        wsc.editWorkspace(workspace.id, workspaceName.getText().toString(), workspace.description, workspaceAdress.getText().toString(), workspaceCountry.getText().toString(), workspaceCity.getText().toString(), workspace.longitude, workspace.latitude, String.valueOf(accomodationCheckbox.isChecked()), String.valueOf(foodCheckbox.isChecked()), String.valueOf(wifiCkeckbox.isChecked()), String.valueOf(activityCheckbox.isChecked()));
+                    LoadingData.EnableProgressBar(relativeLayout, progressBar);
+                }else{
+                    Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

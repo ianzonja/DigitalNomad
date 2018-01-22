@@ -45,7 +45,9 @@ public class ShowWorkspaceGallery extends Fragment implements OnPicturesRecived,
     FloatingActionButton fab;
     ArrayList<String> urls;
     private static final int PICK_IMAGE = 989;
-
+    ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
+    String newBitmap;
+    Bitmap workspaceBitmap;
 
     public ShowWorkspaceGallery() {
         // Required empty public constructor
@@ -83,6 +85,9 @@ public class ShowWorkspaceGallery extends Fragment implements OnPicturesRecived,
     }
     @Override
     public void picturesReceived(Bitmap[] bitmap) {
+        for(int i = 0; i<bitmap.length; i++){
+            bitmaps.add(bitmap[i]);
+        }
         System.out.println("size: " + bitmap.length);
         GalleryAdapter ga = new GalleryAdapter(bitmap);
         rv.setAdapter(ga);
@@ -100,12 +105,12 @@ public class ShowWorkspaceGallery extends Fragment implements OnPicturesRecived,
             } else {
                 Uri selectedImageUri = data.getData();
                 try {
-                    Bitmap profileBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
-                    String newBitmap = GetImage.getEncoded64ImageStringFromBitmap(profileBitmap);
+                    workspaceBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
+                    newBitmap = GetImage.getEncoded64ImageStringFromBitmap(workspaceBitmap);
 
 
                     WebServiceCaller wsc = new WebServiceCaller(ShowWorkspaceGallery.this);
-                    wsc.uploadWorkspaceImage(getArguments().getString("id"), newBitmap);
+                    wsc.uploadWorkspaceImage(getArguments().getString("id"),newBitmap);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -133,11 +138,21 @@ public class ShowWorkspaceGallery extends Fragment implements OnPicturesRecived,
 
     @Override
     public void onServiceDone(Object response) {
+        ServiceResponse isSuccess = (ServiceResponse) response;
+        if (isSuccess.isPostoji()) {
             Toast.makeText(getContext(), "Image uploaded to server", Toast.LENGTH_LONG).show();
+        }
+        bitmaps.add(workspaceBitmap);
+        Bitmap[] bitmapArray = new Bitmap[bitmaps.size()];
+        for(int i=0; i<bitmaps.size(); i++){
+            bitmapArray[i] = bitmaps.get(i);
+        }
+        GalleryAdapter ga = new GalleryAdapter(bitmapArray);
+        rv.setAdapter(ga);
     }
 
     @Override
     public void onServiceFail(Object message) {
-        Toast.makeText(getContext(), "Image failed to upload", Toast.LENGTH_LONG).show();
+
     }
 }
