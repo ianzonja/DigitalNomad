@@ -1,13 +1,9 @@
 package com.example.mihovil.digitalnomad.fragments;
 
 import android.app.Dialog;
-import android.app.FragmentManager;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -20,8 +16,6 @@ import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.WebServiceCaller;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 import com.google.gson.Gson;
-
-import java.io.Serializable;
 
 
 public class PopUpWorkspacesMessage extends DialogFragment implements View.OnClickListener, OnServiceFinished {
@@ -49,7 +43,13 @@ public class PopUpWorkspacesMessage extends DialogFragment implements View.OnCli
             case R.id.edit:
                 Fragment fragment = new EnterWorkspaceFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString("record", getArguments().getString("record"));
+                bundle.putString("email", getArguments().getString("email"));
+                bundle.putString("id", getArguments().getString("id"));
+                bundle.putString("name", getArguments().getString("name"));
+                bundle.putString("country", getArguments().getString("country"));
+                bundle.putString("town", getArguments().getString("town"));
+                bundle.putString("adress", getArguments().getString("adress"));
+                bundle.putString("description", getArguments().getString("description"));
                 fragment.setArguments(bundle);
                 android.support.v4.app.FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
@@ -60,7 +60,7 @@ public class PopUpWorkspacesMessage extends DialogFragment implements View.OnCli
             case R.id.delete:
                 Toast.makeText(getActivity(), "Uneseno", Toast.LENGTH_LONG).show();
                 wsc = new WebServiceCaller(PopUpWorkspacesMessage.this);
-                wsc.deleteWorkspace(workspace.id);
+                wsc.deleteWorkspace(getArguments().getString("id", getArguments().getString("id")));
                 System.out.println("delete");
                 serviceStatus = "delete";
                 dismiss();

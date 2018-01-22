@@ -42,8 +42,6 @@ public class EnterWorkspaceFragment extends Fragment implements OnServiceFinishe
         // Inflate the layout for this fragment
         if(getArguments().getString("email") != null)
             userMail = getArguments().getString("email");
-        else if(getArguments().getString("record") != null)
-            workspace = new Gson().fromJson(getArguments().getString("record"), Workspace.class);
         return inflater.inflate(R.layout.fragment_enter_workspace, container, false);
     }
 
@@ -65,11 +63,12 @@ public class EnterWorkspaceFragment extends Fragment implements OnServiceFinishe
         final CheckBox wifiCkeckbox = (CheckBox) view.findViewById(R.id.wifi_checkbox);
         final CheckBox activityCheckbox = (CheckBox) view.findViewById(R.id.act_checkbox);
 
-        if(workspace != null){
-            workspaceName.setText(workspace.name, TextView.BufferType.EDITABLE);
-            workspaceCountry.setText(workspace.country, TextView.BufferType.EDITABLE);
-            workspaceCity.setText(workspace.town, TextView.BufferType.EDITABLE);
-            workspaceAdress.setText(workspace.adress, TextView.BufferType.EDITABLE);
+        if(getArguments().getString("description") != null && getArguments().getString("id") != null){
+            workspaceName.setText(getArguments().getString("name"), TextView.BufferType.EDITABLE);
+            workspaceCountry.setText(getArguments().getString("country"), TextView.BufferType.EDITABLE);
+            workspaceCity.setText(getArguments().getString("town"), TextView.BufferType.EDITABLE);
+            workspaceAdress.setText(getArguments().getString("adress"), TextView.BufferType.EDITABLE);
+            workspaceDescription.setText(getArguments().getString("description"), TextView.BufferType.EDITABLE);
             addWorkspaceButton.setText("EDIT");
         }
 
@@ -82,10 +81,10 @@ public class EnterWorkspaceFragment extends Fragment implements OnServiceFinishe
                     String longitude = "0";
                     String latitude = "0";
                     System.out.println("unos:" + userMail + ", " + workspaceName.getText().toString() + ", " + description + "," + workspaceAdress.getText().toString() + "," + workspaceCountry.getText().toString() + "," + workspaceCity.getText().toString() + "," + longitude + "," + latitude);
-                    if(workspace == null)
-                        wsc.addWorkspaceAsUser(userMail, workspaceName.getText().toString(), description, workspaceAdress.getText().toString(), workspaceCountry.getText().toString(), workspaceCity.getText().toString(), longitude, latitude, String.valueOf(accomodationCheckbox.isChecked()), String.valueOf(foodCheckbox.isChecked()), String.valueOf(wifiCkeckbox.isChecked()), String.valueOf(activityCheckbox.isChecked()));
+                    if(getArguments().getString("description") != null && getArguments().getString("id") != null)
+                        wsc.editWorkspace(getArguments().getString("id"), workspaceName.getText().toString(), workspaceDescription.getText().toString(), workspaceAdress.getText().toString(), workspaceCountry.getText().toString(), workspaceCity.getText().toString(), longitude, latitude, String.valueOf(accomodationCheckbox.isChecked()), String.valueOf(foodCheckbox.isChecked()), String.valueOf(wifiCkeckbox.isChecked()), String.valueOf(activityCheckbox.isChecked()));
                     else
-                        wsc.editWorkspace(workspace.id, workspaceName.getText().toString(), workspace.description, workspaceAdress.getText().toString(), workspaceCountry.getText().toString(), workspaceCity.getText().toString(), workspace.longitude, workspace.latitude, String.valueOf(accomodationCheckbox.isChecked()), String.valueOf(foodCheckbox.isChecked()), String.valueOf(wifiCkeckbox.isChecked()), String.valueOf(activityCheckbox.isChecked()));
+                        wsc.addWorkspaceAsUser(userMail, workspaceName.getText().toString(), description, workspaceAdress.getText().toString(), workspaceCountry.getText().toString(), workspaceCity.getText().toString(), longitude, latitude, String.valueOf(accomodationCheckbox.isChecked()), String.valueOf(foodCheckbox.isChecked()), String.valueOf(wifiCkeckbox.isChecked()), String.valueOf(activityCheckbox.isChecked()));
                     LoadingData.EnableProgressBar(relativeLayout, progressBar);
                 }else{
                     Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();

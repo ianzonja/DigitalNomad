@@ -109,20 +109,28 @@ public class RecyclerViewFragment extends Fragment implements OnServiceFinished,
 
     @Override
     public void onLongPressAction(int position) {
-        FragmentManager fm = getFragmentManager();
-        valueBundle = new Bundle();
-        valueBundle.putString("record", new Gson().toJson(workspaces.get(position)));
-        PopUpWorkspacesMessage dialog = new PopUpWorkspacesMessage();
-        dialog.setArguments(valueBundle);
-        dialog.show(getFragmentManager(), "sdfdsf");
-        fm.executePendingTransactions();
-        dialog.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                WebServiceCaller wsc = new WebServiceCaller(RecyclerViewFragment.this);
-                wsc.GetClientWorkspaces(getArguments().getString("email"));
-            }
-        });
+        if(getArguments().getString("email") != null){
+            FragmentManager fm = getFragmentManager();
+            valueBundle = new Bundle();
+            valueBundle.putString("id", workspaces.get(position).id);
+            valueBundle.putString("name", workspaces.get(position).name);
+            valueBundle.putString("country", workspaces.get(position).country);
+            valueBundle.putString("town", workspaces.get(position).town);
+            valueBundle.putString("adress", workspaces.get(position).adress);
+            valueBundle.putString("description", workspaces.get(position).description);
+            valueBundle.putString("email", getArguments().getString("email"));
+            PopUpWorkspacesMessage dialog = new PopUpWorkspacesMessage();
+            dialog.setArguments(valueBundle);
+            dialog.show(getFragmentManager(), "sdfdsf");
+            fm.executePendingTransactions();
+            dialog.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialogInterface) {
+                    WebServiceCaller wsc = new WebServiceCaller(RecyclerViewFragment.this);
+                    wsc.GetClientWorkspaces(getArguments().getString("email"));
+                }
+            });
+        }
     }
 
     @Override
