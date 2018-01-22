@@ -3,18 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/workspace_image_gallery"
+    <ImageView
+        android:id="@+id/workspace_image"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="@color/com_facebook_button_border_color_focused">
-    </android.support.v4.view.ViewPager>
+        android:background="@color/com_facebook_button_border_color_focused"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/workspace_image_gallery">
+        android:layout_below="@+id/workspace_image">
 
         <RelativeLayout
             android:layout_width="wrap_content"

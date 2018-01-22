@@ -3,6 +3,7 @@ package com.example.webservice.interfaces.interfaces;
 import com.example.webservice.interfaces.Review;
 import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.WorkspaceDetailsResponse;
+import com.example.webservice.interfaces.WorkspaceGallery;
 import com.example.webservice.interfaces.WorkspaceValue;
 
 import java.util.List;
@@ -66,4 +67,7 @@ public interface APIinterface {
 
     @GET("advancedSearch.php")
     Call <List<WorkspaceValue>> advanceSearch(@Query("countryName") String countryName, @Query("accomodation") String accomodation, @Query("food") String food, @Query("wifi") String wifi, @Query("socialActivities") String socialActivities, @Query("aZ") String aZ);
+
+    @GET("asdassda.php")
+    Call<List<WorkspaceGallery>> workspaceGallery(@Query("idWorkspace") String id);
 }

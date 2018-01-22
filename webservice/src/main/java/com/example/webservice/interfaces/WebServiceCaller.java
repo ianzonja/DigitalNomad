@@ -26,7 +26,7 @@ public class WebServiceCaller {
     private Call<List<WorkspaceValue>> callWorkspaces;
     private Call<WorkspaceDetailsResponse> workspaceCall;
     private Call<List<Review>> reviewsCall;
-
+    private Call<List<WorkspaceGallery>> galleryCall;
     public WebServiceCaller(OnServiceFinished listener) {
         final String baseUrl = "http://jospudjaatfoi.000webhostapp.com/";
         this.listener=listener;
@@ -125,6 +125,11 @@ public class WebServiceCaller {
         CheckWorkspaceCall();
     }
 
+    public void getWorkspaceGallery(String id){
+        galleryCall = serviceCaller.workspaceGallery(id);
+        WorkspaceGalleryCall();
+    }
+
     private void CheckCall(){
         if (call != null) {
             call.enqueue(new Callback<ServiceResponse>() {
@@ -187,6 +192,24 @@ public class WebServiceCaller {
                 System.out.println("jel usa tu?");
                 if(response.isSuccess())
                     listener.onServiceDone(response.body());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                System.out.println("nevalja!!!!!");
+            }
+        });
+    }
+
+    public void WorkspaceGalleryCall(){
+        galleryCall.enqueue(new Callback<List<WorkspaceGallery>>() {
+            @Override
+            public void onResponse(Response<List<WorkspaceGallery>> response, Retrofit retrofit) {
+                System.out.println("uso u onResponse");
+                if(response.isSuccess()) {
+                    System.out.println("success!!");
+                    listener.onServiceDone(response.body());
+                }
             }
 
             @Override

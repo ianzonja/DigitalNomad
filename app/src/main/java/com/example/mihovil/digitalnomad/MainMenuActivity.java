@@ -56,7 +56,7 @@ public class MainMenuActivity extends AppCompatActivity
     private int radius = 0;
     private boolean locationIsReady = false;
     private boolean advancedSearchIsReady = false;
-    private boolean isAplicationStarted = true;
+    private boolean isHomeReady = true;
     private AdvancedResult advancedResult;
 
     @Override
@@ -145,7 +145,7 @@ public class MainMenuActivity extends AppCompatActivity
         Fragment fragment = null;
         Bundle valueBundle = new Bundle();
 
-        if(locationIsReady || isAplicationStarted) {
+        if(locationIsReady || isHomeReady) {
             valueBundle.putString("longitude", Double.toString(longitude));
             valueBundle.putString("latitude", Double.toString(latitude));
             valueBundle.putString("radius", Integer.toString(radius));
@@ -187,7 +187,7 @@ public class MainMenuActivity extends AppCompatActivity
             ft.replace(R.id.content_frame, fragment);
             ft.commit();
         }
-        isAplicationStarted = false;
+        isHomeReady = false;
         locationIsReady = false;
         advancedSearchIsReady= false;
 
@@ -202,8 +202,11 @@ public class MainMenuActivity extends AppCompatActivity
         int id = item.getItemId();
         getSelectedItemPosition();
         position = menuItems.indexOf(item);
-        if(position == 0)
+        if(position == 0){
+            isHomeReady = true;
             id = R.id.nav_workspaces;
+        }
+        System.out.println("Navigation id: " + id);
         displaySelectedFragment(id);
         return true;
     }

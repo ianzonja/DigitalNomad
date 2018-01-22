@@ -2,6 +2,7 @@ package com.example.mihovil.digitalnomad.fragments;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,18 +14,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 import com.example.mihovil.digitalnomad.R;
+import com.example.mihovil.digitalnomad.files.GetImage;
 import com.example.mihovil.digitalnomad.models.Workspace;
+import com.example.webservice.interfaces.Path;
 import com.example.webservice.interfaces.WebServiceCaller;
 import com.example.webservice.interfaces.WorkspaceDetailsResponse;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinished {
+public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinished, OnImageDownload{
     Workspace workspace = null;
     WorkspaceDetailsResponse serviceResponse = null;
     TextView workspaceName;
@@ -38,7 +46,9 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
     TextView workspaceRating;
     TextView workspaceDescription;
     Button workspaceReviews;
+    ImageView workspaceImage;
     String id;
+    List<Path> paths;
 
     String worskpaceUserEmail;
 
@@ -73,6 +83,7 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
         workspaceRating = (TextView) view.findViewById(R.id.workspace_rating);
         workspaceDescription = (TextView) view.findViewById(R.id.workspace_description_detail);
         workspaceReviews = (Button) view.findViewById(R.id.workspace_reviews_detail);
+        workspaceImage = (ImageView) view.findViewById(R.id.workspace_image);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.button_reservation);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +98,22 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
                 Fragment fragment = new ShowReviewsFragment();
                 Bundle valueBundle = new Bundle();
                 valueBundle.putString("idWorkspace", id);
+                fragment.setArguments(valueBundle);
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, fragment);
+                ft.commit();
+            }
+        });
+        workspaceImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new ShowWorkspaceGallery();
+                Bundle valueBundle = new Bundle();
+                ArrayList<String> urls = new ArrayList<String>();
+                for(int i = 0; i<paths.size(); i++){
+                    urls.add(paths.get(i).getPath());
+                }
+                valueBundle.putStringArrayList("urls", urls);
                 fragment.setArguments(valueBundle);
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment);
@@ -115,8 +142,16 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
         workspaceRating.setText(serviceResponse.getDetails().getAveragegrade());
         workspaceDescription.setText(serviceResponse.getDetails().getDescription());
         worskpaceUserEmail = serviceResponse.getDetails().getEmail();
-
-
+        paths = serviceResponse.getPaths();
+        if(paths.get(0).getPath().equals("NULL")){
+            System.out.println("null vridnost!");
+        }
+        else{
+            GetImage getImage = new GetImage(this);
+            getImage.setUrl(paths.get(0).getPath().replace("https", "http"));
+            getImage.execute();
+            System.out.println("url: " + paths.get(0).getPath().replace("https", "http"));
+        }
 
         if(serviceResponse.getServices().getWifi())
             workspaceInternet.setBackgroundColor(getResources().getColor(R.color.green));
@@ -151,5 +186,12 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Digital Nomad");
         emailIntent.putExtra(Intent.EXTRA_TEXT,"I would like to make a reservation on Your Workspace");
         startActivity(Intent.createChooser(emailIntent, null));
+    }
+
+
+    @Override
+    public void onImageDownload(Bitmap image) {
+        System.out.println("skinuo sliku");
+        workspaceImage.setImageBitmap(image);
     }
 }
