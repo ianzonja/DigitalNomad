@@ -130,6 +130,11 @@ public class WebServiceCaller {
         WorkspaceGalleryCall();
     }
 
+    public void  uploadWorkspaceImage(String id, String image){
+        call= serviceCaller.uploadWorkspaceImage(id,image);
+        CheckCall();
+    }
+
     private void CheckCall(){
         if (call != null) {
             call.enqueue(new Callback<ServiceResponse>() {

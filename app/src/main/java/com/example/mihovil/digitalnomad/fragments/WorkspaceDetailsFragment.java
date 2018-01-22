@@ -114,6 +114,7 @@ public class WorkspaceDetailsFragment extends Fragment implements OnServiceFinis
                     urls.add(paths.get(i).getPath());
                 }
                 valueBundle.putStringArrayList("urls", urls);
+                valueBundle.putString("id", id);
                 fragment.setArguments(valueBundle);
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment);

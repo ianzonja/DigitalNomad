@@ -3,7 +3,6 @@ package com.example.mihovil.digitalnomad.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,7 +13,6 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,21 +22,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mihovil.digitalnomad.MainMenuActivity;
-import com.example.mihovil.digitalnomad.files.ImageSaver;
-import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 import com.example.mihovil.digitalnomad.R;
 import com.example.mihovil.digitalnomad.files.GetImage;
+import com.example.mihovil.digitalnomad.files.ImageSaver;
+import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.WebServiceCaller;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
@@ -174,7 +169,7 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
         }
 
         //dohvacanje slike sa prosljedenog urla
-        GetImage getImage = new GetImage(this);
+        getImage = new GetImage(this);
         getImage.setUrl(url);
         getImage.execute();
 
