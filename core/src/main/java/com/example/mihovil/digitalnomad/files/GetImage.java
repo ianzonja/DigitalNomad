@@ -1,7 +1,5 @@
 package com.example.mihovil.digitalnomad.files;
 
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,22 +10,14 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.util.Base64;
-import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 import com.example.mihovil.digitalnomad.Interface.OnPicturesRecived;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-
-import retrofit.http.Url;
 
 /**
  * Created by Mihovil on 27.11.2017..

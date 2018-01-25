@@ -171,7 +171,7 @@ public class WebServiceCaller {
 
             @Override
             public void onFailure(Throwable t) {
-                System.out.println("nevalja!!!!!");
+                listener.onServiceFail("failcina");
             }
         });
     }

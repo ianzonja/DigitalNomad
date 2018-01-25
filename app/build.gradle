@@ -28,6 +28,7 @@ dependencies {
     compile project(':webservice')
     compile project(':map')
     compile project (':advancedsearch')
+    compile project(':core')
     //compile 'com.android.support:appcompat-v7:26.+'
 
     compile 'com.jakewharton:butterknife:8.4.0'

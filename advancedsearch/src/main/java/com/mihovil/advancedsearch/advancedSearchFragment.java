@@ -34,7 +34,6 @@ public class advancedSearchFragment extends Fragment implements View.OnClickList
         super.onAttach(context);
         Activity mainMenu = (Activity) context;
         listener = (OnAdvancedSearch) mainMenu;
-
     }
 
     @Override

@@ -31,6 +31,18 @@ public class Workspace {
         this.workspaceImage = image;
     }
 
+    public Workspace(String id, String name, String description, String adress, String country, String town, String longitude, String latitude, String url){
+        this.name = name;
+        this.id = id;
+        this.description = description;
+        this.adress = adress;
+        this.country = country;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.town = town;
+        this.pictureUrl = url;
+    }
+
     public Workspace(String name, String country){
         this.name = name;
         this.country = country;
