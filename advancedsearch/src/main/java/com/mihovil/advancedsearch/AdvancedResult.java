@@ -1,4 +1,4 @@
-package com.example.mihovil.digitalnomad.models;
+package com.mihovil.advancedsearch;
 
 /**
  * Created by Mihovil on 21.1.2018..

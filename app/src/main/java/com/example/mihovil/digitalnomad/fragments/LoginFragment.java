@@ -6,11 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +19,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mihovil.digitalnomad.MockData.LoginMockData;
-import com.example.mihovil.digitalnomad.files.LoadingData;
 import com.example.mihovil.digitalnomad.MainMenuActivity;
+import com.example.mihovil.digitalnomad.MockData.LoginMockData;
 import com.example.mihovil.digitalnomad.R;
+import com.example.mihovil.digitalnomad.files.LoadingData;
 import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.WebServiceCaller;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
@@ -34,7 +32,6 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -159,28 +156,28 @@ public class LoginFragment extends Fragment implements OnServiceFinished,View.On
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
-            case R.id.signup:
-                Fragment fragment = new RegistracijaFragment();
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack("LoginFragment");
-                ft.replace(R.id.login_content, fragment);
-                ft.commit();
-                break;
-            case R.id.button:
-                if (CheckEntry(mail, pass)) {
-                    //Za potrebe testiranja koristenje mock data
-                    if(mail.getText().toString().equals( LoginMockData.loginMail) && pass.getText().toString().equals(LoginMockData.LoginPassword)){
-                        Intent i = new Intent(getContext(), MainMenuActivity.class);
-                        startActivity(i);
-                        getActivity().finish();
+        int i1 = v.getId();
+        if (i1 == R.id.signup) {
+            Fragment fragment = new RegistracijaFragment();
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack("LoginFragment");
+            ft.replace(R.id.login_content, fragment);
+            ft.commit();
 
-                    }else {
-                        LoadingData.EnableProgressBar(relativeLayout, progressBar);
-                        wsc.Login(mail.getText().toString(), pass.getText().toString());
-                    }
+        } else if (i1 == R.id.button) {
+            if (CheckEntry(mail, pass)) {
+                //Za potrebe testiranja koristenje mock data
+                if (mail.getText().toString().equals(LoginMockData.loginMail) && pass.getText().toString().equals(LoginMockData.LoginPassword)) {
+                    Intent i = new Intent(getContext(), MainMenuActivity.class);
+                    startActivity(i);
+                    getActivity().finish();
+
                 } else {
-                    Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
+                    LoadingData.EnableProgressBar(relativeLayout, progressBar);
+                    wsc.Login(mail.getText().toString(), pass.getText().toString());
                 }
+            } else {
+                Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

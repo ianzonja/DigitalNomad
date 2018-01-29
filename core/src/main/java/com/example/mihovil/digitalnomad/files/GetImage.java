@@ -81,6 +81,7 @@ public class GetImage extends AsyncTask<Void, Integer, Void> {
             if(i == urlArray.size() -1)
                 isReadyToReturnImages = true;
             publishProgress(1);
+            System.out.println("slika: " + Integer.toString(i));
         }
     }
 

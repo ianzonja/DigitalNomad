@@ -12,13 +12,17 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.mihovil.advancedsearch.interfaces.OnAdvancedSearch;
+import com.example.mihovil.digitalnomad.DataLoader;
+import com.example.mihovil.digitalnomad.Interface.OnDataLoaded;
+import com.example.mihovil.digitalnomad.models.Workspace;
+
+import java.util.ArrayList;
 
 /**
  * Created by Mihovil on 20.1.2018..
  */
 
-public class advancedSearchFragment extends Fragment implements View.OnClickListener {
+public class advancedSearchFragment extends Fragment implements View.OnClickListener, OnDataLoaded{
 
     private EditText countryName;
     private CheckBox accomodation;
@@ -26,14 +30,18 @@ public class advancedSearchFragment extends Fragment implements View.OnClickList
     private CheckBox wifi;
     private CheckBox socialActivities;
     private CheckBox aZ;
-    private OnAdvancedSearch listener;
     private Button filterOut;
+    private DataLoader dl;
+    private Object activityObject;
+
+    public advancedSearchFragment(DataLoader dl) {
+        this.dl = dl;
+    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         Activity mainMenu = (Activity) context;
-        listener = (OnAdvancedSearch) mainMenu;
     }
 
     @Override
@@ -68,8 +76,15 @@ public class advancedSearchFragment extends Fragment implements View.OnClickList
             if(countryName.getText().toString().equals(""))
                 countryName.setText("nodata");
             System.out.println("sta rece: " + countryName.getText().toString());
-            listener.onAdvancedResult(countryName.getText().toString(),accomodation.isChecked(),food.isChecked(),wifi.isChecked(),socialActivities.isChecked(),aZ.isChecked());
+            AdvancedResult advancedResult = new AdvancedResult(countryName.getText().toString(),accomodation.isChecked(),food.isChecked(),wifi.isChecked(),socialActivities.isChecked(),aZ.isChecked());
+            dl.loadData((Object) advancedResult);
         }
     }
+
+    @Override
+    public void onDataLoaded(ArrayList<Workspace> workspaces) {
+        dl.displayData();
+    }
+
 
 }

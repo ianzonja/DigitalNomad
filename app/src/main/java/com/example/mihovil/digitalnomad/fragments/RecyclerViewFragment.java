@@ -16,20 +16,15 @@ import android.view.ViewGroup;
 
 import com.example.mihovil.digitalnomad.Interface.ClickListener;
 import com.example.mihovil.digitalnomad.Interface.LongPressListener;
-import com.example.mihovil.digitalnomad.Interface.OnPicturesRecived;
 import com.example.mihovil.digitalnomad.R;
 import com.example.mihovil.digitalnomad.controller.RecyclerViewAdapter;
-import com.example.mihovil.digitalnomad.files.GetImage;
 import com.example.mihovil.digitalnomad.models.Workspace;
 import com.example.webservice.interfaces.WorkspaceValue;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewFragment extends Fragment implements LongPressListener, ClickListener, OnPicturesRecived{
+public class RecyclerViewFragment extends Fragment implements LongPressListener, ClickListener{
 
     public static String returningValue;
     List<Workspace> workspacesList;
@@ -40,6 +35,10 @@ public class RecyclerViewFragment extends Fragment implements LongPressListener,
     FloatingActionButton fab;
     ArrayList<Bitmap> workspaceBitmapList;
     List<Workspace> workspaces;
+
+    public RecyclerViewFragment(List<Workspace> workspaces){
+        this.workspaces = workspaces;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.activity_recycler_view, container, false);
@@ -55,13 +54,8 @@ public class RecyclerViewFragment extends Fragment implements LongPressListener,
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
         workspacesList = new ArrayList<Workspace>();
-        String workspaceJson = getArguments().getString("workspaceJson");
-        Type listType = new TypeToken<List<Workspace>>(){}.getType();
-        workspaces = new Gson().fromJson(workspaceJson, listType);
         workspaceBitmapList = new ArrayList<>();
         fab = (FloatingActionButton) view.findViewById(R.id.add_new_fab);
-        if(getArguments().getString("showFab") == "GONE")
-            fab.setVisibility(view.GONE);
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(workspaces, RecyclerViewFragment.this, RecyclerViewFragment.this);
         rv.setAdapter(adapter);
 
@@ -79,9 +73,7 @@ public class RecyclerViewFragment extends Fragment implements LongPressListener,
         ArrayList<String> urls = new ArrayList<>();
         for(int i = 0; i< workspaces.size(); i++) {
             urls.add(workspaces.get(i).pictureUrl);
-        }
-        GetImage getImage = new GetImage(urls, this);
-        getImage.execute();
+        };
         adapter = new RecyclerViewAdapter(workspaces, RecyclerViewFragment.this, RecyclerViewFragment.this);
         rv.setAdapter(adapter);
     }
@@ -120,14 +112,5 @@ public class RecyclerViewFragment extends Fragment implements LongPressListener,
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, fragment);
         ft.commit();
-    }
-
-    @Override
-    public void picturesReceived(Bitmap[] bitmap) {
-        for(int i = 0; i< workspaces.size(); i++){
-            workspaces.get(i).workspaceImage = bitmap[i];
-        }
-        RecyclerViewAdapter rva = new RecyclerViewAdapter(workspaces, RecyclerViewFragment.this, RecyclerViewFragment.this);
-        rv.setAdapter(rva);
     }
 }

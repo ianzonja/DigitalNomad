@@ -20,50 +20,48 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.air.core.DataLoader;
-import com.example.air.core.OnDataLoaded;
+import com.example.map.LocationDataLoader;
 import com.example.map.MapFragment;
-import com.example.map.interfaces.OnLocationPicked;
+import com.example.mihovil.digitalnomad.Interface.OnDataDisplay;
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 import com.example.mihovil.digitalnomad.files.GetImage;
 import com.example.mihovil.digitalnomad.files.ImageSaver;
 import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.mihovil.digitalnomad.fragments.RecyclerViewFragment;
 import com.example.mihovil.digitalnomad.fragments.UserProfileFragment;
-import com.example.mihovil.digitalnomad.loaders.WsDataLoader;
-import com.example.mihovil.digitalnomad.models.AdvancedResult;
-import com.example.mihovil.digitalnomad.models.LocationResult;
+import com.example.mihovil.digitalnomad.loaders.UserWorkspacesDataLoader;
 import com.example.mihovil.digitalnomad.models.Workspace;
 import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.WebServiceCaller;
+import com.example.webservice.interfaces.WorkspaceValue;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
-import com.google.gson.Gson;
+import com.mihovil.advancedsearch.AdvancedSearchDataLoader;
 import com.mihovil.advancedsearch.advancedSearchFragment;
-import com.mihovil.advancedsearch.interfaces.OnAdvancedSearch;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainMenuActivity extends AppCompatActivity
-        implements OnServiceFinished, NavigationView.OnNavigationItemSelectedListener,OnImageDownload, OnDataLoaded, OnLocationPicked, OnAdvancedSearch {
+        implements OnServiceFinished, NavigationView.OnNavigationItemSelectedListener,OnImageDownload, OnDataDisplay {
     SharedPreferences preferences;
     List<MenuItem> menuItems;
     NavigationView navigationView;
     ImageView navProfilePicture;
     TextView navName;
     TextView navEmail;
-    ArrayList<Workspace> workspacesArray;
+    List<Workspace> workspacesArray;
     Bitmap[] workspaceBitmapArray;
     String fabView;
     private int position;
     private double longitude = 0,latitude = 0;
     private int radius = 0;
-    private AdvancedResult advancedResult;
+    List<WorkspaceValue> workspaceResponse = null;
+    List<Workspace> userWorkspaces;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,8 +101,6 @@ public class MainMenuActivity extends AppCompatActivity
             WebServiceCaller wsc = new WebServiceCaller(MainMenuActivity.this);
             wsc.GetUserProfile(email);
         }
-
-        DoWorkspaceCall();
     }
 
     @Override
@@ -144,36 +140,32 @@ public class MainMenuActivity extends AppCompatActivity
     private void displaySelectedFragment(int id) {
         Fragment fragment = null;
         Bundle valueBundle = new Bundle();
-        System.out.println("size: " + workspacesArray.size());
         valueBundle.putString("Email", preferences.getString("Email", null));
-        if(id == R.id.nav_workspaces)
-            valueBundle.putString("showFab", fabView);
-            valueBundle.putString("workspaceJson", new Gson().toJson(workspacesArray));
-        switch (id) {
-            case R.id.nav_search:
-                fragment = new MapFragment();
-                break;
-            case R.id.nav_advanced_search:
-                fragment = new advancedSearchFragment();
-                break;
-            case R.id.nav_user_profile:
-                fragment = new UserProfileFragment();
-                break;
-            case R.id.nav_workspaces:
-                fragment = new RecyclerViewFragment();
-                fragment.setArguments(valueBundle);
-                break;
-            case R.id.nav_logout:
-                Logout();
-                startActivity(new Intent(getBaseContext(), LoginActivity.class));
-                finish();
+        if (id == R.id.nav_search) {
+            DataLoader dl = new LocationDataLoader(this);
+            fragment = new MapFragment(dl);
+
+        } else if (id == R.id.nav_advanced_search) {
+            DataLoader dl = new AdvancedSearchDataLoader(this);
+            fragment = new advancedSearchFragment(dl);
+
+        } else if (id == R.id.nav_user_profile) {
+            fragment = new UserProfileFragment();
+
+        } else if (id == R.id.nav_workspaces) {
+            fragment = new RecyclerViewFragment(workspacesArray);
+            fragment.setArguments(valueBundle);
+
+        } else{
+            Logout();
+            startActivity(new Intent(getBaseContext(), LoginActivity.class));
+            finish();
         }
 
-        if (fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, fragment);
-            ft.commit();
-        }
+        System.out.println("i sad bi jos trebo dat fragent");
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -186,15 +178,18 @@ public class MainMenuActivity extends AppCompatActivity
         int id = item.getItemId();
         getSelectedItemPosition();
         position = menuItems.indexOf(item);
-        if(position == 0){
-            locationArrived(longitude, latitude, radius);
+        if(position == 4 || position == 0){
+            DoUserWorkspaceCall();
         }
-        else if(position == 4){
-            DoWorkspaceCall();
-        }
-        System.out.println("Navigation id: " + id);
-        displaySelectedFragment(id);
+        else
+            displaySelectedFragment(id);
         return true;
+    }
+
+    private void DoUserWorkspaceCall() {
+        System.out.println("uso u workspaces call");
+        DataLoader userWorkspaces = new UserWorkspacesDataLoader(this);
+        userWorkspaces.loadData(preferences.getString("Email", null));
     }
 
     public void getSelectedItemPosition(){
@@ -225,23 +220,26 @@ public class MainMenuActivity extends AppCompatActivity
 
     @Override
     public void onServiceDone(Object response) {
-
-        ServiceResponse user = (ServiceResponse) response;
-        UserToJsonFile obj = new UserToJsonFile(user.getName(), user.getEmail(), user.getReponseId(), user.getUrlPicture(),user.getRank(), getBaseContext());
-
-        navName.setText(user.getName());
-        navEmail.setText(user.getEmail());
         try {
-            obj.makeJSONObject();
-            obj.SaveToFile();
-        } catch (Exception e) {
-            e.printStackTrace();
+            ServiceResponse user  = (ServiceResponse) response;
+            if(user != null){
+                UserToJsonFile obj = new UserToJsonFile(user.getName(), user.getEmail(), user.getReponseId(), user.getUrlPicture(),user.getRank(), getBaseContext());
+
+                navName.setText(user.getName());
+                navEmail.setText(user.getEmail());
+                try {
+                    obj.makeJSONObject();
+                    obj.SaveToFile();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                GetImage getImage = new GetImage( this);
+                getImage.execute();
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
         }
-
-        GetImage getImage = new GetImage( this);
-        getImage.setUrl(user.getUrlPicture());
-        getImage.execute();
-
     }
 
     @Override
@@ -255,32 +253,9 @@ public class MainMenuActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDataLoaded(ArrayList<Workspace> workspaces, Bitmap[] workspaceBitmaps) {
+    public void onDataDisplay(List<Workspace> workspaces) {
+        System.out.println("uso u onDataDisplay");
         workspacesArray = workspaces;
-        workspaceBitmapArray = workspaceBitmaps;
-        System.out.println("velicina: " + workspacesArray.size());
         displaySelectedFragment(R.id.nav_workspaces);
-    }
-
-    public void DoWorkspaceCall(){
-        fabView = "SHOW";
-        WsDataLoader dataLoader = new WsDataLoader(preferences.getString("Email", null));
-        dataLoader.loadData(this);
-    }
-
-    @Override
-    public void locationArrived(double longitude, double latitude, int radius) {
-        fabView = "GONE";
-        LocationResult result = new LocationResult(longitude, latitude, radius);
-        DataLoader wsDataLoader = new WsDataLoader(result);
-        wsDataLoader.loadData(this);
-    }
-
-    @Override
-    public void onAdvancedResult(String countryName, boolean accomodation, boolean food, boolean wifi, boolean socialActivities, boolean aZ) {
-        fabView = "GONE";
-        advancedResult = new AdvancedResult(countryName, accomodation, food, wifi, socialActivities, aZ);
-        DataLoader wsDataLoader = new WsDataLoader(advancedResult);
-        wsDataLoader.loadData(this);
     }
 }

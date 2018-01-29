@@ -5,7 +5,6 @@ android {
     compileSdkVersion 25
     buildToolsVersion "26.0.1"
     defaultConfig {
-        applicationId "com.example.mihovil.digitalnomad"
         minSdkVersion 18
         targetSdkVersion 25
         versionCode 1
@@ -26,9 +25,9 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile project(':webservice')
-    compile project(':map')
-    compile project (':advancedsearch')
+    compile project(':advancedsearch')
     compile project(':core')
+    compile project(':map')
     //compile 'com.android.support:appcompat-v7:26.+'
 
     compile 'com.jakewharton:butterknife:8.4.0'

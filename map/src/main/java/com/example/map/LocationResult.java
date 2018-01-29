@@ -1,4 +1,4 @@
-package com.example.mihovil.digitalnomad.models;
+package com.example.map;
 
 /**
  * Created by Ian on 1/25/2018.

@@ -39,32 +39,32 @@ public class PopUpWorkspacesMessage extends DialogFragment implements View.OnCli
 
     @Override
     public void onClick(View view) {
-        switch(view.getId()){
-            case R.id.edit:
-                Fragment fragment = new EnterWorkspaceFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("email", getArguments().getString("email"));
-                bundle.putString("id", getArguments().getString("id"));
-                bundle.putString("name", getArguments().getString("name"));
-                bundle.putString("country", getArguments().getString("country"));
-                bundle.putString("town", getArguments().getString("town"));
-                bundle.putString("adress", getArguments().getString("adress"));
-                bundle.putString("description", getArguments().getString("description"));
-                fragment.setArguments(bundle);
-                android.support.v4.app.FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.content_frame, fragment);
-                ft.commit();
-                dismiss();
-                break;
-            case R.id.delete:
-                Toast.makeText(getActivity(), "Uneseno", Toast.LENGTH_LONG).show();
-                wsc = new WebServiceCaller(PopUpWorkspacesMessage.this);
-                wsc.deleteWorkspace(getArguments().getString("id", getArguments().getString("id")));
-                System.out.println("delete");
-                serviceStatus = "delete";
-                dismiss();
-                break;
+        int i = view.getId();
+        if (i == R.id.edit) {
+            Fragment fragment = new EnterWorkspaceFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("email", getArguments().getString("email"));
+            bundle.putString("id", getArguments().getString("id"));
+            bundle.putString("name", getArguments().getString("name"));
+            bundle.putString("country", getArguments().getString("country"));
+            bundle.putString("town", getArguments().getString("town"));
+            bundle.putString("adress", getArguments().getString("adress"));
+            bundle.putString("description", getArguments().getString("description"));
+            fragment.setArguments(bundle);
+            android.support.v4.app.FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
+            dismiss();
+
+        } else if (i == R.id.delete) {
+            Toast.makeText(getActivity(), "Uneseno", Toast.LENGTH_LONG).show();
+            wsc = new WebServiceCaller(PopUpWorkspacesMessage.this);
+            wsc.deleteWorkspace(getArguments().getString("id", getArguments().getString("id")));
+            System.out.println("delete");
+            serviceStatus = "delete";
+            dismiss();
+
         }
     }
 

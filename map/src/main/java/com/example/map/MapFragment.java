@@ -17,15 +17,13 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.support.v4.app.Fragment;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,15 +32,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.map.interfaces.OnLocationPicked;
+import com.example.mihovil.digitalnomad.DataLoader;
+import com.example.mihovil.digitalnomad.Interface.OnDataLoaded;
+import com.example.mihovil.digitalnomad.models.Workspace;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -50,7 +46,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
@@ -59,7 +54,7 @@ import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, OnDataLoaded {
 
     private static final int ERROR_DIALOG_REQUEST = 9001;
 
@@ -67,7 +62,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 15f;
-    private OnLocationPicked listener;
     private LatLng userData;
 
     private Location currentLocation;
@@ -83,12 +77,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
+    DataLoader dl;
+
+    public MapFragment(DataLoader dl) {
+        this.dl = dl;
+    }
+
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         Activity mainMenu = (Activity) context;
-        listener = (OnLocationPicked) mainMenu;
     }
 
     @Override
@@ -134,8 +133,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         btnSearchLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                listener.locationArrived(userData.longitude, userData.latitude, progressChanged);
+                LocationResult lr = new LocationResult(userData.longitude, userData.latitude, progressChanged);
+                dl.loadData((Object) lr);
             }
         });
     }
@@ -212,10 +211,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
                             currentLocation = (Location) task.getResult();
-                            userData = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                             if (currentLocation == null) {
                                 enableLocation();
                             } else {
+                                userData = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                                 moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "Your location");
                             }
                         } else {
@@ -345,5 +344,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             });
             bilder.create().show();
         }
+    }
+    @Override
+    public void onDataLoaded(ArrayList<Workspace> workspaces) {
+        dl.displayData();
     }
 }

@@ -157,26 +157,26 @@ public class RegistracijaFragment extends Fragment implements OnServiceFinished,
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()) {
-            case R.id.registracija:
-                if (CheckEntry(email, password, name, lastName, repeatPass)) {
+        int i = v.getId();
+        if (i == R.id.registracija) {
+            if (CheckEntry(email, password, name, lastName, repeatPass)) {
 
-                    //MockData za potrebe testiranja Registracije
-                    if(name.getText().toString().equals(RegistracijaMockData.RegistracijanNme) &&
-                            lastName.getText().toString().equals(RegistracijaMockData.RegistracijaLastName) &&
-                            email.getText().toString().equals(RegistracijaMockData.RegistracijaEmail) &&
-                            password.getText().toString().equals(RegistracijaMockData.RegistracijaPassword) &&
-                            repeatPass.getText().toString().equals(RegistracijaMockData.RegistracijaRepeatPassword)){
-                        startActivity(new Intent(getContext(), MainMenuActivity.class));
-                        getActivity().finish();
+                //MockData za potrebe testiranja Registracije
+                if (name.getText().toString().equals(RegistracijaMockData.RegistracijanNme) &&
+                        lastName.getText().toString().equals(RegistracijaMockData.RegistracijaLastName) &&
+                        email.getText().toString().equals(RegistracijaMockData.RegistracijaEmail) &&
+                        password.getText().toString().equals(RegistracijaMockData.RegistracijaPassword) &&
+                        repeatPass.getText().toString().equals(RegistracijaMockData.RegistracijaRepeatPassword)) {
+                    startActivity(new Intent(getContext(), MainMenuActivity.class));
+                    getActivity().finish();
 
-                    }else {
-                        LoadingData.EnableProgressBar(relativeLayout, progressBar);
-                        wsc.Registrate(email.getText().toString(), password.getText().toString(), name.getText().toString(), lastName.getText().toString());
-                    }
                 } else {
-                    Toast.makeText(getContext(), "Correct errors", Toast.LENGTH_SHORT).show();
+                    LoadingData.EnableProgressBar(relativeLayout, progressBar);
+                    wsc.Registrate(email.getText().toString(), password.getText().toString(), name.getText().toString(), lastName.getText().toString());
                 }
+            } else {
+                Toast.makeText(getContext(), "Correct errors", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

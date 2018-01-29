@@ -226,25 +226,17 @@ public class UserProfileFragment extends Fragment implements OnImageDownload, On
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.profilePic: {
-                DialogInterface.OnClickListener dialogClickListener = UserProfileFragment.this;
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setMessage("Select image from gallery?").setPositiveButton("Yes", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
-
-                break;
-
-            }
-            case R.id.user_profile_txtChangePassword:{
-                Fragment fragment = new EditUserProfileFragment();
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame, fragment);
-                ft.commit();
-                break;
-            }
-
+        int i = v.getId();
+        if (i == R.id.profilePic) {
+            DialogInterface.OnClickListener dialogClickListener = UserProfileFragment.this;
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage("Select image from gallery?").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
+        } else if (i == R.id.user_profile_txtChangePassword) {
+            Fragment fragment = new EditUserProfileFragment();
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
         }
 
     }

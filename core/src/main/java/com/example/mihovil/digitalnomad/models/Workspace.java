@@ -31,7 +31,7 @@ public class Workspace {
         this.workspaceImage = image;
     }
 
-    public Workspace(String id, String name, String description, String adress, String country, String town, String longitude, String latitude, String url){
+    public Workspace(String id, String name, String description, String adress, String country, String town, String longitude, String latitude, Bitmap bitmap){
         this.name = name;
         this.id = id;
         this.description = description;
@@ -40,7 +40,7 @@ public class Workspace {
         this.longitude = longitude;
         this.latitude = latitude;
         this.town = town;
-        this.pictureUrl = url;
+        this.workspaceImage = bitmap;
     }
 
     public Workspace(String name, String country){

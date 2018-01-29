@@ -118,18 +118,16 @@ public class EditUserProfileFragment extends Fragment implements OnServiceFinish
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.user_profile_edit_user_btnSpremi: {
-                if (!checkIfEmpty(oldPassword, newPassword, repeatPassword)) {
-                    Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
-                } else {
-                    String email = preferences.getString("Email", null);
-                    WebServiceCaller wsc = new WebServiceCaller(EditUserProfileFragment.this);
-                    wsc.changePassword(email, oldPassword.getText().toString(), newPassword.getText().toString());
-                    LoadingData.EnableProgressBar(relativeLayout, progressBar);
-                    resetAll();
-                }
-                break;
+        int i = v.getId();
+        if (i == R.id.user_profile_edit_user_btnSpremi) {
+            if (!checkIfEmpty(oldPassword, newPassword, repeatPassword)) {
+                Toast.makeText(getActivity(), "Correct errors", Toast.LENGTH_SHORT).show();
+            } else {
+                String email = preferences.getString("Email", null);
+                WebServiceCaller wsc = new WebServiceCaller(EditUserProfileFragment.this);
+                wsc.changePassword(email, oldPassword.getText().toString(), newPassword.getText().toString());
+                LoadingData.EnableProgressBar(relativeLayout, progressBar);
+                resetAll();
             }
         }
     }
