@@ -3,14 +3,14 @@ package com.mihovil.advancedsearch;
 import android.support.v4.app.Fragment;
 
 import com.example.mihovil.digitalnomad.Interface.OnDataDisplay;
-import com.example.mihovil.digitalnomad.getWorkspaceData;
+import com.example.mihovil.digitalnomad.GetWorkspaceData;
 import com.example.webservice.interfaces.WebServiceCaller;
 
 /**
  * Created by Ian on 1/26/2018.
  */
 
-public class AdvancedSearchGetWorkspaceData extends getWorkspaceData {
+public class AdvancedSearchGetWorkspaceData extends GetWorkspaceData {
 
     AdvancedResult result = null;
     private advancedSearchFragment fragment;

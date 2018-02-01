@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.example.mihovil.digitalnomad.getWorkspaceData;
+import com.example.mihovil.digitalnomad.GetWorkspaceData;
 import com.example.mihovil.digitalnomad.Interface.OnDataLoaded;
 import com.example.mihovil.digitalnomad.models.Workspace;
 
@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * Created by Mihovil on 20.1.2018..
  */
 
-public class advancedSearchFragment extends Fragment implements View.OnClickListener, OnDataLoaded, getReference{
+public class advancedSearchFragment extends Fragment implements View.OnClickListener, OnDataLoaded, GetReference {
 
     private EditText countryName;
     private CheckBox accomodation;
@@ -31,7 +31,7 @@ public class advancedSearchFragment extends Fragment implements View.OnClickList
     private CheckBox socialActivities;
     private CheckBox aZ;
     private Button filterOut;
-    private getWorkspaceData dl;
+    private GetWorkspaceData dl;
     private Object activityObject;
 
     @Override

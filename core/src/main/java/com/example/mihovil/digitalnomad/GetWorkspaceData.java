@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import com.example.mihovil.digitalnomad.Interface.OnDataDisplay;
 import com.example.mihovil.digitalnomad.Interface.OnDataLoaded;
 import com.example.mihovil.digitalnomad.Interface.OnPicturesRecived;
-import com.example.mihovil.digitalnomad.Interface.getWorkspaces;
+import com.example.mihovil.digitalnomad.Interface.GetWorkspaces;
 import com.example.mihovil.digitalnomad.files.GetImage;
 import com.example.mihovil.digitalnomad.models.Workspace;
 import com.example.webservice.interfaces.WorkspaceValue;
@@ -17,14 +17,14 @@ import java.util.ArrayList;
  * Created by Ian on 1/25/2018.
  */
 
-public abstract class getWorkspaceData implements OnServiceFinished, OnPicturesRecived, getWorkspaces {
+public abstract class GetWorkspaceData implements OnServiceFinished, OnPicturesRecived, GetWorkspaces {
     public ArrayList<Workspace> workspaces = new ArrayList<>();
     public Bitmap[] workspaceBitmaps;
     protected OnDataLoaded listener;
     protected OnDataDisplay onDataDisplayListener;
     ArrayList<WorkspaceValue> workspaceResponse = null;
 
-    protected getWorkspaceData(OnDataDisplay onDataDisplay){
+    protected GetWorkspaceData(OnDataDisplay onDataDisplay){
         this.onDataDisplayListener = onDataDisplay;
     }
 

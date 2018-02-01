@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.example.map.LocationGetWorkspaceData;
 import com.example.mihovil.digitalnomad.Interface.OnDataDisplay;
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
+import com.example.mihovil.digitalnomad.Interface.GetWorkspaces;
 import com.example.mihovil.digitalnomad.files.GetImage;
 import com.example.mihovil.digitalnomad.files.ImageSaver;
 import com.example.mihovil.digitalnomad.files.UserToJsonFile;
@@ -139,16 +140,14 @@ public class MainMenuActivity extends AppCompatActivity
         Fragment fragment = null;
         Bundle valueBundle = new Bundle();
         valueBundle.putString("Email", preferences.getString("Email", null));
-        getWorkspaceData dl = null;
+        GetWorkspaces getWorkspaces = null;
 
         switch (id){
             case R.id.nav_search:
-                dl = new LocationGetWorkspaceData(this);
-                fragment = dl.getFragment(dl);
+                getWorkspaces = new LocationGetWorkspaceData(this);
                 break;
             case R.id.nav_advanced_search:
-                dl = new AdvancedSearchGetWorkspaceData(this);
-                fragment = dl.getFragment(dl);
+                getWorkspaces = new AdvancedSearchGetWorkspaceData(this);
                 break;
             case R.id.nav_user_profile:
                 fragment = new UserProfileFragment();
@@ -161,6 +160,9 @@ public class MainMenuActivity extends AppCompatActivity
                 Logout();
                 startActivity(new Intent(getBaseContext(), LoginActivity.class));
                 finish();
+        }
+        if(getWorkspaces != null){
+            fragment = getWorkspaces.getFragment();
         }
 
         if(fragment != null){
@@ -191,7 +193,7 @@ public class MainMenuActivity extends AppCompatActivity
 
     private void DoUserWorkspaceCall() {
         System.out.println("uso u workspaces call");
-        getWorkspaceData userWorkspaces = new UserWorkspacesGetWorkspaceData(this);
+        GetWorkspaceData userWorkspaces = new UserWorkspacesGetWorkspaceData(this);
         userWorkspaces.loadData(preferences.getString("Email", null));
     }
 
