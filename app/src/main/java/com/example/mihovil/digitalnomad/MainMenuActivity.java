@@ -148,7 +148,7 @@ public class MainMenuActivity extends AppCompatActivity
                 break;
             case R.id.nav_advanced_search:
                 dl = new AdvancedSearchGetWorkspaceData(this);
-                dl.getFragment();
+                fragment = dl.getFragment(dl);
                 break;
             case R.id.nav_user_profile:
                 fragment = new UserProfileFragment();
