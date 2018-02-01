@@ -20,8 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.map.LocationDataLoader;
-import com.example.map.MapFragment;
+import com.example.map.LocationGetWorkspaceData;
 import com.example.mihovil.digitalnomad.Interface.OnDataDisplay;
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
 import com.example.mihovil.digitalnomad.files.GetImage;
@@ -29,7 +28,7 @@ import com.example.mihovil.digitalnomad.files.ImageSaver;
 import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.mihovil.digitalnomad.fragments.RecyclerViewFragment;
 import com.example.mihovil.digitalnomad.fragments.UserProfileFragment;
-import com.example.mihovil.digitalnomad.loaders.UserWorkspacesDataLoader;
+import com.example.mihovil.digitalnomad.loaders.UserWorkspacesGetWorkspaceData;
 import com.example.mihovil.digitalnomad.models.Workspace;
 import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.WebServiceCaller;
@@ -40,8 +39,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
-import com.mihovil.advancedsearch.AdvancedSearchDataLoader;
-import com.mihovil.advancedsearch.advancedSearchFragment;
+import com.mihovil.advancedsearch.AdvancedSearchGetWorkspaceData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,31 +139,36 @@ public class MainMenuActivity extends AppCompatActivity
         Fragment fragment = null;
         Bundle valueBundle = new Bundle();
         valueBundle.putString("Email", preferences.getString("Email", null));
-        if (id == R.id.nav_search) {
-            DataLoader dl = new LocationDataLoader(this);
-            fragment = new MapFragment(dl);
+        getWorkspaceData dl = null;
 
-        } else if (id == R.id.nav_advanced_search) {
-            DataLoader dl = new AdvancedSearchDataLoader(this);
-            fragment = new advancedSearchFragment(dl);
-
-        } else if (id == R.id.nav_user_profile) {
-            fragment = new UserProfileFragment();
-
-        } else if (id == R.id.nav_workspaces) {
-            fragment = new RecyclerViewFragment(workspacesArray);
-            fragment.setArguments(valueBundle);
-
-        } else{
-            Logout();
-            startActivity(new Intent(getBaseContext(), LoginActivity.class));
-            finish();
+        switch (id){
+            case R.id.nav_search:
+                dl = new LocationGetWorkspaceData(this);
+                dl.getFragment();
+                break;
+            case R.id.nav_advanced_search:
+                dl = new AdvancedSearchGetWorkspaceData(this);
+                dl.getFragment();
+                break;
+            case R.id.nav_user_profile:
+                fragment = new UserProfileFragment();
+                break;
+            case R.id.nav_workspaces:
+                fragment = new RecyclerViewFragment(workspacesArray);
+                fragment.setArguments(valueBundle);
+                break;
+            case R.id.nav_logout:
+                Logout();
+                startActivity(new Intent(getBaseContext(), LoginActivity.class));
+                finish();
         }
 
-        System.out.println("i sad bi jos trebo dat fragent");
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, fragment);
-        ft.commit();
+        if(fragment != null){
+            System.out.println("i sad bi jos trebo dat fragent");
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -188,7 +191,7 @@ public class MainMenuActivity extends AppCompatActivity
 
     private void DoUserWorkspaceCall() {
         System.out.println("uso u workspaces call");
-        DataLoader userWorkspaces = new UserWorkspacesDataLoader(this);
+        getWorkspaceData userWorkspaces = new UserWorkspacesGetWorkspaceData(this);
         userWorkspaces.loadData(preferences.getString("Email", null));
     }
 

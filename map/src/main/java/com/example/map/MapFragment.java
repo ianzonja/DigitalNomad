@@ -32,7 +32,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mihovil.digitalnomad.DataLoader;
+import com.example.mihovil.digitalnomad.getWorkspaceData;
 import com.example.mihovil.digitalnomad.Interface.OnDataLoaded;
 import com.example.mihovil.digitalnomad.models.Workspace;
 import com.google.android.gms.common.ConnectionResult;
@@ -77,9 +77,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnDataL
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
-    DataLoader dl;
+    getWorkspaceData dl;
 
-    public MapFragment(DataLoader dl) {
+    public MapFragment(getWorkspaceData dl) {
         this.dl = dl;
     }
 

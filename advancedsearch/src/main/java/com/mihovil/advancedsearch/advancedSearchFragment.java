@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.example.mihovil.digitalnomad.DataLoader;
+import com.example.mihovil.digitalnomad.getWorkspaceData;
 import com.example.mihovil.digitalnomad.Interface.OnDataLoaded;
 import com.example.mihovil.digitalnomad.models.Workspace;
 
@@ -31,10 +31,10 @@ public class advancedSearchFragment extends Fragment implements View.OnClickList
     private CheckBox socialActivities;
     private CheckBox aZ;
     private Button filterOut;
-    private DataLoader dl;
+    private getWorkspaceData dl;
     private Object activityObject;
 
-    public advancedSearchFragment(DataLoader dl) {
+    public advancedSearchFragment(getWorkspaceData dl) {
         this.dl = dl;
     }
 

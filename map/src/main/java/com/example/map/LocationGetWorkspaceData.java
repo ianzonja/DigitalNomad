@@ -1,6 +1,6 @@
 package com.example.map;
 
-import com.example.mihovil.digitalnomad.DataLoader;
+import com.example.mihovil.digitalnomad.getWorkspaceData;
 import com.example.mihovil.digitalnomad.Interface.OnDataDisplay;
 import com.example.webservice.interfaces.WebServiceCaller;
 
@@ -8,11 +8,11 @@ import com.example.webservice.interfaces.WebServiceCaller;
  * Created by Ian on 1/26/2018.
  */
 
-public class LocationDataLoader extends DataLoader {
+public class LocationGetWorkspaceData extends getWorkspaceData {
 
     private LocationResult locationResult = null;
 
-    public LocationDataLoader(OnDataDisplay onDataDisplay) {
+    public LocationGetWorkspaceData(OnDataDisplay onDataDisplay) {
         super(onDataDisplay);
     }
 

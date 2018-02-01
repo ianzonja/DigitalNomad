@@ -1,6 +1,6 @@
 package com.mihovil.advancedsearch;
 
-import com.example.mihovil.digitalnomad.DataLoader;
+import com.example.mihovil.digitalnomad.getWorkspaceData;
 import com.example.mihovil.digitalnomad.Interface.OnDataDisplay;
 import com.example.webservice.interfaces.WebServiceCaller;
 
@@ -8,11 +8,11 @@ import com.example.webservice.interfaces.WebServiceCaller;
  * Created by Ian on 1/26/2018.
  */
 
-public class AdvancedSearchDataLoader extends DataLoader {
+public class AdvancedSearchGetWorkspaceData extends getWorkspaceData {
 
     AdvancedResult result = null;
 
-    public AdvancedSearchDataLoader(OnDataDisplay onDataDisplay) {
+    public AdvancedSearchGetWorkspaceData(OnDataDisplay onDataDisplay) {
         super(onDataDisplay);
     }
 
