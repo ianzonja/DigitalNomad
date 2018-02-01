@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * Created by Mihovil on 20.1.2018..
  */
 
-public class advancedSearchFragment extends Fragment implements View.OnClickListener, OnDataLoaded{
+public class advancedSearchFragment extends Fragment implements View.OnClickListener, OnDataLoaded, getReference{
 
     private EditText countryName;
     private CheckBox accomodation;
@@ -33,10 +33,6 @@ public class advancedSearchFragment extends Fragment implements View.OnClickList
     private Button filterOut;
     private getWorkspaceData dl;
     private Object activityObject;
-
-    public advancedSearchFragment(getWorkspaceData dl) {
-        this.dl = dl;
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -86,5 +82,8 @@ public class advancedSearchFragment extends Fragment implements View.OnClickList
         dl.displayData();
     }
 
-
+    @Override
+    public void getController(AdvancedSearchGetWorkspaceData advancedSearchGetWorkspaceData) {
+        dl = advancedSearchGetWorkspaceData;
+    }
 }

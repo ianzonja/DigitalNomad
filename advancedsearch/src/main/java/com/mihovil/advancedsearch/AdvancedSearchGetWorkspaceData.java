@@ -13,14 +13,16 @@ import com.example.webservice.interfaces.WebServiceCaller;
 public class AdvancedSearchGetWorkspaceData extends getWorkspaceData {
 
     AdvancedResult result = null;
+    private advancedSearchFragment fragment;
 
     public AdvancedSearchGetWorkspaceData(OnDataDisplay onDataDisplay) {
         super(onDataDisplay);
+        fragment = new advancedSearchFragment();
+        fragment.getController(this);
     }
 
     @Override
-    public Fragment getFragment(getWorkspaceData dl) {
-        Fragment fragment = new advancedSearchFragment(dl);
+    public Fragment getFragment() {
         return fragment;
     }
 
