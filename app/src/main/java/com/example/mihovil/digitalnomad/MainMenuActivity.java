@@ -144,7 +144,7 @@ public class MainMenuActivity extends AppCompatActivity
         switch (id){
             case R.id.nav_search:
                 dl = new LocationGetWorkspaceData(this);
-                dl.getFragment();
+                fragment = dl.getFragment(dl);
                 break;
             case R.id.nav_advanced_search:
                 dl = new AdvancedSearchGetWorkspaceData(this);
