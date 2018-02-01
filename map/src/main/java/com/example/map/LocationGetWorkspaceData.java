@@ -13,14 +13,16 @@ import com.example.webservice.interfaces.WebServiceCaller;
 public class LocationGetWorkspaceData extends getWorkspaceData {
 
     private LocationResult locationResult = null;
+    private MapFragment fragment;
 
     public LocationGetWorkspaceData(OnDataDisplay onDataDisplay) {
         super(onDataDisplay);
+        fragment = new MapFragment();
+        fragment.getController(this);
     }
 
     @Override
-    public Fragment getFragment(getWorkspaceData dl) {
-        Fragment fragment = new MapFragment(dl);
+    public Fragment getFragment() {
         return  fragment;
     }
 

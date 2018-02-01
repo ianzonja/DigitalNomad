@@ -54,7 +54,7 @@ import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, OnDataLoaded {
+public class MapFragment extends Fragment implements OnMapReadyCallback, OnDataLoaded, getReference {
 
     private static final int ERROR_DIALOG_REQUEST = 9001;
 
@@ -79,9 +79,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnDataL
 
     getWorkspaceData dl;
 
-    public MapFragment(getWorkspaceData dl) {
-        this.dl = dl;
-    }
 
 
     @Override
@@ -349,4 +346,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnDataL
     public void onDataLoaded(ArrayList<Workspace> workspaces) {
         dl.displayData();
     }
-}
+
+    @Override
+    public void getController(LocationGetWorkspaceData locationGetWorkspaceData) {
+        dl = locationGetWorkspaceData;
+    }
+
+    }
