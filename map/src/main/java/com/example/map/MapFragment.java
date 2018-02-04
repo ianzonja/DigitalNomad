@@ -32,9 +32,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mihovil.digitalnomad.GetWorkspaceData;
-import com.example.mihovil.digitalnomad.Interface.OnDataLoaded;
-import com.example.mihovil.digitalnomad.models.Workspace;
+import com.example.mihovil.digitalnomad.WorkspaceData;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -54,7 +52,7 @@ import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, OnDataLoaded, GetReference {
+public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private static final int ERROR_DIALOG_REQUEST = 9001;
 
@@ -77,8 +75,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnDataL
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
-    GetWorkspaceData dl;
-
+    LocationWorkspaceData workspaceData;
 
 
     @Override
@@ -131,7 +128,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnDataL
             @Override
             public void onClick(View v) {
                 LocationResult lr = new LocationResult(userData.longitude, userData.latitude, progressChanged);
-                dl.loadData((Object) lr);
+                workspaceData.loadData((Object) lr);
             }
         });
     }
@@ -247,7 +244,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnDataL
 
         super.onDestroyView();
 
-}
+    }
 
     //metoda za inicijaliziranje mape
     private void initMap() {
@@ -342,14 +339,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnDataL
             bilder.create().show();
         }
     }
-    @Override
-    public void onDataLoaded(ArrayList<Workspace> workspaces) {
-        dl.displayData();
+
+    public void getController(LocationWorkspaceData locationGetWorkspaceData) {
+        workspaceData = locationGetWorkspaceData;
     }
 
-    @Override
-    public void getController(LocationGetWorkspaceData locationGetWorkspaceData) {
-        dl = locationGetWorkspaceData;
-    }
-
-    }
+}

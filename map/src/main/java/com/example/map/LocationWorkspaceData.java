@@ -2,7 +2,7 @@ package com.example.map;
 
 import android.support.v4.app.Fragment;
 
-import com.example.mihovil.digitalnomad.GetWorkspaceData;
+import com.example.mihovil.digitalnomad.WorkspaceData;
 import com.example.mihovil.digitalnomad.Interface.OnDataDisplay;
 import com.example.webservice.interfaces.WebServiceCaller;
 
@@ -10,13 +10,12 @@ import com.example.webservice.interfaces.WebServiceCaller;
  * Created by Ian on 1/26/2018.
  */
 
-public class LocationGetWorkspaceData extends GetWorkspaceData {
+public class LocationWorkspaceData extends WorkspaceData {
 
     private LocationResult locationResult = null;
     private MapFragment fragment;
 
-    public LocationGetWorkspaceData(OnDataDisplay onDataDisplay) {
-        super(onDataDisplay);
+    public LocationWorkspaceData() {
         fragment = new MapFragment();
         fragment.getController(this);
     }

@@ -6,8 +6,8 @@ import android.support.v4.app.Fragment;
  * Created by ivysl on 1.2.2018..
  */
 
-public interface GetWorkspaces {
+public interface OnSelectedModule {
     Fragment getFragment();
     void loadData(Object object);
-    void displayData();
+    void setReturnPoint(OnDataDisplay onDataDisplay);
 }

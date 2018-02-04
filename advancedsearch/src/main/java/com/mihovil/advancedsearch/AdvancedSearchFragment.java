@@ -1,7 +1,5 @@
 package com.mihovil.advancedsearch;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,17 +10,15 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.example.mihovil.digitalnomad.GetWorkspaceData;
-import com.example.mihovil.digitalnomad.Interface.OnDataLoaded;
-import com.example.mihovil.digitalnomad.models.Workspace;
-
-import java.util.ArrayList;
+import com.example.mihovil.digitalnomad.Interface.OnSelectedModule;
+import com.example.mihovil.digitalnomad.WorkspaceData;
+import com.example.webservice.interfaces.WebServiceCaller;
 
 /**
  * Created by Mihovil on 20.1.2018..
  */
 
-public class advancedSearchFragment extends Fragment implements View.OnClickListener, OnDataLoaded, GetReference {
+public class AdvancedSearchFragment extends Fragment implements View.OnClickListener {
 
     private EditText countryName;
     private CheckBox accomodation;
@@ -31,14 +27,7 @@ public class advancedSearchFragment extends Fragment implements View.OnClickList
     private CheckBox socialActivities;
     private CheckBox aZ;
     private Button filterOut;
-    private GetWorkspaceData dl;
-    private Object activityObject;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Activity mainMenu = (Activity) context;
-    }
+    private AdvancedSearchWorkspaceData workspaceData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,17 +62,13 @@ public class advancedSearchFragment extends Fragment implements View.OnClickList
                 countryName.setText("nodata");
             System.out.println("sta rece: " + countryName.getText().toString());
             AdvancedResult advancedResult = new AdvancedResult(countryName.getText().toString(),accomodation.isChecked(),food.isChecked(),wifi.isChecked(),socialActivities.isChecked(),aZ.isChecked());
-            dl.loadData((Object) advancedResult);
+            workspaceData.loadData((Object) advancedResult);
         }
     }
 
-    @Override
-    public void onDataLoaded(ArrayList<Workspace> workspaces) {
-        dl.displayData();
+    public void getController(AdvancedSearchWorkspaceData advancedSearchGetWorkspaceData) {
+        workspaceData = advancedSearchGetWorkspaceData;
     }
 
-    @Override
-    public void getController(AdvancedSearchGetWorkspaceData advancedSearchGetWorkspaceData) {
-        dl = advancedSearchGetWorkspaceData;
-    }
+
 }

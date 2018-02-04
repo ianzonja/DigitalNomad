@@ -20,16 +20,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.map.LocationGetWorkspaceData;
 import com.example.mihovil.digitalnomad.Interface.OnDataDisplay;
 import com.example.mihovil.digitalnomad.Interface.OnImageDownload;
-import com.example.mihovil.digitalnomad.Interface.GetWorkspaces;
+import com.example.mihovil.digitalnomad.Interface.OnSelectedModule;
 import com.example.mihovil.digitalnomad.files.GetImage;
 import com.example.mihovil.digitalnomad.files.ImageSaver;
 import com.example.mihovil.digitalnomad.files.UserToJsonFile;
 import com.example.mihovil.digitalnomad.fragments.RecyclerViewFragment;
 import com.example.mihovil.digitalnomad.fragments.UserProfileFragment;
-import com.example.mihovil.digitalnomad.loaders.UserWorkspacesGetWorkspaceData;
+import com.example.mihovil.digitalnomad.loaders.UserWorkspacesWorkspaceData;
 import com.example.mihovil.digitalnomad.models.Workspace;
 import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.WebServiceCaller;
@@ -40,13 +39,12 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
-import com.mihovil.advancedsearch.AdvancedSearchGetWorkspaceData;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainMenuActivity extends AppCompatActivity
-        implements OnServiceFinished, NavigationView.OnNavigationItemSelectedListener,OnImageDownload, OnDataDisplay {
+        implements OnServiceFinished, NavigationView.OnNavigationItemSelectedListener, OnImageDownload, OnDataDisplay {
     SharedPreferences preferences;
     List<MenuItem> menuItems;
     NavigationView navigationView;
@@ -54,13 +52,7 @@ public class MainMenuActivity extends AppCompatActivity
     TextView navName;
     TextView navEmail;
     List<Workspace> workspacesArray;
-    Bitmap[] workspaceBitmapArray;
-    String fabView;
     private int position;
-    private double longitude = 0,latitude = 0;
-    private int radius = 0;
-    List<WorkspaceValue> workspaceResponse = null;
-    List<Workspace> userWorkspaces;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,11 +77,11 @@ public class MainMenuActivity extends AppCompatActivity
         navName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.MainMenuNameLastName);
         navEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.MainMenuEmail);
 
-        Bitmap bitmap =  new ImageSaver(this).
+        Bitmap bitmap = new ImageSaver(this).
                 setFileName("ProfilePic.png").
                 setDirectoryName("ProfilePicture").
                 load();
-        if(bitmap !=null) {
+        if (bitmap != null) {
             navProfilePicture.setImageBitmap(GetImage.getRoundedCornerBitmap(bitmap));
         }
 
@@ -105,13 +97,12 @@ public class MainMenuActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
 
-        while (getSupportFragmentManager().getBackStackEntryCount() > 0){
+        while (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStackImmediate();
         }
 
         displaySelectedFragment(R.id.nav_workspaces);
     }
-
 
 
     @Override
@@ -140,14 +131,14 @@ public class MainMenuActivity extends AppCompatActivity
         Fragment fragment = null;
         Bundle valueBundle = new Bundle();
         valueBundle.putString("Email", preferences.getString("Email", null));
-        GetWorkspaces getWorkspaces = null;
+        OnSelectedModule searchModule = null;
 
-        switch (id){
+        switch (id) {
             case R.id.nav_search:
-                getWorkspaces = new LocationGetWorkspaceData(this);
+                searchModule = SearchFactory.getSearchModule("map");
                 break;
             case R.id.nav_advanced_search:
-                getWorkspaces = new AdvancedSearchGetWorkspaceData(this);
+                searchModule = SearchFactory.getSearchModule("advanced");
                 break;
             case R.id.nav_user_profile:
                 fragment = new UserProfileFragment();
@@ -161,11 +152,12 @@ public class MainMenuActivity extends AppCompatActivity
                 startActivity(new Intent(getBaseContext(), LoginActivity.class));
                 finish();
         }
-        if(getWorkspaces != null){
-            fragment = getWorkspaces.getFragment();
+        if (searchModule != null) {
+            searchModule.setReturnPoint(this);
+            fragment = searchModule.getFragment();
         }
 
-        if(fragment != null){
+        if (fragment != null) {
             System.out.println("i sad bi jos trebo dat fragent");
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
@@ -183,24 +175,24 @@ public class MainMenuActivity extends AppCompatActivity
         int id = item.getItemId();
         getSelectedItemPosition();
         position = menuItems.indexOf(item);
-        if(position == 4 || position == 0){
+        if (position == 4 || position == 0) {
             DoUserWorkspaceCall();
-        }
-        else
+        } else
             displaySelectedFragment(id);
         return true;
     }
 
     private void DoUserWorkspaceCall() {
         System.out.println("uso u workspaces call");
-        GetWorkspaceData userWorkspaces = new UserWorkspacesGetWorkspaceData(this);
+        WorkspaceData userWorkspaces = new UserWorkspacesWorkspaceData();
+        userWorkspaces.setReturnPoint(this);
         userWorkspaces.loadData(preferences.getString("Email", null));
     }
 
-    public void getSelectedItemPosition(){
+    public void getSelectedItemPosition() {
         Menu menu = navigationView.getMenu();
-        menuItems=new ArrayList<>();
-        for(int i = 0; i<menu.size(); i++){
+        menuItems = new ArrayList<>();
+        for (int i = 0; i < menu.size(); i++) {
             menuItems.add(menu.getItem(i));
         }
     }
@@ -226,9 +218,9 @@ public class MainMenuActivity extends AppCompatActivity
     @Override
     public void onServiceDone(Object response) {
         try {
-            ServiceResponse user  = (ServiceResponse) response;
-            if(user != null){
-                UserToJsonFile obj = new UserToJsonFile(user.getName(), user.getEmail(), user.getReponseId(), user.getUrlPicture(),user.getRank(), getBaseContext());
+            ServiceResponse user = (ServiceResponse) response;
+            if (user != null) {
+                UserToJsonFile obj = new UserToJsonFile(user.getName(), user.getEmail(), user.getReponseId(), user.getUrlPicture(), user.getRank(), getBaseContext());
 
                 navName.setText(user.getName());
                 navEmail.setText(user.getEmail());
@@ -239,10 +231,10 @@ public class MainMenuActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
 
-                GetImage getImage = new GetImage( this);
+                GetImage getImage = new GetImage(this);
                 getImage.execute();
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
