@@ -56,6 +56,8 @@ public class RecyclerViewFragment extends Fragment implements LongPressListener,
         workspacesList = new ArrayList<Workspace>();
         workspaceBitmapList = new ArrayList<>();
         fab = (FloatingActionButton) view.findViewById(R.id.add_new_fab);
+        if(getArguments().getBoolean("showFab") == false)
+            fab.setVisibility(view.GONE);
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(workspaces, RecyclerViewFragment.this, RecyclerViewFragment.this);
         rv.setAdapter(adapter);
 

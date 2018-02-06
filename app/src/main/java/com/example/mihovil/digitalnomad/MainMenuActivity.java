@@ -32,7 +32,6 @@ import com.example.mihovil.digitalnomad.loaders.UserWorkspacesWorkspaceData;
 import com.example.mihovil.digitalnomad.models.Workspace;
 import com.example.webservice.interfaces.ServiceResponse;
 import com.example.webservice.interfaces.WebServiceCaller;
-import com.example.webservice.interfaces.WorkspaceValue;
 import com.example.webservice.interfaces.interfaces.OnServiceFinished;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -53,6 +52,7 @@ public class MainMenuActivity extends AppCompatActivity
     TextView navEmail;
     List<Workspace> workspacesArray;
     private int position;
+    private Boolean needToShowFab = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +144,7 @@ public class MainMenuActivity extends AppCompatActivity
                 fragment = new UserProfileFragment();
                 break;
             case R.id.nav_workspaces:
+                valueBundle.putBoolean("showFab", needToShowFab);
                 fragment = new RecyclerViewFragment(workspacesArray);
                 fragment.setArguments(valueBundle);
                 break;
@@ -153,6 +154,7 @@ public class MainMenuActivity extends AppCompatActivity
                 finish();
         }
         if (searchModule != null) {
+            needToShowFab = false;
             searchModule.setReturnPoint(this);
             fragment = searchModule.getFragment();
         }
@@ -187,6 +189,7 @@ public class MainMenuActivity extends AppCompatActivity
         WorkspaceData userWorkspaces = new UserWorkspacesWorkspaceData();
         userWorkspaces.setReturnPoint(this);
         userWorkspaces.loadData(preferences.getString("Email", null));
+        needToShowFab = true;
     }
 
     public void getSelectedItemPosition() {

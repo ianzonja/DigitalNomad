@@ -29,10 +29,13 @@ public abstract class WorkspaceData implements OnServiceFinished, OnPicturesReci
     @Override
     public void onServiceDone(Object response) {
         workspaceResponse = (ArrayList<WorkspaceValue>)response;
-        System.out.println("velicina onservicedone; " + workspaceResponse.size());
         ArrayList<String> urls = new ArrayList<>();
         for(int i = 0; i<workspaceResponse.size(); i++){
-            urls.add("http://jospudjaatfoi.000webhostapp.com/Pictures/Workspaces/Screenshot_1.png");
+            if(workspaceResponse.get(i).getPath() == null){
+                urls.add("http://jospudjaatfoi.000webhostapp.com/Pictures/Workspaces/Screenshot_1.png");
+            }
+            else
+                urls.add(workspaceResponse.get(i).getPath().replace("https://", "http://"));
         }
         GetImage getImage = new GetImage(urls, this);
         getImage.execute();
