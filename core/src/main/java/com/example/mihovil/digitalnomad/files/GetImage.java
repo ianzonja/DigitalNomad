@@ -67,22 +67,19 @@ public class GetImage extends AsyncTask<Void, Integer, Void> {
     private void getPicture() throws IOException {
 
         URL url = new URL(urlProfile);
-
         bitmap[0] = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-
         publishProgress(1);
     }
 
     private void getPictures() throws IOException{
         for(int i = 0; i<urlArray.size(); i++){
             URL url = new URL(urlArray.get(i));
-
             bitmap[i] = BitmapFactory.decodeStream(url.openConnection().getInputStream());
             if(i == urlArray.size() -1)
                 isReadyToReturnImages = true;
-            publishProgress(1);
             System.out.println("slika: " + Integer.toString(i));
         }
+        publishProgress(1);
     }
 
     @Override

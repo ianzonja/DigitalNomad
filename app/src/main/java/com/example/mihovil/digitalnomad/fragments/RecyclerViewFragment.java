@@ -1,6 +1,5 @@
 package com.example.mihovil.digitalnomad.fragments;
 
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -65,7 +64,7 @@ public class RecyclerViewFragment extends Fragment implements LongPressListener,
             public void onClick(View v){
                 Fragment fragment = new EnterWorkspaceFragment();
                 Bundle valueBundle = new Bundle();
-                valueBundle.putString("email", getArguments().getString("email"));
+                valueBundle.putString("Email", getArguments().getString("Email"));
                 fragment.setArguments(valueBundle);
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment);
@@ -82,25 +81,21 @@ public class RecyclerViewFragment extends Fragment implements LongPressListener,
 
     @Override
     public void onLongPressAction(int position) {
-        if(getArguments().getString("email") != null){
+        if(getArguments().getString("Email") != null){
+            System.out.println("uso u longpress");
             FragmentManager fm = getFragmentManager();
             valueBundle = new Bundle();
             valueBundle.putString("id", workspaces.get(position).id);
-            valueBundle.putString("name", workspaces.get(position).name);
+                        valueBundle.putString("name", workspaces.get(position).name);
             valueBundle.putString("country", workspaces.get(position).country);
             valueBundle.putString("town", workspaces.get(position).town);
             valueBundle.putString("adress", workspaces.get(position).adress);
             valueBundle.putString("description", workspaces.get(position).description);
-            valueBundle.putString("email", getArguments().getString("email"));
+            valueBundle.putString("email", getArguments().getString("Email"));
             PopUpWorkspacesMessage dialog = new PopUpWorkspacesMessage();
             dialog.setArguments(valueBundle);
             dialog.show(getFragmentManager(), "sdfdsf");
             fm.executePendingTransactions();
-            dialog.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialogInterface) {
-                }
-            });
         }
     }
 
@@ -114,5 +109,11 @@ public class RecyclerViewFragment extends Fragment implements LongPressListener,
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, fragment);
         ft.commit();
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
     }
 }
